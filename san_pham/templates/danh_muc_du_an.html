@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dự Án Tiêu Biểu - Vữa Khô Sông Hồng{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* CSS dành riêng cho trang Danh Mục Dự Án */
+    .project-header {
+        padding: 150px 5% 50px; /* Padding top lớn để không bị header đè lên */
+        text-align: center;
+        background: linear-gradient(135deg, var(--shk-blue), #1e3a8a);
+        color: white;
+    }
+    .project-header h1 {
+        font-size: clamp(30px, 5vw, 50px);
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+    }
+    .project-header p {
+        font-family: var(--font-secondary);
+        font-size: 16px;
+        opacity: 0.9;
+    }
+
+    /* Tái sử dụng CSS Gallery từ file cũ để hiển thị lưới video/ảnh */
+    .gallery-wrapper { width: 100%; max-width: 1400px; padding: 50px 5%; margin: 0 auto; }
+    .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 20px; overflow: hidden; background: rgba(255,255,255,0.6); border: 2px solid rgba(0,0,0,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s;}
+    .video-wrapper:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;}
+
+    @media (max-width: 768px) {
+        .video-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="project-header">
+    <h1>CÁC DỰ ÁN TIÊU BIỂU</h1>
+    <p>Bảo chứng chất lượng thực tế từ các công trình sử dụng Vữa Khô Sông Hồng</p>
+</div>
+
+<div class="gallery-wrapper">
+    <div class="video-grid">
+        <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe></div>
+        <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe></div>
+        <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe></div>
+        <div class="video-wrapper" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#e2e8f0;">
+            <i class="fa-solid fa-photo-film" style="font-size:40px; color:#94a3b8; margin-bottom:10px;"></i>
+            <span style="font-weight:700; color:#64748b;">ĐANG CẬP NHẬT</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Các lệnh JS riên của trang dự án (nếu có) sẽ viết ở đây
+</script>
+{% endblock %}

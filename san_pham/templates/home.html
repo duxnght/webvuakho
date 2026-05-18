@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    body { overflow: hidden; }
+    
+    #pageWrapper { width: 100%; height: 100vh; overflow-y: auto; overflow-x: hidden; scroll-snap-type: y mandatory; scroll-behavior: smooth; position: relative; z-index: 2; }
+    .snap-section { min-height: 100vh; width: 100%; scroll-snap-align: start; scroll-snap-stop: always; position: relative; display: flex; flex-direction: column; overflow: hidden; flex: none; padding-top: 80px;}
+    
+    .global-footer { scroll-snap-align: end; }
+
+    header .logo img { height: 80px !important; transition: 0.3s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));}
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
+    
+    /* --- 1. HERO BANNER --- */
+    .hero { 
+        background: linear-gradient(to right, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.7) 45%, rgba(15, 23, 42, 0.1) 100%), url('{% static "home/anhbia.png" %}') center/cover no-repeat; 
+        justify-content: center; align-items: flex-start; padding-left: 8%; padding-right: 8%; text-align: left; 
+    }
+    
+    .hero-text { max-width: 950px; z-index: 2; margin-top: 20px;}
+    .main-heading { font-size: clamp(32px, 4.5vw, 65px); line-height: 1.2; letter-spacing: -0.5px; color: #ffffff; margin-bottom: 15px; text-shadow: 2px 4px 10px rgba(0,0,0,0.9); white-space: nowrap;}
+    .main-heading .text-blue { color: var(--shk-blue); font-weight: 900; filter: brightness(1.2); text-shadow: 2px 4px 15px rgba(37, 99, 235, 0.5); }
+    .mobile-break { display: none; } 
+
+    .sub-heading { font-size: clamp(18px, 2.5vw, 24px); color: #f8fafc; margin-bottom: 25px; text-transform: none; font-weight: 600; text-shadow: 1px 3px 8px rgba(0,0,0,0.8); border-left: 4px solid var(--shk-blue); padding-left: 15px; font-family: var(--font-secondary);}
+    .desc { font-size: clamp(15px, 1.8vw, 17px); color: rgba(255,255,255,0.95); margin-bottom: 40px; font-weight: 500; font-family: var(--font-secondary); line-height: 1.6; text-shadow: 1px 2px 8px rgba(0,0,0,1); max-width: 700px;}
+    
+    .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+    .btn-3d { border-radius: 50px; font-weight: 800; font-size: 13px; letter-spacing: 0.5px; padding: 14px 28px; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none;}
+    .btn-blue { background: var(--shk-blue); color: white; box-shadow: 0 5px 0 #1e3a8a, 0 10px 20px rgba(0,0,0,0.4); }
+    .btn-blue:active { transform: translateY(3px); box-shadow: 0 2px 0 #1e3a8a, 0 5px 10px rgba(0,0,0,0.2); }
+    .btn-white { background: #ffffff; color: var(--text-dark); box-shadow: 0 5px 0 #cbd5e1, 0 10px 20px rgba(0,0,0,0.3); }
+    .btn-white:active { transform: translateY(3px); box-shadow: 0 2px 0 #cbd5e1, 0 5px 10px rgba(0,0,0,0.2); }
+
+    /* --- POPUP VIDEO --- */
+    .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s ease; backdrop-filter: blur(10px); }
+    .video-modal.active { opacity: 1; pointer-events: auto; }
+    .video-container { position: relative; width: 90%; max-width: 900px; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: 0.4s ease; }
+    .video-modal.active .video-container { transform: scale(1); }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .close-modal { position: absolute; top: 30px; right: 40px; color: white; font-size: 45px; cursor: pointer; transition: 0.3s; z-index: 10000; line-height: 1; }
+    .close-modal:hover { color: var(--shk-blue); transform: scale(1.1); }
+
+    /* --- 2. SẢN PHẨM SPOTLIGHT 3D --- */
+    .interactive-container { 
+        display: flex; flex-direction: row; 
+        background: transparent; 
+        overflow: hidden; height: calc(100vh - 80px); 
+    }
+    .product-layer { 
+        position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        cursor: pointer; z-index: 1; overflow: hidden; transition: var(--transition-main); 
+    }
+    
+    /* Vạch kẻ dọc mềm giữa các sản phẩm (từ code gốc) */
+    .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after {
+        content: ''; 
+        position: absolute; right: 0; top: 15%; height: 70%; width: 1px;
+        background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+        z-index: 10; transition: opacity 0.3s; pointer-events: none;
+    }
+    .interactive-container:not(:has(.expanded)) .product-layer:hover::after { opacity: 0; }
+    
+    /* PHỤC HỒI CHÍNH XÁC MÃ GRADIENT TỪ BẢN GỐC CỦA BẠN NHƯNG ĐỔI THỨ TỰ LỚP VÀ CHỮ TRẮNG */
+    .layer-yellow { background: linear-gradient(180deg, rgba(253,224,71,0) 0%, rgba(253,224,71,0.9) 15%, rgba(217,119,6,0.9) 85%, rgba(217,119,6,0) 100%); color: white; }
+    .layer-blue { background: linear-gradient(180deg, rgba(59,130,246,0) 0%, rgba(59,130,246,0.9) 15%, rgba(29,78,216,0.9) 85%, rgba(29,78,216,0) 100%); color: white; }
+    .layer-tan { background: linear-gradient(180deg, rgba(252,211,77,0) 0%, rgba(252,211,77,0.9) 15%, rgba(180,83,9,0.9) 85%, rgba(180,83,9,0) 100%); color: white; }
+    
+    .product-layer:hover { flex: 1.6; z-index: 12; box-shadow: 0 0 80px rgba(0,0,0,0.3); }
+    
+    /* Chữ in mờ (watermark) */
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); font-size: clamp(100px, 15vw, 250px); font-weight: 900; z-index: 0; pointer-events: none; transition: 0.6s; white-space: nowrap; color: rgba(255,255,255,0.25);}
+
+    /* Hình ảnh sản phẩm (có to có nhỏ) */
+    .img-box { position: relative; height: 42vh; width: 100%; z-index: 2; transition: var(--transition-main); filter: drop-shadow(0 20px 25px rgba(0,0,0,0.4)); display: flex; justify-content: center; align-items: flex-end; }
+    .bag-std { height: 68%; object-fit: contain; margin-bottom: 20px; } 
+    .bag-jumbo { height: 95%; object-fit: contain; margin-bottom: -10px;} 
+    
+    .interactive-container:not(:has(.expanded)) .product-layer:hover .img-box { transform: scale(1.1) translateY(-20px); filter: drop-shadow(0 40px 45px rgba(0,0,0,0.5));}
+    
+    .panel-content { text-align: center; margin-top: 25px; z-index: 3; width: 100%; transition: opacity 0.3s;}
+    .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid rgba(255,255,255,0.5); margin-bottom: 15px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); text-shadow: 0 1px 3px rgba(0,0,0,0.5);}
+    .panel-content h2 { font-size: 28px; margin-bottom: 12px; line-height: 1.3; font-weight: 800; letter-spacing: -0.5px; text-shadow: 1px 2px 5px rgba(0,0,0,0.3);}
+    .panel-content p { font-size: 14px; font-weight: 500; font-family: var(--font-secondary); padding: 0 15%; opacity: 0.95; line-height: 1.5; text-shadow: 1px 2px 5px rgba(0,0,0,0.3);}
+    
+    /* =========================================
+       HIỆU ỨNG EXPAND KHI CLICK (PHỤC HỒI TỪ CODE CŨ BẠN GỬI)
+       ========================================= */
+    .product-layer.expanded {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: 9999;
+        flex-direction: row; 
+        justify-content: flex-start;
+        cursor: default;
+        border: none;
+    }
+    
+    /* Khi mở rộng thì nền đặc 100% như code gốc */
+    .layer-yellow.expanded { background: linear-gradient(180deg, rgba(253,224,71,0.95) 0%, rgba(217,119,6,0.95) 100%); }
+    .layer-blue.expanded { background: linear-gradient(180deg, rgba(59,130,246,0.95) 0%, rgba(29,78,216,0.95) 100%); }
+    .layer-tan.expanded { background: linear-gradient(180deg, rgba(252,211,77,0.95) 0%, rgba(180,83,9,0.95) 100%); }
+
+    .expanded .img-box {
+        width: 50vw; height: 75vh;
+        transform: scale(1.1) translateY(0) !important;
+        filter: drop-shadow(0 40px 60px rgba(0,0,0,0.5));
+    }
+    
+    .expanded .panel-content { display: none; }
+    .expanded .watermark {
+        transform: translate(-50%, -50%) rotate(0deg); 
+        font-size: 35vw; opacity: 0.05; left: 50%; top: 50%;
+    }
+
+    .info-overlay {
+        display: none; width: 45vw; padding-right: 5vw;
+        flex-direction: column; justify-content: center; text-align: left;
+        color: white; z-index: 10;
+        opacity: 0; transform: translateX(50px); transition: all 0.5s ease 0.3s;
+    }
+    .expanded .info-overlay { display: flex; opacity: 1; transform: translateX(0); }
+    
+    .series-tag { font-weight: 800; letter-spacing: 2px; font-size: 14px; opacity: 0.9; margin-bottom: 10px; display: block; font-family: var(--font-secondary);}
+    .info-overlay h2 { font-size: clamp(40px, 4vw, 65px); line-height: 1.1; margin-bottom: 40px; text-shadow: 0 5px 15px rgba(0,0,0,0.2); letter-spacing: -1px;}
+
+    .spec-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        border-radius: 24px; padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        display: grid; grid-template-columns: 1fr 1fr; gap: 35px 20px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    }
+    .spec-item b { display: block; font-size: 12px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; font-family: var(--font-secondary); }
+    .spec-item span { font-size: 24px; font-weight: 800; font-family: var(--font-primary);}
+
+    .layer-yellow .info-overlay, .layer-tan .info-overlay { color: var(--text-dark); }
+    .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: none; }
+    .layer-yellow .spec-card, .layer-tan .spec-card {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-close {
+        position: absolute; top: 40px; right: 40px;
+        width: 50px; height: 50px; border-radius: 50%;
+        background: white; color: black; display: none;
+        align-items: center; justify-content: center;
+        font-size: 24px; cursor: pointer; z-index: 101;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s;
+    }
+    .expanded .btn-close { display: flex; }
+    .btn-close:hover { transform: scale(1.1); background: var(--text-dark); color: white;}
+
+    /* --- 3. TƯ VẤN --- */
+    .consult-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 0 5%; }
+    .glass-3d-box { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(30px); border-radius: 40px; padding: 50px; box-shadow: 10px 20px 40px rgba(0,0,0,0.1); max-width: 1200px; width: 100%; }
+    .consult-box { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .input-group input { width: 100%; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: var(--font-secondary); margin-bottom: 15px;}
+
+    /* =======================================
+       RESPONSIVE MOBILE
+       ======================================= */
+    @media (max-width: 1024px) {
+        .expanded .img-box { width: 40vw; height: 60vh; }
+        .info-overlay { width: 60vw; padding-right: 5vw; }
+        .spec-card { padding: 25px; gap: 20px; }
+    }
+
+    @media (max-width: 768px) {
+        header .logo img { height: 50px !important; }
+        .hero { padding: 60px 5% 0 5%; background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%), url('{% static "home/anhbia.png" %}') center/cover no-repeat; }
+        .hero-text { text-align: center; display: flex; flex-direction: column; align-items: center; margin-top: 0; width: 100%; }
+        
+        .main-heading { white-space: normal; text-align: center; line-height: 1.2; margin-bottom: 18px; width: 100%;}
+        .main-heading .text-blue { font-size: clamp(26px, 8vw, 36px); display: block; margin-bottom: 5px; text-shadow: 2px 2px 8px rgba(37, 99, 235, 0.3); white-space: nowrap; }
+        .main-heading .text-white-title { font-size: clamp(20px, 6vw, 28px); display: block;}
+        .mobile-break { display: block; }
+        
+        .sub-heading { font-size: 15px; border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;}
+        .desc { font-size: 14px; margin-bottom: 25px; text-align: center; max-width: 320px; line-height: 1.5; }
+        .hero-buttons { flex-direction: column; width: 100%; gap: 12px; align-items: center;}
+        .btn-3d { width: 100%; max-width: 300px; padding: 14px; font-size: 12px; }
+        
+        .interactive-container { flex-direction: column; height: auto;}
+        
+        /* Vạch kẻ ngang mềm cho Mobile */
+        .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after {
+            right: auto; top: auto; bottom: 0; left: 15%; width: 70%; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+        }
+        
+        .panel-content p { padding: 0 5%; }
+        .interactive-container:not(:has(.expanded)) .watermark { transform: translate(-50%, -50%) rotate(0deg); font-size: 80px; } 
+        
+        .product-layer.expanded { flex-direction: column; justify-content: center; align-items: center; overflow-y: auto;}
+        .expanded .img-box { width: 100vw; height: 40vh; transform: scale(1) translateY(-2vh) !important;}
+        .info-overlay { width: 90vw; padding-right: 0; text-align: center;}
+        .info-overlay h2 { font-size: 30px; margin-bottom: 20px;}
+        .spec-card { padding: 20px; gap: 15px; grid-template-columns: 1fr 1fr;}
+        .spec-item span { font-size: 18px;}
+        .btn-close { top: 20px; right: 20px; width: 40px; height: 40px; font-size: 20px; position: fixed;}
+        .expanded .watermark { font-size: 60vw; top: 30%; left: 50%;}
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="snap-section hero" id="hero">
+    <div class="hero-text reveal delay-1">
+        <h1 class="main-heading">
+            <span class="theme-transition text-blue">VỮA KHÔ TRỘN SẴN</span><br class="mobile-break">
+            <span class="text-white-title">CAO CẤP</span>
+        </h1>
+        <h3 class="sub-heading">Nâng tầm chất lượng công trình</h3>
+        <p class="desc">Giải pháp vật liệu xây dựng thế hệ mới với khả năng kiểm soát cấp phối tối ưu, giúp nâng cao chất lượng thi công và đảm bảo độ bền vững cho công trình dài hạn.</p>
+        <div class="hero-buttons">
+            <a href="https://keovuasonghong.vn" target="_blank" class="btn-3d btn-blue theme-transition">
+                <i class="fa-solid fa-globe"></i> Website Keo Vữa Sông Hồng
+            </a>
+            <button onclick="openVideoModal()" class="btn-3d btn-white theme-transition">
+                <i class="fa-solid fa-play" style="color: red;"></i> Video giới thiệu sản phẩm
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="snap-section interactive-container" id="san-pham">
+    
+    <div class="product-layer layer-yellow" onclick="expand(this)">
+        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="watermark">NANO</div>
+        
+        <div class="img-box"><img src="{% static 'home/nanoflex-bao-50kg.png' %}" alt="Nano" class="bag-std"></div>
+        <div class="panel-content">
+            <span class="badge" style="border-color: rgba(255,255,255,0.8);">DÒNG CAO CẤP</span>
+            <h2>VỮA TRÁT TƯỜNG<br>NANOFLEX</h2>
+            <p>Bổ sung phụ gia chống nứt, siêu bám dính</p>
+        </div>
+        
+        <div class="info-overlay">
+            <span class="series-tag">TECH-SERIES</span>
+            <h2>VỮA TRÁT TƯỜNG<br>NANOFLEX</h2>
+            <div class="spec-card">
+                <div class="spec-item"><b>Bám dính</b><span>Siêu cấp</span></div>
+                <div class="spec-item"><b>Chống nứt</b><span>Tuyệt đối</span></div>
+                <div class="spec-item"><b>Phụ gia</b><span>Polymer Đức</span></div>
+                <div class="spec-item"><b>Bề mặt</b><span>Gạch nhẹ, AAC</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-layer layer-blue" onclick="expand(this)">
+        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="watermark">SHV01</div>
+        
+        <div class="img-box"><img src="{% static 'home/vuakho7.5bao50.png' %}" alt="M7.5" class="bag-std"></div>
+        <div class="panel-content">
+            <span class="badge">DÒNG TIÊU CHUẨN</span>
+            <h2>VỮA KHÔ<br>TRỘN SẴN</h2>
+            <p>Công thức chuẩn cho xây, trát, cán nền</p>
+        </div>
+        
+        <div class="info-overlay">
+            <span class="series-tag">SHV-SERIES</span>
+            <h2>VỮA KHÔ<br>TRỘN SẴN M7.5</h2>
+            <div class="spec-card">
+                <div class="spec-item"><b>Cường độ nén</b><span>7.5 MPa</span></div>
+                <div class="spec-item"><b>Tỷ lệ nước</b><span>18 - 22%</span></div>
+                <div class="spec-item"><b>Chiều dày</b><span>5 - 20 mm</span></div>
+                <div class="spec-item"><b>Quy cách</b><span>50 Kg/Bao</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="product-layer layer-tan" onclick="expand(this)">
+        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="watermark">JUMBO</div>
+        
+        <div class="img-box"><img src="{% static 'home/vuakho7.5Jumbo.png' %}" alt="Jumbo" class="bag-jumbo"></div>
+        <div class="panel-content">
+            <span class="badge">DÒNG DỰ ÁN</span>
+            <h2>VỮA KHÔ<br>BAO JUMBO</h2>
+            <p>Tối ưu giá cả cho công trình lớn</p>
+        </div>
+        
+        <div class="info-overlay">
+            <span class="series-tag">PRO-SERIES</span>
+            <h2>VỮA KHÔ<br>BAO JUMBO</h2>
+            <div class="spec-card">
+                <div class="spec-item"><b>Trọng lượng</b><span>1000 Kg</span></div>
+                <div class="spec-item"><b>Tiết kiệm</b><span>15% Chi phí</span></div>
+                <div class="spec-item"><b>Vận chuyển</b><span>Xe chuyên dụng</span></div>
+                <div class="spec-item"><b>Dự án</b><span>Nhà cao tầng</span></div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="snap-section" id="tu-van" style="display: flex; flex-direction: column; justify-content: center;">
+    <div class="consult-wrapper">
+        <div class="glass-3d-box reveal delay-1">
+            <div class="consult-box">
+                <div class="consult-info">
+                    <h2>Đăng Ký<br><span class="theme-transition" style="color: var(--shk-blue);">Nhận Báo Giá</span></h2>
+                    <p style="font-family: var(--font-secondary);">Hệ thống tự động đồng bộ. Kỹ sư Sông Hồng sẽ gọi lại ngay lập tức để tư vấn phương án.</p>
+                </div>
+                <form class="consult-form">
+                    <div class="input-group">
+                        <input type="tel" placeholder="Số điện thoại liên hệ" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Khu vực thi công" required>
+                    </div>
+                    <button type="button" class="btn-3d btn-blue" style="width: 100%;">GỬI YÊU CẦU NGAY</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="video-modal" id="vidModal">
+    <div class="close-modal" onclick="closeVideoModal()">&times;</div>
+    <div class="video-container">
+        <iframe id="ytIframe" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.1 }); 
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    function expand(element) {
+        if(element.classList.contains('expanded')) return;
+        
+        document.querySelectorAll('.product-layer').forEach(el => el.classList.remove('expanded'));
+        element.classList.add('expanded');
+        
+        const pageWrapper = document.getElementById('pageWrapper');
+        if(pageWrapper) pageWrapper.style.overflowY = 'hidden';
+    }
+
+    function collapse() {
+        document.querySelectorAll('.product-layer').forEach(el => el.classList.remove('expanded'));
+        const pageWrapper = document.getElementById('pageWrapper');
+        if(pageWrapper) pageWrapper.style.overflowY = 'auto';
+    }
+
+    function openVideoModal() {
+        const modal = document.getElementById('vidModal');
+        const iframe = document.getElementById('ytIframe');
+        iframe.src = "https://www.youtube.com/embed/N-FLw-piwlc?si=yOS3CCfxzE-jk_Ek&autoplay=1";
+        modal.classList.add('active');
+    }
+
+    function closeVideoModal() {
+        const modal = document.getElementById('vidModal');
+        const iframe = document.getElementById('ytIframe');
+        modal.classList.remove('active');
+        setTimeout(() => { iframe.src = ""; }, 400); 
+    }
+</script>
+{% endblock %}

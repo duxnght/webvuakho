@@ -1,0 +1,33 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# --- Django ---
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+staticfiles/
+media/
+
+# --- Hệ điều hành (OS) ---
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# --- Môi trường (Environment) ---
+.env
+.venv
+env/
+venv/
+ENV/
+
+# --- Dự án hiện tại của bạn ---
+tree.txt

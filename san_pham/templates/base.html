@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vữa Khô Sông Hồng{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --shk-blue: #2563eb;       
+            --shk-yellow: #eab308;     
+            --shk-tan: #d97706;        
+            --text-dark: #0f172a;      
+            --text-gray: #475569;      
+            --transition-main: all 0.7s cubic-bezier(0.7, 0, 0.2, 1);
+            
+            --font-primary: 'Be Vietnam Pro', sans-serif;
+            --font-secondary: 'Inter', sans-serif;
+        }
+
+        body { top: 0 !important; }
+        .skiptranslate { display: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { width: 100%; height: 100%; font-family: var(--font-secondary); background-color: #f8fafc; color: var(--text-dark); }
+        h1, h2, h3, h4, h5, h6, nav a, .btn-3d, .logo, .floating-tag, .badge { font-family: var(--font-primary); text-transform: uppercase; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Nền cực quang trả về nguyên bản như code cũ của bro (opacity: 0.2) */
+        .global-aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; z-index: 1; filter: blur(90px); transform: scale(1.2); pointer-events: none;}
+        .global-aurora-bg div { flex: 1; opacity: 0.2; animation: pulseGlow 6s infinite alternate; } 
+        
+        .stripe-yellow { background: var(--shk-yellow); animation-delay: -2s !important;}
+        .stripe-blue { background: var(--shk-blue); } 
+        .stripe-tan { background: var(--shk-tan); animation-delay: -4s !important;}
+        
+        #nano-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.8; mix-blend-mode: overlay; }
+        @keyframes pulseGlow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+
+        .top-nav-wrapper { position: absolute; top: 0; left: 0; width: 100%; z-index: 2000; padding: 20px 5%;}
+        header { display: flex; justify-content: space-between; align-items: center; background: transparent; }
+        .logo img { height: 45px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));}
+        nav { display: flex; gap: 40px; position: absolute; left: 50%; transform: translateX(-50%); }
+        nav a { font-weight: 800; font-size: 13px; color: white; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);}
+        nav a:hover { color: var(--shk-yellow); }
+        .lang-switch { display: flex; gap: 12px; align-items: center; }
+        .lang-btn { width: 35px; height: 25px; border-radius: 4px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .lang-btn:hover { border-color: white; transform: translateY(-2px); }
+        .lang-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+        .global-footer { background: #ffffff; color: var(--text-dark); padding: 50px 8% 30px; position: relative; z-index: 10; border-top: 1px solid #e2e8f0; font-family: var(--font-secondary);}
+        .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1400px; margin: 0 auto; }
+        .footer-col-left h3 { color: var(--shk-tan); font-size: 22px; margin-bottom: 25px; font-weight: 800;}
+        .footer-info-item { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; font-weight: 500; color: #334155; line-height: 1.5; }
+        .footer-info-item i { color: var(--text-gray); width: 22px; text-align: center; margin-right: 8px; margin-top: 3px; font-size: 15px;}
+        .footer-col-right { text-align: right; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end;}
+        .footer-col-right h4 { color: var(--text-dark); font-size: 16px; margin-bottom: 25px; font-weight: 800;}
+        .social-icons { display: flex; gap: 15px; margin-bottom: 30px; }
+        .social-icons a { display: flex; justify-content: center; align-items: center; color: white; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 15px rgba(0,0,0,0.15); color: white;}
+        .icon-fb { width: 38px; height: 38px; border-radius: 50%; background: #1877f2; font-size: 18px; }
+        .icon-yt { width: 50px; height: 38px; border-radius: 8px; background: #ff0000; font-size: 18px; }
+        .icon-tk { width: 38px; height: 38px; border-radius: 50%; background: #000000; font-size: 18px; }
+        .icon-in { width: 38px; height: 38px; border-radius: 6px; background: #0a66c2; font-size: 18px; }
+        .copyright { font-size: 13px; color: #64748b; font-weight: 500; }
+
+        .float-btn-left { position: fixed; bottom: 30px; left: 30px; z-index: 2000; }
+        .float-btn-right { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
+        .btn-scroll-top { width: 45px; height: 45px; border-radius: 50%; background: #1e293b; color: white; border: 1px solid #475569; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-scroll-top:hover { background: var(--shk-tan); border-color: var(--shk-tan); transform: translateY(-3px);}
+        .zalo-btn { width: 60px; height: 60px; background-color: #0068ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff !important; font-weight: 900; font-size: 16px; letter-spacing: 0.5px; position: relative; box-shadow: 0 4px 10px rgba(0, 104, 255, 0.4); text-decoration: none;}
+        .zalo-btn::before, .zalo-btn::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background-color: #0068ff; opacity: 0.4; z-index: -1; animation: zaloRipple 2s infinite ease-in-out; }
+        .zalo-btn::after { animation-delay: -1s; }
+        @keyframes zaloRipple { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.6); opacity: 0; } }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .global-footer { padding-bottom: 110px; }
+            .footer-container { flex-direction: column; text-align: left; gap: 30px;}
+            .footer-col-left h3 { text-align: center; margin-bottom: 20px;}
+            .footer-info-item { align-items: flex-start; justify-content: flex-start; }
+            .footer-col-right { align-items: center; text-align: center; margin-top: 10px;}
+            .social-icons { justify-content: center; }
+            .copyright { text-align: center; }
+            .float-btn-left { bottom: 20px; left: 20px; }
+            .float-btn-right { bottom: 20px; right: 20px; }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div id="google_translate_element"></div>
+    <canvas id="nano-particles"></canvas>
+    
+    <div class="global-aurora-bg">
+        <div class="stripe-yellow"></div>
+        <div class="stripe-blue"></div>
+        <div class="stripe-tan"></div>
+    </div>
+
+    <div id="pageWrapper" style="position: relative;">
+        <div class="top-nav-wrapper">
+            <header>
+                <div class="logo">
+                    <a href="/"><img src="{% static 'base/logo-shk-trang.png' %}" alt="SHK Logo"></a>
+                </div>
+                <nav>
+                    <a href="/">Trang chủ</a>
+                    <a href="#san-pham">Sản phẩm</a>
+                    <a href="#gallery">Dự án</a>
+                </nav>
+                <div class="lang-switch">
+                    <div class="lang-btn" onclick="changeLanguage('vi')" title="Tiếng Việt"><img src="https://flagcdn.com/w40/vn.png" alt="VN"></div>
+                    <div class="lang-btn" onclick="changeLanguage('en')" title="English"><img src="https://flagcdn.com/w40/gb.png" alt="EN"></div>
+                </div>
+            </header>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        <footer class="global-footer">
+            <div class="footer-container">
+                <div class="footer-col-left">
+                    <h3>KEO VỮA SÔNG HỒNG</h3>
+                    <div class="footer-info-item"><i class="fa-solid fa-industry"></i><p>Địa chỉ nhà máy: Ninh Tập, Châu Ninh, Hưng Yên</p></div>
+                    <div class="footer-info-item"><i class="fa-solid fa-building"></i><p>Địa chỉ văn phòng: Vinhomes Ocean Park 2, Văn Giang, Hưng Yên</p></div>
+                    <div class="footer-info-item"><i class="fa-solid fa-globe"></i><p>Website: keovuasonghong.vn</p></div>
+                    <div class="footer-info-item"><i class="fa-solid fa-envelope"></i><p>Email kinh doanh: kinhdoanh@keovuasonghong.vn</p></div>
+                    <div class="footer-info-item"><i class="fa-solid fa-phone"></i><p>0386 360 797 - 0938 016 788</p></div>
+                </div>
+                
+                <div class="footer-col-right">
+                    <h4>LIÊN HỆ VỚI CHÚNG TÔI</h4>
+                    <div class="social-icons">
+                        <a href="#" class="icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="icon-yt"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="icon-tk"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="icon-in"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                    <p class="copyright">© 2026 Sông Hồng. Developed by Thinh Nguyen.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="float-btn-left">
+        <button onclick="scrollToTop()" class="btn-scroll-top" title="Lên đầu trang">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </div>
+    <div class="float-btn-right">
+        <a href="https://zalo.me/0386360797" target="_blank" class="zalo-btn" title="Chat Zalo">Zalo</a>
+    </div>
+
+    <script>
+        function scrollToTop() {
+            const pageWrapper = document.getElementById('pageWrapper');
+            if (pageWrapper && getComputedStyle(pageWrapper).overflowY === 'auto') {
+                pageWrapper.scrollTo({top: 0, behavior: 'smooth'});
+            } else {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+        function changeLanguage(langCode) {
+            document.cookie = "googtrans=/vi/" + langCode + "; path=/;";
+            document.cookie = "googtrans=/vi/" + langCode + "; domain=." + document.domain + "; path=/;";
+            window.location.reload(); 
+        }
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'vi', includedLanguages: 'en,vi', autoDisplay: false }, 'google_translate_element');
+        }
+        
+        const canvas = document.getElementById('nano-particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particlesArray = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1; this.speedY = Math.random() * -0.5 - 0.1; 
+                this.speedX = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y += this.speedY; this.x += this.speedX;
+                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function initParticles() {
+            particlesArray = []; let num = (canvas.width * canvas.height) / 9000; 
+            for (let i = 0; i < num; i++) particlesArray.push(new Particle());
+        }
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles(); animateParticles();
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); });
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

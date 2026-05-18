@@ -30,7 +30,7 @@
         h1, h2, h3, h4, h5, h6, nav a, .btn-3d, .logo, .floating-tag, .badge { font-family: var(--font-primary); text-transform: uppercase; }
         a { text-decoration: none; color: inherit; }
 
-        /* Nền cực quang trả về nguyên bản như code cũ của bro (opacity: 0.2) */
+        /* Nền cực quang */
         .global-aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; z-index: 1; filter: blur(90px); transform: scale(1.2); pointer-events: none;}
         .global-aurora-bg div { flex: 1; opacity: 0.2; animation: pulseGlow 6s infinite alternate; } 
         
@@ -55,8 +55,15 @@
         .global-footer { background: #ffffff; color: var(--text-dark); padding: 50px 8% 30px; position: relative; z-index: 10; border-top: 1px solid #e2e8f0; font-family: var(--font-secondary);}
         .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1400px; margin: 0 auto; }
         .footer-col-left h3 { color: var(--shk-tan); font-size: 22px; margin-bottom: 25px; font-weight: 800;}
+        
         .footer-info-item { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; font-weight: 500; color: #334155; line-height: 1.5; }
         .footer-info-item i { color: var(--text-gray); width: 22px; text-align: center; margin-right: 8px; margin-top: 3px; font-size: 15px;}
+        .footer-info-item p { margin: 0; }
+        
+        /* Hiệu ứng hover cho link trong footer */
+        .footer-info-item p a { color: inherit; text-decoration: none; transition: color 0.3s; }
+        .footer-info-item p a:hover { color: var(--shk-blue); }
+
         .footer-col-right { text-align: right; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end;}
         .footer-col-right h4 { color: var(--text-dark); font-size: 16px; margin-bottom: 25px; font-weight: 800;}
         .social-icons { display: flex; gap: 15px; margin-bottom: 30px; }
@@ -129,18 +136,31 @@
                     <h3>KEO VỮA SÔNG HỒNG</h3>
                     <div class="footer-info-item"><i class="fa-solid fa-industry"></i><p>Địa chỉ nhà máy: Ninh Tập, Châu Ninh, Hưng Yên</p></div>
                     <div class="footer-info-item"><i class="fa-solid fa-building"></i><p>Địa chỉ văn phòng: Vinhomes Ocean Park 2, Văn Giang, Hưng Yên</p></div>
-                    <div class="footer-info-item"><i class="fa-solid fa-globe"></i><p>Website: keovuasonghong.vn</p></div>
-                    <div class="footer-info-item"><i class="fa-solid fa-envelope"></i><p>Email kinh doanh: kinhdoanh@keovuasonghong.vn</p></div>
-                    <div class="footer-info-item"><i class="fa-solid fa-phone"></i><p>0386 360 797 - 0938 016 788</p></div>
+                    
+                    <div class="footer-info-item">
+                        <i class="fa-solid fa-globe"></i>
+                        <p>Website: <a href="https://keovuasonghong.vn" target="_blank" rel="noopener noreferrer">keovuasonghong.vn</a></p>
+                    </div>
+                    <div class="footer-info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <p>Email kinh doanh: <a href="mailto:kinhdoanh@keovuasonghong.vn">kinhdoanh@keovuasonghong.vn</a></p>
+                    </div>
+                    <div class="footer-info-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <p>
+                            <a href="tel:0386360797">0386 360 797</a> - 
+                            <a href="tel:0938016788">0938 016 788</a>
+                        </p>
+                    </div>
                 </div>
                 
                 <div class="footer-col-right">
                     <h4>LIÊN HỆ VỚI CHÚNG TÔI</h4>
                     <div class="social-icons">
-                        <a href="#" class="icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="icon-yt"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="#" class="icon-tk"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="#" class="icon-in"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://facebook.com/keovuasonghong.vn" target="_blank" rel="noopener noreferrer" class="icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://youtube.com/@keovuasonghong" target="_blank" rel="noopener noreferrer" class="icon-yt"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@shkmortar?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="icon-tk"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="https://www.linkedin.com/company/shk-mortar-company/" target="_blank" rel="noopener noreferrer" class="icon-in"><i class="fa-brands fa-linkedin-in"></i></a>
                     </div>
                     <p class="copyright">© 2026 Sông Hồng. Developed by Thinh Nguyen.</p>
                 </div>
@@ -154,7 +174,7 @@
         </button>
     </div>
     <div class="float-btn-right">
-        <a href="https://zalo.me/0386360797" target="_blank" class="zalo-btn" title="Chat Zalo">Zalo</a>
+        <a href="https://zalo.me/0386360797" target="_blank" rel="noopener noreferrer" class="zalo-btn" title="Chat Zalo">Zalo</a>
     </div>
 
     <script>

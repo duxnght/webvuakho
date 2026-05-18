@@ -46,17 +46,19 @@
     .close-modal:hover { color: var(--shk-blue); transform: scale(1.1); }
 
     /* --- 2. SẢN PHẨM SPOTLIGHT 3D --- */
+    #san-pham { padding-top: 0; } /* SỬA LỖI RÃNH TRONG SUỐT Ở TRÊN CÙNG */
+    
     .interactive-container { 
         display: flex; flex-direction: row; 
         background: transparent; 
-        overflow: hidden; height: calc(100vh - 80px); 
+        overflow: hidden; height: 100vh; /* Kéo dãn 100% chiều cao */
     }
     .product-layer { 
         position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-        cursor: pointer; z-index: 1; overflow: hidden; transition: var(--transition-main); 
+        cursor: pointer; z-index: 1; overflow: hidden; transition: opacity 0.2s ease, flex 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+        padding-top: 80px; /* Bù khoảng cách đẩy nội dung xuống né header */
     }
     
-    /* Vạch kẻ dọc mềm giữa các sản phẩm (từ code gốc) */
     .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after {
         content: ''; 
         position: absolute; right: 0; top: 15%; height: 70%; width: 1px;
@@ -65,98 +67,134 @@
     }
     .interactive-container:not(:has(.expanded)) .product-layer:hover::after { opacity: 0; }
     
-    /* PHỤC HỒI CHÍNH XÁC MÃ GRADIENT TỪ BẢN GỐC CỦA BẠN NHƯNG ĐỔI THỨ TỰ LỚP VÀ CHỮ TRẮNG */
-    .layer-yellow { background: linear-gradient(180deg, rgba(253,224,71,0) 0%, rgba(253,224,71,0.9) 15%, rgba(217,119,6,0.9) 85%, rgba(217,119,6,0) 100%); color: white; }
+    .layer-yellow { background: linear-gradient(180deg, rgba(253,224,71,0) 0%, rgba(253,224,71,0.9) 15%, rgba(217,119,6,0.9) 85%, rgba(217,119,6,0) 100%); color: var(--text-dark); }
     .layer-blue { background: linear-gradient(180deg, rgba(59,130,246,0) 0%, rgba(59,130,246,0.9) 15%, rgba(29,78,216,0.9) 85%, rgba(29,78,216,0) 100%); color: white; }
-    .layer-tan { background: linear-gradient(180deg, rgba(252,211,77,0) 0%, rgba(252,211,77,0.9) 15%, rgba(180,83,9,0.9) 85%, rgba(180,83,9,0) 100%); color: white; }
+    .layer-tan { background: linear-gradient(180deg, rgba(252,211,77,0) 0%, rgba(252,211,77,0.9) 15%, rgba(180,83,9,0.9) 85%, rgba(180,83,9,0) 100%); color: var(--text-dark); }
     
     .product-layer:hover { flex: 1.6; z-index: 12; box-shadow: 0 0 80px rgba(0,0,0,0.3); }
     
-    /* Chữ in mờ (watermark) */
-    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); font-size: clamp(100px, 15vw, 250px); font-weight: 900; z-index: 0; pointer-events: none; transition: 0.6s; white-space: nowrap; color: rgba(255,255,255,0.25);}
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); font-size: clamp(100px, 15vw, 250px); font-weight: 900; z-index: 0; pointer-events: none; transition: 0.6s; white-space: nowrap; text-shadow: 2px 2px 10px rgba(255,255,255,0.2);}
+    .layer-blue .watermark { color: rgba(255,255,255,0.1); }
+    .layer-yellow .watermark, .layer-tan .watermark { color: rgba(255,255,255,0.3); }
 
-    /* Hình ảnh sản phẩm (có to có nhỏ) */
-    .img-box { position: relative; height: 42vh; width: 100%; z-index: 2; transition: var(--transition-main); filter: drop-shadow(0 20px 25px rgba(0,0,0,0.4)); display: flex; justify-content: center; align-items: flex-end; }
+    .img-box { position: relative; height: 42vh; width: 100%; z-index: 2; transition: var(--transition-main); filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3)); display: flex; justify-content: center; align-items: flex-end; }
     .bag-std { height: 68%; object-fit: contain; margin-bottom: 20px; } 
     .bag-jumbo { height: 95%; object-fit: contain; margin-bottom: -10px;} 
     
-    .interactive-container:not(:has(.expanded)) .product-layer:hover .img-box { transform: scale(1.1) translateY(-20px); filter: drop-shadow(0 40px 45px rgba(0,0,0,0.5));}
+    .interactive-container:not(:has(.expanded)) .product-layer:hover .img-box { transform: scale(1.18) translateY(-25px); filter: drop-shadow(0 40px 45px rgba(0,0,0,0.5));}
     
-    .panel-content { text-align: center; margin-top: 25px; z-index: 3; width: 100%; transition: opacity 0.3s;}
-    .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid rgba(255,255,255,0.5); margin-bottom: 15px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); text-shadow: 0 1px 3px rgba(0,0,0,0.5);}
-    .panel-content h2 { font-size: 28px; margin-bottom: 12px; line-height: 1.3; font-weight: 800; letter-spacing: -0.5px; text-shadow: 1px 2px 5px rgba(0,0,0,0.3);}
-    .panel-content p { font-size: 14px; font-weight: 500; font-family: var(--font-secondary); padding: 0 15%; opacity: 0.95; line-height: 1.5; text-shadow: 1px 2px 5px rgba(0,0,0,0.3);}
+    .panel-content { text-align: center; margin-top: 35px; z-index: 3; width: 100%; transition: var(--transition-fast);}
+    .interactive-container:not(:has(.expanded)) .product-layer:hover .panel-content { transform: translateY(-10px); }
+    
+    .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid currentColor; margin-bottom: 15px; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px);}
+    .panel-content h2 { font-size: 32px; margin-bottom: 10px; line-height: 1.2; font-weight: 800; letter-spacing: -1px; text-shadow: 1px 2px 5px rgba(0,0,0,0.1);}
+    .panel-content p { font-size: 15px; font-weight: 600; line-height: 1.5;}
     
     /* =========================================
-       HIỆU ỨNG EXPAND KHI CLICK (PHỤC HỒI TỪ CODE CŨ BẠN GỬI)
+       HIỆU ỨNG EXPAND KHI CLICK VÀ CÁC NÚT ĐIỀU HƯỚNG
        ========================================= */
     .product-layer.expanded {
         position: fixed;
         top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        z-index: 9999;
+        width: 100%; height: 100%;
+        z-index: 100;
         flex-direction: row; 
         justify-content: flex-start;
         cursor: default;
         border: none;
+        padding-top: 0; /* Reset padding để khỏi lệch */
+        animation: smoothExpand 0.4s ease forwards;
     }
     
-    /* Khi mở rộng thì nền đặc 100% như code gốc */
+    @keyframes smoothExpand {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
     .layer-yellow.expanded { background: linear-gradient(180deg, rgba(253,224,71,0.95) 0%, rgba(217,119,6,0.95) 100%); }
     .layer-blue.expanded { background: linear-gradient(180deg, rgba(59,130,246,0.95) 0%, rgba(29,78,216,0.95) 100%); }
     .layer-tan.expanded { background: linear-gradient(180deg, rgba(252,211,77,0.95) 0%, rgba(180,83,9,0.95) 100%); }
 
     .expanded .img-box {
-        width: 50vw; height: 75vh;
+        width: 50vw; height: 100vh;
         transform: scale(1.1) translateY(0) !important;
         filter: drop-shadow(0 40px 60px rgba(0,0,0,0.5));
+        align-items: center; 
     }
     
-    .expanded .panel-content { display: none; }
+    .expanded .bag-jumbo {
+        height: 80%; 
+    }
+    
+    .expanded .panel-content { opacity: 0; transform: translateY(50px); pointer-events: none; position: absolute; }
     .expanded .watermark {
         transform: translate(-50%, -50%) rotate(0deg); 
         font-size: 35vw; opacity: 0.05; left: 50%; top: 50%;
     }
 
     .info-overlay {
-        display: none; width: 45vw; padding-right: 5vw;
-        flex-direction: column; justify-content: center; text-align: left;
+        position: absolute; right: 8%; width: 45vw; 
+        display: flex; flex-direction: column; justify-content: center; text-align: left;
         color: white; z-index: 10;
-        opacity: 0; transform: translateX(50px); transition: all 0.5s ease 0.3s;
+        opacity: 0; transform: translateX(60px); transition: all 0.5s ease 0.4s; pointer-events: none;
     }
-    .expanded .info-overlay { display: flex; opacity: 1; transform: translateX(0); }
+    .expanded .info-overlay { opacity: 1; transform: translateX(0); pointer-events: auto; }
     
-    .series-tag { font-weight: 800; letter-spacing: 2px; font-size: 14px; opacity: 0.9; margin-bottom: 10px; display: block; font-family: var(--font-secondary);}
-    .info-overlay h2 { font-size: clamp(40px, 4vw, 65px); line-height: 1.1; margin-bottom: 40px; text-shadow: 0 5px 15px rgba(0,0,0,0.2); letter-spacing: -1px;}
+    .series-tag { font-weight: 900; letter-spacing: 2px; font-size: 22px; opacity: 1; margin-bottom: 5px; display: block; font-family: var(--font-secondary);}
+    
+    .info-overlay h2 { 
+        font-size: clamp(26px, 3.5vw, 45px); 
+        line-height: 1.35; 
+        margin-bottom: 35px; 
+        text-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+        letter-spacing: -1px;
+        white-space: nowrap; 
+    }
 
     .spec-card {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         border-radius: 24px; padding: 40px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        display: grid; grid-template-columns: 1fr 1fr; gap: 35px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        display: grid; grid-template-columns: 1fr 1fr; gap: 30px 20px;
         box-shadow: 0 25px 50px rgba(0,0,0,0.2);
     }
-    .spec-item b { display: block; font-size: 12px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; font-family: var(--font-secondary); }
-    .spec-item span { font-size: 24px; font-weight: 800; font-family: var(--font-primary);}
+    .spec-item b { display: block; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; font-family: var(--font-secondary); }
+    .spec-item span { font-size: 19px; font-weight: 800; font-family: var(--font-primary); display: block; margin-top: 5px; line-height: 1.4;}
 
     .layer-yellow .info-overlay, .layer-tan .info-overlay { color: var(--text-dark); }
     .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: none; }
     .layer-yellow .spec-card, .layer-tan .spec-card {
         background: rgba(255, 255, 255, 0.4);
-        border-color: rgba(255, 255, 255, 0.8);
+        border-color: white;
     }
 
     .btn-close {
         position: absolute; top: 40px; right: 40px;
-        width: 50px; height: 50px; border-radius: 50%;
-        background: white; color: black; display: none;
+        width: 60px; height: 60px; border-radius: 50%;
+        background: white; color: black; display: flex;
         align-items: center; justify-content: center;
         font-size: 24px; cursor: pointer; z-index: 101;
         box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s;
+        opacity: 0; pointer-events: none;
     }
-    .expanded .btn-close { display: flex; }
+    .expanded .btn-close { opacity: 1; pointer-events: auto; }
     .btn-close:hover { transform: scale(1.1); background: var(--text-dark); color: white;}
+
+    .nav-btn {
+        position: fixed; top: 50%; transform: translateY(-50%);
+        width: 60px; height: 60px; border-radius: 50%;
+        background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);
+        color: white; font-size: 24px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none;
+        transition: 0.3s; border: 1px solid rgba(255,255,255,0.5);
+    }
+    .nav-btn:hover { background: white; color: var(--text-dark); transform: translateY(-50%) scale(1.1);}
+    .prev-btn { left: 30px; }
+    .next-btn { right: 30px; }
+    
+    body.is-expanded .nav-btn { opacity: 1; pointer-events: auto; }
 
     /* --- 3. TƯ VẤN --- */
     .consult-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 0 5%; }
@@ -168,9 +206,10 @@
        RESPONSIVE MOBILE
        ======================================= */
     @media (max-width: 1024px) {
-        .expanded .img-box { width: 40vw; height: 60vh; }
-        .info-overlay { width: 60vw; padding-right: 5vw; }
+        .expanded .img-box { width: 45vw; transform: translateX(-5vw) scale(1) !important;}
+        .info-overlay { width: 55vw; right: 4%; }
         .spec-card { padding: 25px; gap: 20px; }
+        .info-overlay h2 { white-space: normal; } 
     }
 
     @media (max-width: 768px) {
@@ -188,9 +227,12 @@
         .hero-buttons { flex-direction: column; width: 100%; gap: 12px; align-items: center;}
         .btn-3d { width: 100%; max-width: 300px; padding: 14px; font-size: 12px; }
         
+        #san-pham { padding-top: 80px; } /* Trả lại padding cho section trên mobile */
+
         .interactive-container { flex-direction: column; height: auto;}
         
-        /* Vạch kẻ ngang mềm cho Mobile */
+        .product-layer { padding-top: 0; } /* Khôi phục padding cho cột sản phẩm trên mobile */
+
         .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after {
             right: auto; top: auto; bottom: 0; left: 15%; width: 70%; height: 1px;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
@@ -199,14 +241,25 @@
         .panel-content p { padding: 0 5%; }
         .interactive-container:not(:has(.expanded)) .watermark { transform: translate(-50%, -50%) rotate(0deg); font-size: 80px; } 
         
-        .product-layer.expanded { flex-direction: column; justify-content: center; align-items: center; overflow-y: auto;}
-        .expanded .img-box { width: 100vw; height: 40vh; transform: scale(1) translateY(-2vh) !important;}
-        .info-overlay { width: 90vw; padding-right: 0; text-align: center;}
-        .info-overlay h2 { font-size: 30px; margin-bottom: 20px;}
-        .spec-card { padding: 20px; gap: 15px; grid-template-columns: 1fr 1fr;}
-        .spec-item span { font-size: 18px;}
-        .btn-close { top: 20px; right: 20px; width: 40px; height: 40px; font-size: 20px; position: fixed;}
-        .expanded .watermark { font-size: 60vw; top: 30%; left: 50%;}
+        .product-layer.expanded { flex-direction: column; justify-content: flex-start; align-items: center; overflow-y: auto; padding-bottom: 40px;}
+        .expanded .img-box { width: 100vw; height: 35vh; margin-top: 5vh; transform: scale(1) translateY(0) !important; align-items: center;}
+        .expanded .bag-jumbo { height: 90%; }
+        
+        .info-overlay { position: relative; width: 90vw; right: 0; transform: translateX(0); margin-top: 10px;}
+        .info-overlay h2 { font-size: 24px; margin-bottom: 15px; white-space: normal; line-height: 1.3;}
+        .series-tag { font-size: 16px;}
+        
+        .spec-card { padding: 15px; gap: 12px; grid-template-columns: 1fr;} 
+        .spec-item span { font-size: 15px; line-height: 1.4;}
+        .spec-item b { font-size: 11px; margin-bottom: 4px;}
+        .spec-item div { font-size: 15px !important; line-height: 1.5 !important;}
+        
+        .btn-close { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 18px; position: fixed;}
+        .expanded .watermark { font-size: 50vw; top: 15%; left: 50%;}
+        
+        .nav-btn { width: 40px; height: 40px; font-size: 16px; top: 25vh;} 
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
     }
 </style>
 {% endblock %}
@@ -232,30 +285,38 @@
 </section>
 
 <section class="snap-section interactive-container" id="san-pham">
-    
+
     <div class="product-layer layer-yellow" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark">NANO</div>
         
         <div class="img-box"><img src="{% static 'home/nanoflex-bao-50kg.png' %}" alt="Nano" class="bag-std"></div>
         <div class="panel-content">
-            <span class="badge" style="border-color: rgba(255,255,255,0.8);">DÒNG CAO CẤP</span>
+            <span class="badge" style="border-color: currentColor;">DÒNG CAO CẤP</span>
             <h2>VỮA TRÁT TƯỜNG<br>NANOFLEX</h2>
             <p>Bổ sung phụ gia chống nứt, siêu bám dính</p>
         </div>
         
         <div class="info-overlay">
             <span class="series-tag">TECH-SERIES</span>
-            <h2>VỮA TRÁT TƯỜNG<br>NANOFLEX</h2>
+            <h2>VỮA TRÁT TƯỜNG NANOFLEX</h2>
             <div class="spec-card">
-                <div class="spec-item"><b>Bám dính</b><span>Siêu cấp</span></div>
-                <div class="spec-item"><b>Chống nứt</b><span>Tuyệt đối</span></div>
-                <div class="spec-item"><b>Phụ gia</b><span>Polymer Đức</span></div>
-                <div class="spec-item"><b>Bề mặt</b><span>Gạch nhẹ, AAC</span></div>
+                <div class="spec-item" style="grid-column: 1 / -1;">
+                    <b>Thành phần</b><span>Cát sấy khô, xi măng Portland, tro bay và phụ gia chuyên dụng</span>
+                </div>
+                <div class="spec-item" style="grid-column: 1 / -1;">
+                    <b>Ứng dụng</b><span>Trát tường công trình trong nhà, ngoài trời</span>
+                </div>
+                <div class="spec-item">
+                    <b>Cường độ nén</b><span>>=7.5 MPa</span>
+                </div>
+                <div class="spec-item">
+                    <b>Định mức sử dụng</b><span>∼20kg/ m² cho mỗi lớp trát 10mm</span>
+                </div>
             </div>
         </div>
     </div>
-
+    
     <div class="product-layer layer-blue" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark">SHV01</div>
@@ -268,13 +329,21 @@
         </div>
         
         <div class="info-overlay">
-            <span class="series-tag">SHV-SERIES</span>
-            <h2>VỮA KHÔ<br>TRỘN SẴN M7.5</h2>
+            <span class="series-tag">M7.5</span>
+            <h2>VỮA KHÔ TRỘN SẴN</h2>
+            
             <div class="spec-card">
-                <div class="spec-item"><b>Cường độ nén</b><span>7.5 MPa</span></div>
-                <div class="spec-item"><b>Tỷ lệ nước</b><span>18 - 22%</span></div>
-                <div class="spec-item"><b>Chiều dày</b><span>5 - 20 mm</span></div>
-                <div class="spec-item"><b>Quy cách</b><span>50 Kg/Bao</span></div>
+                <div class="spec-item"><b>Thành phần</b><span>Cát sấy khô, xi măng Portland, tro bay</span></div>
+                <div class="spec-item"><b>Ứng dụng</b><span>Xây tường, trát tường, cán nền</span></div>
+                
+                <div class="spec-item" style="grid-column: 1 / -1;">
+                    <b>Định mức sử dụng</b>
+                    <div style="font-size: 19px; font-weight: 800; font-family: var(--font-primary); line-height: 1.6; margin-top: 8px;">
+                        • Xây tường: 350-370kg/m³<br>
+                        • Trát tường: 20-22kg/m²/cm<br>
+                        • Cán nền: 30-35kg/m²/1.2-1.5 cm
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -292,15 +361,28 @@
         
         <div class="info-overlay">
             <span class="series-tag">PRO-SERIES</span>
-            <h2>VỮA KHÔ<br>BAO JUMBO</h2>
+            <h2>VỮA KHÔ BAO JUMBO</h2>
             <div class="spec-card">
-                <div class="spec-item"><b>Trọng lượng</b><span>1000 Kg</span></div>
-                <div class="spec-item"><b>Tiết kiệm</b><span>15% Chi phí</span></div>
-                <div class="spec-item"><b>Vận chuyển</b><span>Xe chuyên dụng</span></div>
-                <div class="spec-item"><b>Dự án</b><span>Nhà cao tầng</span></div>
+                <div class="spec-item" style="grid-column: 1 / -1;">
+                    <b>Phân loại</b><span>Mac 5.0, Mac 7.5, Mac 10</span>
+                </div>
+                <div class="spec-item" style="grid-column: 1 / -1;">
+                    <b>Khối lượng tịnh</b><span>Trung bình 1,5 tấn/bao</span>
+                </div>
+                <div class="spec-item" style="grid-column: 1 / -1;">
+                    <b>Định mức sử dụng</b>
+                    <div style="font-size: 19px; font-weight: 800; font-family: var(--font-primary); line-height: 1.6; margin-top: 8px;">
+                        • Xây tường: 350-370kg/m³<br>
+                        • Trát tường: 20-22kg/m²/cm<br>
+                        • Cán nền: 30-35kg/m²/1.2-1.5 cm
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="nav-btn prev-btn" onclick="event.stopPropagation(); navigateProduct(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+    <div class="nav-btn next-btn" onclick="event.stopPropagation(); navigateProduct(1)"><i class="fa-solid fa-chevron-right"></i></div>
 
 </section>
 
@@ -312,14 +394,17 @@
                     <h2>Đăng Ký<br><span class="theme-transition" style="color: var(--shk-blue);">Nhận Báo Giá</span></h2>
                     <p style="font-family: var(--font-secondary);">Hệ thống tự động đồng bộ. Kỹ sư Sông Hồng sẽ gọi lại ngay lập tức để tư vấn phương án.</p>
                 </div>
-                <form class="consult-form">
+                <form id="consultForm" class="consult-form">
+                    {% csrf_token %}
                     <div class="input-group">
-                        <input type="tel" placeholder="Số điện thoại liên hệ" required>
+                        <input type="tel" id="phone" required autocomplete="off">
+                        <label>Số điện thoại liên hệ</label>
                     </div>
                     <div class="input-group">
-                        <input type="text" placeholder="Khu vực thi công" required>
+                        <input type="text" id="address" required autocomplete="off">
+                        <label>Khu vực thi công</label>
                     </div>
-                    <button type="button" class="btn-3d btn-blue" style="width: 100%;">GỬI YÊU CẦU NGAY</button>
+                    <button type="submit" class="btn-3d btn-blue" style="width: 100%; padding: 22px;">GỬI YÊU CẦU NGAY</button>
                 </form>
             </div>
         </div>
@@ -341,20 +426,45 @@
     }, { threshold: 0.1 }); 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+    // --- LOGIC PHÓNG TO VÀ ĐIỀU HƯỚNG CÓ HIỆU ỨNG CHỐNG LAG ---
+    const products = Array.from(document.querySelectorAll('.product-layer'));
+    let currentIndex = -1;
+
     function expand(element) {
         if(element.classList.contains('expanded')) return;
         
-        document.querySelectorAll('.product-layer').forEach(el => el.classList.remove('expanded'));
+        products.forEach(el => el.classList.remove('expanded'));
         element.classList.add('expanded');
+        currentIndex = products.indexOf(element);
         
+        document.body.classList.add('is-expanded');
         const pageWrapper = document.getElementById('pageWrapper');
         if(pageWrapper) pageWrapper.style.overflowY = 'hidden';
     }
 
     function collapse() {
-        document.querySelectorAll('.product-layer').forEach(el => el.classList.remove('expanded'));
+        products.forEach(el => el.classList.remove('expanded'));
+        currentIndex = -1;
+        
+        document.body.classList.remove('is-expanded');
         const pageWrapper = document.getElementById('pageWrapper');
         if(pageWrapper) pageWrapper.style.overflowY = 'auto';
+    }
+    
+    function navigateProduct(direction) {
+        if (currentIndex === -1) return;
+        
+        const currentEl = products[currentIndex];
+        currentEl.style.opacity = '0';
+        
+        setTimeout(() => {
+            currentEl.classList.remove('expanded');
+            currentEl.style.opacity = '';
+            
+            currentIndex = (currentIndex + direction + products.length) % products.length;
+            
+            products[currentIndex].classList.add('expanded');
+        }, 150); 
     }
 
     function openVideoModal() {
@@ -370,5 +480,38 @@
         modal.classList.remove('active');
         setTimeout(() => { iframe.src = ""; }, 400); 
     }
+
+    /* --- SCRIPT GỬI FORM AJAX --- */
+    document.getElementById('consultForm').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = 'ĐANG XỬ LÝ... <i class="fa-solid fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('phone', phone);
+        formData.append('address', address);
+
+        fetch('{% url "dang_ky_tu_van" %}', {
+            method: 'POST', body: formData, headers: { 'X-CSRFToken': csrfToken }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Gửi yêu cầu thành công! Chúng tôi sẽ gọi lại cho số ' + phone);
+                this.reset();
+            } else alert('Lỗi: ' + data.message);
+        })
+        .catch(err => alert('Có lỗi kết nối máy chủ!'))
+        .finally(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        });
+    });
 </script>
 {% endblock %}

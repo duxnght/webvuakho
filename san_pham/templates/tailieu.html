@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% block nav_class %}nav-solid-bg{% endblock %}
+{% load static %}
+
+{% block title %}Tài Liệu Sản Phẩm - Vữa Khô Sông Hồng{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       CSS ĐỒNG BỘ THEME VỮA KHÔ SÔNG HỒNG
+       ========================================= */
+    .reveal-up { opacity: 0; transform: translateY(40px); transition: 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+    .reveal-up.visible { opacity: 1; transform: translateY(0); }
+
+    .main-content { padding: 150px 5% 80px; max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 10; }
+    
+    .page-title { text-align: center; margin-bottom: 60px; }
+    .page-title h2 { font-size: clamp(32px, 5vw, 46px); color: var(--text-dark); margin-bottom: 15px; letter-spacing: -0.5px; font-weight: 900; text-transform: uppercase; }
+    .page-title p { font-size: 16px; color: var(--text-gray); font-weight: 500; max-width: 600px; margin: 0 auto; line-height: 1.6;}
+
+    /* Thẻ trắng nổi bật trên nền Aurora */
+    .doc-glass-card {
+        background: #ffffff; 
+        border-radius: 24px;
+        box-shadow: 0 20px 45px rgba(0,0,0,0.08); 
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+    .doc-glass-card:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.12); }
+
+    .doc-row { display: flex; align-items: center; justify-content: space-between; padding: 40px; flex-wrap: wrap; gap: 25px;}
+    .doc-info { display: flex; align-items: center; gap: 25px; }
+    
+    .icon-box {
+        width: 75px; height: 75px; background: rgba(37, 99, 235, 0.1); 
+        border-radius: 20px; display: flex; justify-content: center; align-items: center;
+        color: var(--shk-blue); font-size: 35px; transition: 0.3s;
+        border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+    .doc-glass-card:hover .icon-box { background: var(--shk-blue); color: white; transform: rotate(-5deg) scale(1.05);}
+    
+    .doc-name { font-size: 22px; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; font-family: var(--font-primary);}
+    .doc-meta { font-size: 14px; color: #64748b; font-weight: 500; display: flex; gap: 20px; flex-wrap: wrap;}
+    .doc-meta span { display: flex; align-items: center; gap: 6px; }
+    .doc-meta i { color: var(--shk-blue); }
+    
+    .doc-actions { display: flex; gap: 15px; }
+    .btn-action {
+        padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 14px; font-family: var(--font-secondary);
+        cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 10px; border: none; letter-spacing: 0.5px;
+    }
+    .btn-view { background: #f8fafc; color: #334155; border: 1px solid #cbd5e1; }
+    .btn-view:hover { background: #e2e8f0; color: var(--text-dark); transform: translateY(-2px); }
+    
+    .btn-down { background: var(--shk-blue); color: white; box-shadow: 0 8px 25px rgba(37, 99, 235, 0.25); text-decoration: none;}
+    .btn-down:hover { background: #1d4ed8; box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35); transform: translateY(-2px); }
+
+    /* MODAL XEM TÀI LIỆU */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        display: flex; justify-content: center; align-items: center;
+        z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .viewer-window {
+        position: relative; display: inline-block; 
+        background: transparent;
+        border-radius: 12px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        padding: 0; overflow: hidden;
+        transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 2;
+    }
+    .modal-overlay.active .viewer-window { transform: scale(1); }
+
+    .viewer-image { display: block; max-width: 90vw; max-height: 85vh; object-fit: contain; user-select: none; border-radius: 12px; background: white;}
+
+    .close-btn {
+        position: absolute; top: 25px; right: 30px;
+        background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+        color: white; font-size: 20px; width: 45px; height: 45px;
+        border-radius: 50%; cursor: pointer; transition: 0.3s;
+        display: flex; justify-content: center; align-items: center;
+        z-index: 100000; backdrop-filter: blur(4px);
+    }
+    .close-btn:hover { background: #ef4444; border-color: transparent; transform: rotate(90deg); }
+
+    .nav-btn {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.2);
+        color: white; font-size: 22px; width: 55px; height: 55px;
+        border-radius: 50%; cursor: pointer; transition: 0.3s;
+        display: flex; justify-content: center; align-items: center;
+        z-index: 100000; backdrop-filter: blur(8px);
+    }
+    .nav-btn:hover { background: var(--shk-blue); border-color: transparent; transform: translateY(-50%) scale(1.1);}
+    .nav-prev { left: 30px; }
+    .nav-next { right: 30px; }
+
+    .page-counter {
+        position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.6); color: white;
+        padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 14px;
+        backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1);
+        z-index: 100000; letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+        .main-content { padding-top: 100px; }
+        .doc-row { flex-direction: column; text-align: center; padding: 30px 20px; }
+        .doc-info { flex-direction: column; text-align: center; gap: 15px;}
+        .doc-meta { justify-content: center; }
+        .doc-actions { flex-direction: column; width: 100%; margin-top: 10px;}
+        .btn-action { justify-content: center; width: 100%; }
+        
+        .viewer-window { max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; border-radius: 0; border: none; background: black; }
+        .viewer-image { max-width: 100vw; max-height: 100vh; width: 100%; height: 100%; border-radius: 0; }
+        .close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 16px; background: rgba(0,0,0,0.6); border: none;}
+        .nav-btn { width: 40px; height: 40px; font-size: 16px; background: rgba(0,0,0,0.6); border: none;}
+        .nav-prev { left: 10px; }
+        .nav-next { right: 10px; }
+        .page-counter { bottom: 15px; font-size: 12px; padding: 6px 15px; background: rgba(0,0,0,0.8); border: none;}
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="main-content">
+        <div class="page-title reveal-up">
+            <h2>Tài Liệu Sản Phẩm</h2>
+            <p>Khám phá năng lực sản xuất và giải pháp công nghệ tiên tiến nhất từ Vữa Khô Sông Hồng</p>
+        </div>
+
+        <div class="doc-glass-card reveal-up" style="transition-delay: 0.1s;">
+            <div class="doc-row">
+                <div class="doc-info">
+                    <div class="icon-box"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div>
+                        <div class="doc-name">Hồ sơ năng lực Sông Hồng 2026</div>
+                        <div class="doc-meta">
+                            <span><i class="fa-solid fa-expand"></i> Khổ A3 Ngang</span>
+                            <span><i class="fa-solid fa-file-lines"></i> 12 Trang</span>
+                            <span><i class="fa-solid fa-clock"></i> T4/2026</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-actions">
+                    <button class="btn-action btn-view" onclick="openViewer()"><i class="fa-solid fa-book-open"></i> XEM TÀI LIỆU</button>
+                    <a href="{% static 'Ho_So_Nang_Luc_A3.pdf' %}" class="btn-action btn-down" download><i class="fa-solid fa-download"></i> TẢI XUỐNG</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="docViewerModal" class="modal-overlay" onclick="closeOnOutside(event)">
+        <button class="close-btn" onclick="closeViewer()" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+        <button class="nav-btn nav-prev" onclick="changePage(-1)" aria-label="Trang trước"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="nav-btn nav-next" onclick="changePage(1)" aria-label="Trang sau"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="page-counter"><span id="pageIndex">1</span> / 12</div>
+
+        <div class="viewer-window" id="viewerWindow">
+            <img id="currentDocImage" class="viewer-image" src="{% static 'tailieu/HSNL_1.webp' %}" alt="Trang tài liệu">
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+        
+        document.querySelectorAll('.reveal-up').forEach(el => revealObserver.observe(el));
+    });
+
+    // --- LOGIC VIEWER TÀI LIỆU ---
+    const baseUrl = "{% static '' %}";
+    const totalPages = 12;
+    const pages = [];
+    
+    for (let i = 1; i <= totalPages; i++) {
+        pages.push(`${baseUrl}tailieu/HSNL_${i}.webp`);
+    }
+
+    let currentPage = 0;
+    const modal = document.getElementById('docViewerModal');
+    const docImage = document.getElementById('currentDocImage');
+    const pageIndexLabel = document.getElementById('pageIndex');
+    const viewerWindow = document.getElementById('viewerWindow');
+
+    function openViewer() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; 
+        updateView();
+    }
+
+    function closeViewer() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto'; 
+        currentPage = 0; 
+    }
+
+    function closeOnOutside(event) {
+        if (event.target === modal) { closeViewer(); }
+    }
+
+    function changePage(direction) {
+        currentPage += direction;
+        if (currentPage >= totalPages) currentPage = 0;
+        if (currentPage < 0) currentPage = totalPages - 1;
+        updateView();
+    }
+
+    function updateView() {
+        docImage.src = pages[currentPage];
+        pageIndexLabel.innerText = currentPage + 1;
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (modal.classList.contains('active')) {
+            if (event.key === "Escape") closeViewer();
+            if (event.key === "ArrowRight") changePage(1);
+            if (event.key === "ArrowLeft") changePage(-1);
+        }
+    });
+    
+    let touchstartX = 0;
+    let touchendX = 0;
+    
+    viewerWindow.addEventListener('touchstart', e => {
+        touchstartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    viewerWindow.addEventListener('touchend', e => {
+        touchendX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        const threshold = 50; 
+        if (touchendX < touchstartX - threshold) changePage(1); 
+        if (touchendX > touchstartX + threshold) changePage(-1); 
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bước đột phá mới: Vữa Khô Sông Hồng ứng dụng công nghệ Nano Châu Âu{% endblock %}
+
+{% block nav_class %}nav-solid-bg{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* TẮT NỀN CỰC QUANG */
+    .global-aurora-bg, #nano-particles { display: none !important; }
+    body { background-color: #f8fafc !important; }
+
+    /* CSS ĐỌC BÁO TRẮNG SẠCH - RÕ RÀNG */
+    .article-container {
+        padding: 130px 5% 80px;
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .article-wrapper {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 50px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .breadcrumb { display: flex; gap: 10px; font-size: 14px; color: var(--text-gray); margin-bottom: 20px; font-weight: 500;}
+    .breadcrumb a { color: var(--shk-blue); text-decoration: none; transition: 0.3s; }
+    .breadcrumb a:hover { color: var(--shk-tan); }
+    .breadcrumb span { color: #94a3b8; }
+
+    .article-title { font-family: var(--font-primary); font-size: clamp(26px, 4vw, 36px); color: var(--text-dark); font-weight: 800; line-height: 1.3; margin-bottom: 20px; }
+    
+    .article-meta { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; color: var(--text-gray); font-size: 14px; font-weight: 600;}
+    .article-meta i { color: var(--shk-tan); margin-right: 5px; }
+
+    .article-hero-img { width: 100%; border-radius: 12px; margin-bottom: 40px; object-fit: cover; aspect-ratio: 16/9; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+    .article-content { color: #1e293b; font-size: 17px; line-height: 1.8; }
+    .article-content p { margin-bottom: 20px; }
+    .article-content h3 { font-family: var(--font-primary); font-size: 24px; color: var(--shk-blue); margin: 40px 0 15px; font-weight: 700; }
+    .article-content img { width: 100%; border-radius: 10px; margin: 20px 0; }
+    .article-content blockquote { border-left: 5px solid var(--shk-tan); background: #f8fafc; padding: 20px; margin: 30px 0; font-style: italic; font-weight: 600; color: #334155; border-radius: 0 10px 10px 0;}
+
+    .article-share { display: flex; align-items: center; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 1px solid #e2e8f0; }
+    .article-share span { font-weight: 700; font-family: var(--font-primary); color: var(--text-dark); }
+    .share-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+    .share-btn:hover { transform: translateY(-3px); }
+    .share-fb { background: #1877f2; }
+    .share-tw { background: #1da1f2; }
+    .share-li { background: #0a66c2; }
+
+    @media (max-width: 768px) {
+        .article-container { padding-top: 110px; }
+        .article-wrapper { padding: 25px; }
+        .article-title { font-size: 24px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-container">
+    <div class="article-wrapper">
+        
+        <div class="breadcrumb">
+            <a href="{% url 'home_page' %}">Trang chủ</a> <span>/</span>
+            <a href="{% url 'blog_page' %}">Blog</a> <span>/</span>
+            <span style="color: var(--text-dark);">Tin tức</span>
+        </div>
+
+        <h1 class="article-title">Bước đột phá mới: Vữa Khô Sông Hồng ứng dụng công nghệ Nano Châu Âu</h1>
+        
+        <div class="article-meta">
+            <div class="meta-item"><i class="fa-regular fa-calendar"></i> 19/05/2026</div>
+            <div class="meta-item"><i class="fa-solid fa-user-pen"></i> Tác giả: Ban Giám Đốc</div>
+            <div class="meta-item"><i class="fa-regular fa-eye"></i> 1,245 lượt xem</div>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Vữa Khô Sông Hồng" class="article-hero-img">
+
+        <div class="article-content">
+            <p><strong>Ngày 19/05/2026, Công ty Vữa Khô Sông Hồng chính thức công bố việc ứng dụng thành công công nghệ Nano tiên tiến từ Châu Âu vào dây chuyền sản xuất vữa khô trộn sẵn. Đây được xem là bước tiến lịch sử, đánh dấu sự chuyển mình mạnh mẽ của vật liệu xây dựng nội địa trên thị trường quốc tế.</strong></p>
+            
+            <p>Trước bối cảnh ngành xây dựng đang yêu cầu ngày càng khắt khe về chất lượng và độ bền vững của công trình, việc kiểm soát cấp phối thủ công đã không còn đáp ứng được tiêu chuẩn. Giải pháp Vữa Khô Trộn Sẵn Sông Hồng ra đời nhằm giải quyết triệt để vấn đề rạn nứt, phồng rộp tường sau thời gian dài sử dụng.</p>
+            
+            <h3>1. Công nghệ Nano mang lại điều gì?</h3>
+            <p>Công nghệ Nano giúp phân tách các hạt cốt liệu (cát sấy khô, xi măng, phụ gia) xuống kích thước siêu nhỏ. Khi trộn với nước, các hạt này len lỏi và lấp đầy mọi lỗ rỗng vi mô, tạo ra một màng liên kết cực kỳ vững chắc.</p>
+            
+            <blockquote>"Vữa Khô Sông Hồng không chỉ là vật liệu xây dựng, mà là áo giáp bảo vệ công trình của bạn trước mọi tác động khắc nghiệt của thời tiết." - Kỹ sư trưởng dự án chia sẻ.</blockquote>
+
+            <h3>2. Lợi ích vượt trội cho nhà thầu</h3>
+            <ul>
+                <li><strong>Tiết kiệm nhân công:</strong> Không cần sàng cát, trộn xi măng tại công trường. Chỉ cần trộn với nước là dùng được ngay.</li>
+                <li><strong>Đảm bảo vệ sinh:</strong> Giảm thiểu tối đa bụi bẩn, bảo vệ môi trường và sức khỏe công nhân.</li>
+                <li><strong>Kiểm soát vật tư:</strong> Không hao hụt nguyên vật liệu, dễ dàng tính toán khối lượng thi công.</li>
+            </ul>
+
+            <p>Với hệ thống trạm trộn hiện đại đặt tại Hưng Yên, chúng tôi cam kết cung ứng liên tục với sản lượng hàng ngàn tấn mỗi ngày cho các đại dự án trên toàn quốc.</p>
+        </div>
+
+        <div class="article-share">
+            <span>Chia sẻ bài viết:</span>
+            <a href="#" class="share-btn share-fb"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="share-btn share-tw"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="share-btn share-li"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

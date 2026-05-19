@@ -11,90 +11,136 @@
     
     <style>
         :root {
-            --shk-blue: #2563eb;       
+            --shk-blue: #4da3ff;       
             --shk-yellow: #eab308;     
             --shk-tan: #d97706;        
             --text-dark: #0f172a;      
             --text-gray: #475569;      
-            --transition-main: all 0.7s cubic-bezier(0.7, 0, 0.2, 1);
-            
+            --transition-main: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             --font-primary: 'Be Vietnam Pro', sans-serif;
             --font-secondary: 'Inter', sans-serif;
         }
 
-        body { top: 0 !important; }
-        .skiptranslate { display: none !important; }
+        /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body { width: 100%; height: 100%; font-family: var(--font-secondary); background-color: #f8fafc; color: var(--text-dark); }
-        h1, h2, h3, h4, h5, h6, nav a, .btn-3d, .logo, .floating-tag, .badge { font-family: var(--font-primary); text-transform: uppercase; }
+        html { scroll-behavior: smooth; }
+        body { width: 100%; min-height: 100vh; font-family: var(--font-secondary); background-color: #f8fafc; color: var(--text-dark); overflow-x: hidden; position: relative; top: 0 !important; }
+        
+        /* Ẩn công cụ Google Dịch mặc định */
+        .skiptranslate { display: none !important; } 
+        
+        h1, h2, h3, h4, h5, h6, nav a, .logo, .btn-3d, .floating-tag, .badge { font-family: var(--font-primary); text-transform: uppercase; }
         a { text-decoration: none; color: inherit; }
 
-        /* Nền cực quang */
+        /* Bảo vệ chống tràn cho các khối chứa nền Jumbo */
+        .product-card, .product-item, .card-sp, .san-pham-box, .overflow-hidden { overflow: hidden !important; position: relative; }
+
+        /* Nền cực quang (Aurora) */
         .global-aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; z-index: 1; filter: blur(90px); transform: scale(1.2); pointer-events: none;}
         .global-aurora-bg div { flex: 1; opacity: 0.2; animation: pulseGlow 6s infinite alternate; } 
-        
-        .stripe-yellow { background: var(--shk-yellow); animation-delay: -2s !important;}
-        .stripe-blue { background: var(--shk-blue); } 
-        .stripe-tan { background: var(--shk-tan); animation-delay: -4s !important;}
-        
-        #nano-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.8; mix-blend-mode: overlay; }
+        .stripe-yellow { background: #eab308; animation-delay: -2s !important;}
+        .stripe-blue { background: #2563eb; } 
+        .stripe-tan { background: #d97706; animation-delay: -4s !important;}
         @keyframes pulseGlow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 
-        .top-nav-wrapper { position: absolute; top: 0; left: 0; width: 100%; z-index: 2000; padding: 20px 5%;}
-        header { display: flex; justify-content: space-between; align-items: center; background: transparent; }
-        .logo img { height: 45px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));}
+        /* Hạt Nano */
+        #nano-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.8; mix-blend-mode: overlay; }
+
+        /* =========================================
+           THANH NAVBAR
+           ========================================= */
+        .top-nav-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 85px; z-index: 2000; padding: 0 5%; display: flex; align-items: center; transition: var(--transition-main); }
+        header { width: 100%; display: flex; justify-content: space-between; align-items: center; background: transparent; }
+        .logo img { height: 50px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); transition: 0.3s;}
+        
+        .nav-solid-bg { background: rgba(77, 163, 255, 0.98) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: fixed; }
+
         nav { display: flex; gap: 40px; position: absolute; left: 50%; transform: translateX(-50%); }
-        nav a { font-weight: 800; font-size: 13px; color: white; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);}
-        nav a:hover { color: var(--shk-yellow); }
-        .lang-switch { display: flex; gap: 12px; align-items: center; }
-        .lang-btn { width: 35px; height: 25px; border-radius: 4px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-        .lang-btn:hover { border-color: white; transform: translateY(-2px); }
+        nav a { font-weight: 800; font-size: 13px; color: white; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); transition: 0.3s; }
+        nav a:hover { color: var(--shk-yellow); transform: translateY(-2px); }
+        
+        .nav-right-area { display: flex; align-items: center; gap: 20px; }
+        .mobile-menu-btn { display: none; color: white; font-size: 24px; cursor: pointer; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+        .lang-switch { display: flex; gap: 10px; align-items: center; }
+        .lang-btn { width: 32px; height: 22px; border-radius: 3px; overflow: hidden; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .lang-btn:hover { transform: scale(1.1); }
         .lang-btn img { width: 100%; height: 100%; object-fit: cover; }
 
-        .global-footer { background: #ffffff; color: var(--text-dark); padding: 50px 8% 30px; position: relative; z-index: 10; border-top: 1px solid #e2e8f0; font-family: var(--font-secondary);}
+        /* =========================================
+           CỬA SỔ MENU MOBILE (DRAWER)
+           ========================================= */
+        .mobile-drawer { position: fixed; top: 0; right: -100%; width: 75%; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 3000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); display: flex; flex-direction: column; padding: 80px 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .mobile-drawer.active { right: 0; }
+        .close-drawer { position: absolute; top: 25px; right: 25px; font-size: 28px; color: var(--text-dark); cursor: pointer; }
+        .mobile-nav-links { display: flex; flex-direction: column; gap: 30px; }
+        .mobile-nav-links a { font-size: 20px; font-weight: 800; color: var(--text-dark); border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; transition: 0.3s; }
+        .mobile-nav-links a:hover { color: var(--shk-blue); padding-left: 10px; }
+
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2999; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+
+        /* =========================================
+           FOOTER (Mỏng, thanh lịch)
+           ========================================= */
+        .global-footer { background: #ffffff; color: var(--text-dark); padding: 50px 5% 30px; position: relative; z-index: 10; border-top: 1px solid #e2e8f0; }
         .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1400px; margin: 0 auto; }
         .footer-col-left h3 { color: var(--shk-tan); font-size: 22px; margin-bottom: 25px; font-weight: 800;}
-        
         .footer-info-item { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; font-weight: 500; color: #334155; line-height: 1.5; }
-        .footer-info-item i { color: var(--text-gray); width: 22px; text-align: center; margin-right: 8px; margin-top: 3px; font-size: 15px;}
-        .footer-info-item p { margin: 0; }
+        .footer-info-item i { color: var(--text-gray); width: 22px; text-align: center; margin-right: 8px; margin-top: 3px; }
+        .footer-info-item a { transition: 0.3s; }
+        .footer-info-item a:hover { color: var(--shk-blue); }
         
-        /* Hiệu ứng hover cho link trong footer */
-        .footer-info-item p a { color: inherit; text-decoration: none; transition: color 0.3s; }
-        .footer-info-item p a:hover { color: var(--shk-blue); }
+        .footer-col-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
+        .footer-col-right h4 { color: var(--text-dark); font-size: 16px; margin-bottom: 20px; font-weight: 800; letter-spacing: 0.5px;}
+        .social-icons { display: flex; gap: 15px; margin-bottom: 25px; }
+        .social-icons a { width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; transition: 0.3s; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.05); }
+        .icon-fb { background: #1877f2; } .icon-yt { background: #ff0000; width: 45px !important; border-radius: 8px !important; } .icon-tk { background: #000; } .icon-in { background: #0a66c2; border-radius: 6px !important; }
 
-        .footer-col-right { text-align: right; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end;}
-        .footer-col-right h4 { color: var(--text-dark); font-size: 16px; margin-bottom: 25px; font-weight: 800;}
-        .social-icons { display: flex; gap: 15px; margin-bottom: 30px; }
-        .social-icons a { display: flex; justify-content: center; align-items: center; color: white; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .social-icons a:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 15px rgba(0,0,0,0.15); color: white;}
-        .icon-fb { width: 38px; height: 38px; border-radius: 50%; background: #1877f2; font-size: 18px; }
-        .icon-yt { width: 50px; height: 38px; border-radius: 8px; background: #ff0000; font-size: 18px; }
-        .icon-tk { width: 38px; height: 38px; border-radius: 50%; background: #000000; font-size: 18px; }
-        .icon-in { width: 38px; height: 38px; border-radius: 6px; background: #0a66c2; font-size: 18px; }
-        .copyright { font-size: 13px; color: #64748b; font-weight: 500; }
+        /* =========================================
+           FLOAT BUTTONS TÁCH RỜI HAI BÊN
+           ========================================= */
+        /* Nút Cuộn Trái - LUÔN HIỂN THỊ, MÀU XANH NAVBAR */
+        .float-left { position: fixed; bottom: 30px; left: 30px; z-index: 2500; }
+        .btn-scroll-top { 
+            width: 50px; height: 50px; border-radius: 50%; 
+            background: var(--shk-blue); /* Màu xanh giống Navbar */
+            color: white; border: none; display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(77, 163, 255, 0.4); font-size: 20px;
+        }
+        .btn-scroll-top:hover { background: #2563eb; transform: translateY(-5px); box-shadow: 0 8px 20px rgba(77, 163, 255, 0.6); }
 
-        .float-btn-left { position: fixed; bottom: 30px; left: 30px; z-index: 2000; }
-        .float-btn-right { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
-        .btn-scroll-top { width: 45px; height: 45px; border-radius: 50%; background: #1e293b; color: white; border: 1px solid #475569; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .btn-scroll-top:hover { background: var(--shk-tan); border-color: var(--shk-tan); transform: translateY(-3px);}
-        .zalo-btn { width: 60px; height: 60px; background-color: #0068ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff !important; font-weight: 900; font-size: 16px; letter-spacing: 0.5px; position: relative; box-shadow: 0 4px 10px rgba(0, 104, 255, 0.4); text-decoration: none;}
-        .zalo-btn::before, .zalo-btn::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background-color: #0068ff; opacity: 0.4; z-index: -1; animation: zaloRipple 2s infinite ease-in-out; }
-        .zalo-btn::after { animation-delay: -1s; }
+        /* Nút Zalo Phải */
+        .float-right { position: fixed; bottom: 30px; right: 30px; z-index: 2500; }
+        .zalo-btn { 
+            width: 60px; height: 60px; background-color: #0068ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white !important; font-weight: 900; position: relative; box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); text-decoration: none; transition: 0.3s;
+        }
+        .zalo-btn:hover { transform: translateY(-5px); }
+        .zalo-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: #0068ff; opacity: 0.4; z-index: -1; animation: zaloRipple 2s infinite; }
         @keyframes zaloRipple { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.6); opacity: 0; } }
 
-        @media (max-width: 768px) {
+        /* Responsive Mobile */
+        @media (max-width: 992px) {
             nav { display: none; }
-            .global-footer { padding-bottom: 110px; }
-            .footer-container { flex-direction: column; text-align: left; gap: 30px;}
-            .footer-col-left h3 { text-align: center; margin-bottom: 20px;}
-            .footer-info-item { align-items: flex-start; justify-content: flex-start; }
-            .footer-col-right { align-items: center; text-align: center; margin-top: 10px;}
-            .social-icons { justify-content: center; }
-            .copyright { text-align: center; }
-            .float-btn-left { bottom: 20px; left: 20px; }
-            .float-btn-right { bottom: 20px; right: 20px; }
+            .mobile-menu-btn { display: block; }
+            .top-nav-wrapper { height: 75px; } 
+            .logo img { height: 45px; }
+        }
+
+        @media (max-width: 768px) {
+            /* Gom nội dung Footer vào giữa để 2 nút Float ở góc không che mất chữ */
+            .global-footer { padding: 40px 5% 40px; text-align: center; } 
+            .footer-container { flex-direction: column; align-items: center; gap: 30px; }
+            .footer-col-left { display: flex; flex-direction: column; align-items: center; }
+            .footer-col-right { align-items: center; text-align: center; margin-top: 10px; }
+            .footer-info-item { justify-content: center; text-align: center; }
+            
+            /* Thu nhỏ kích thước Float Buttons trên đt */
+            .float-left { bottom: 20px; left: 15px; }
+            .float-right { bottom: 20px; right: 15px; }
+            .zalo-btn { width: 50px; height: 50px; font-size: 14px;}
+            .btn-scroll-top { width: 45px; height: 45px; font-size: 18px;}
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -102,6 +148,7 @@
 <body>
 
     <div id="google_translate_element"></div>
+    
     <canvas id="nano-particles"></canvas>
     
     <div class="global-aurora-bg">
@@ -110,20 +157,43 @@
         <div class="stripe-tan"></div>
     </div>
 
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <i class="fas fa-times close-drawer" id="closeDrawer"></i>
+        <div class="mobile-nav-links">
+            <a href="{% url 'home_page' %}">Trang chủ</a>
+            <a href="{% url 'blog_page' %}">Blog</a>
+            <a href="{% url 'tai_lieu_page' %}">Tài Liệu</a>
+        </div>
+        <div class="lang-switch" style="margin-top: auto; justify-content: center;">
+            <div class="lang-btn" onclick="changeLanguage('vi')"><img src="https://flagcdn.com/w40/vn.png" alt="VN"></div>
+            <div class="lang-btn" onclick="changeLanguage('en')"><img src="https://flagcdn.com/w40/gb.png" alt="EN"></div>
+        </div>
+    </div>
+
     <div id="pageWrapper" style="position: relative;">
-        <div class="top-nav-wrapper">
+        <div class="top-nav-wrapper {% block nav_class %}{% endblock %}">
             <header>
                 <div class="logo">
-                    <a href="/"><img src="{% static 'base/logo-shk-trang.png' %}" alt="SHK Logo"></a>
+                    <a href="{% url 'home_page' %}">
+                        <img src="{% static 'base/logo-shk-trang.png' %}" alt="SHK Logo">
+                    </a>
                 </div>
+                
                 <nav>
-                    <a href="/">Trang chủ</a>
-                    <a href="#san-pham">Sản phẩm</a>
-                    <a href="#gallery">Dự án</a>
+                    <a href="{% url 'home_page' %}">Trang chủ</a>
+                    <a href="{% url 'blog_page' %}">Blog</a>
+                    <a href="{% url 'tai_lieu_page' %}">Tài Liệu</a>
                 </nav>
-                <div class="lang-switch">
-                    <div class="lang-btn" onclick="changeLanguage('vi')" title="Tiếng Việt"><img src="https://flagcdn.com/w40/vn.png" alt="VN"></div>
-                    <div class="lang-btn" onclick="changeLanguage('en')" title="English"><img src="https://flagcdn.com/w40/gb.png" alt="EN"></div>
+                
+                <div class="nav-right-area">
+                    <div class="lang-switch">
+                        <div class="lang-btn" onclick="changeLanguage('vi')" title="Tiếng Việt"><img src="https://flagcdn.com/w40/vn.png" alt="VN"></div>
+                        <div class="lang-btn" onclick="changeLanguage('en')" title="English"><img src="https://flagcdn.com/w40/gb.png" alt="EN"></div>
+                    </div>
+                    <div class="mobile-menu-btn" id="openDrawer">
+                        <i class="fas fa-bars"></i>
+                    </div>
                 </div>
             </header>
         </div>
@@ -136,65 +206,87 @@
                     <h3>KEO VỮA SÔNG HỒNG</h3>
                     <div class="footer-info-item"><i class="fa-solid fa-industry"></i><p>Địa chỉ nhà máy: Ninh Tập, Châu Ninh, Hưng Yên</p></div>
                     <div class="footer-info-item"><i class="fa-solid fa-building"></i><p>Địa chỉ văn phòng: Vinhomes Ocean Park 2, Văn Giang, Hưng Yên</p></div>
-                    
-                    <div class="footer-info-item">
-                        <i class="fa-solid fa-globe"></i>
-                        <p>Website: <a href="https://keovuasonghong.vn" target="_blank" rel="noopener noreferrer">keovuasonghong.vn</a></p>
-                    </div>
-                    <div class="footer-info-item">
-                        <i class="fa-solid fa-envelope"></i>
-                        <p>Email kinh doanh: <a href="mailto:kinhdoanh@keovuasonghong.vn">kinhdoanh@keovuasonghong.vn</a></p>
-                    </div>
+                    <div class="footer-info-item"><i class="fa-solid fa-globe"></i><p>Website: <a href="https://keovuasonghong.vn" target="_blank" rel="noopener noreferrer">keovuasonghong.vn</a></p></div>
+                    <div class="footer-info-item"><i class="fa-solid fa-envelope"></i><p>Email: <a href="mailto:kinhdoanh@keovuasonghong.vn">kinhdoanh@keovuasonghong.vn</a></p></div>
                     <div class="footer-info-item">
                         <i class="fa-solid fa-phone"></i>
-                        <p>
-                            <a href="tel:0386360797">0386 360 797</a> - 
-                            <a href="tel:0938016788">0938 016 788</a>
-                        </p>
+                        <p>Hotline: <a href="tel:0386360797">0386 360 797</a> - <a href="tel:0938016788">0938 016 788</a></p>
                     </div>
                 </div>
                 
                 <div class="footer-col-right">
                     <h4>LIÊN HỆ VỚI CHÚNG TÔI</h4>
                     <div class="social-icons">
-                        <a href="https://facebook.com/keovuasonghong.vn" target="_blank" rel="noopener noreferrer" class="icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://youtube.com/@keovuasonghong" target="_blank" rel="noopener noreferrer" class="icon-yt"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="https://www.tiktok.com/@shkmortar?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="icon-tk"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://www.linkedin.com/company/shk-mortar-company/" target="_blank" rel="noopener noreferrer" class="icon-in"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://facebook.com/keovuasonghong.vn" target="_blank" rel="noopener noreferrer" class="icon-fb" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://youtube.com/@keovuasonghong" target="_blank" rel="noopener noreferrer" class="icon-yt" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@shkmortar?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="icon-tk" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="https://www.linkedin.com/company/shk-mortar-company/" target="_blank" rel="noopener noreferrer" class="icon-in" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                     </div>
-                    <p class="copyright">© 2026 Sông Hồng. Developed by Thinh Nguyen.</p>
+                    <p style="font-size: 13px; color: #64748b;">© 2026 Sông Hồng. By Thinh Nguyen.</p>
                 </div>
             </div>
         </footer>
     </div>
 
-    <div class="float-btn-left">
-        <button onclick="scrollToTop()" class="btn-scroll-top" title="Lên đầu trang">
+    <div class="float-left">
+        <button id="scrollTopBtn" class="btn-scroll-top" title="Lên đầu trang">
             <i class="fa-solid fa-arrow-up"></i>
         </button>
     </div>
-    <div class="float-btn-right">
+
+    <div class="float-right">
         <a href="https://zalo.me/0386360797" target="_blank" rel="noopener noreferrer" class="zalo-btn" title="Chat Zalo">Zalo</a>
     </div>
 
     <script>
-        function scrollToTop() {
+        // Drawer Menu Mobile
+        const openDrawer = document.getElementById('openDrawer');
+        const closeDrawer = document.getElementById('closeDrawer');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+
+        openDrawer.onclick = () => {
+            mobileDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        };
+
+        const hideDrawer = () => {
+            mobileDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeDrawer.onclick = hideDrawer;
+        drawerOverlay.onclick = hideDrawer;
+
+        // ĐÃ FIX: Logic cuộn mượt mà áp dụng bọc cả 2 lớp trục (đảm bảo không trượt phát nào)
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
             const pageWrapper = document.getElementById('pageWrapper');
-            if (pageWrapper && getComputedStyle(pageWrapper).overflowY === 'auto') {
+            if(pageWrapper) {
                 pageWrapper.scrollTo({top: 0, behavior: 'smooth'});
-            } else {
-                window.scrollTo({top: 0, behavior: 'smooth'});
             }
-        }
+        });
+
+        // Dịch thuật Google
         function changeLanguage(langCode) {
-            document.cookie = "googtrans=/vi/" + langCode + "; path=/;";
-            document.cookie = "googtrans=/vi/" + langCode + "; domain=." + document.domain + "; path=/;";
+            if (langCode === 'vi') {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+            } else {
+                document.cookie = "googtrans=/vi/" + langCode + "; path=/;";
+                document.cookie = "googtrans=/vi/" + langCode + "; path=/; domain=" + window.location.hostname;
+            }
             window.location.reload(); 
         }
+
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({ pageLanguage: 'vi', includedLanguages: 'en,vi', autoDisplay: false }, 'google_translate_element');
+            new google.translate.TranslateElement({ pageLanguage: 'vi', autoDisplay: false }, 'google_translate_element');
         }
-        
+
+        // Hạt Nano Canvas
         const canvas = document.getElementById('nano-particles');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -202,11 +294,11 @@
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1; this.speedY = Math.random() * -0.5 - 0.1; 
-                this.speedX = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.5 + 0.1;
+                this.size = Math.random() * 2 + 0.5; this.speedY = Math.random() * -0.5 - 0.1; 
+                this.opacity = Math.random() * 0.5 + 0.1;
             }
             update() {
-                this.y += this.speedY; this.x += this.speedX;
+                this.y += this.speedY;
                 if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
             }
             draw() {
@@ -214,19 +306,20 @@
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-        function initParticles() {
-            particlesArray = []; let num = (canvas.width * canvas.height) / 9000; 
+        function init() {
+            particlesArray = []; let num = (canvas.width * canvas.height) / 10000; 
             for (let i = 0; i < num; i++) particlesArray.push(new Particle());
         }
-        function animateParticles() {
+        function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
-            requestAnimationFrame(animateParticles);
+            particlesArray.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
         }
-        initParticles(); animateParticles();
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); });
+        init(); animate();
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -11,8 +11,9 @@
     /* Reset lại snap-section, không ép buộc chiều cao 100vh nữa */
     .snap-section { width: 100%; position: relative; display: flex; flex-direction: column; overflow: visible; }
     
-    /* Chỉ giữ chiều cao full màn hình cho phần Hero và Sản phẩm 3D */
-    .hero, #san-pham { min-height: 100vh; padding-top: 80px; }
+    /* FIX RÃNH TRONG SUỐT: Tách riêng Hero và Sản phẩm, gỡ padding-top của Sản phẩm */
+    .hero { min-height: 100vh; padding-top: 80px; }
+    #san-pham { min-height: 100vh; padding-top: 0; margin-top: -1px; }
 
     header .logo img { height: 80px !important; transition: 0.3s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));}
     .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -330,14 +331,14 @@
         .main-heading { white-space: normal; text-align: center; line-height: 1.1; margin-bottom: 18px; width: 100%;}
         .main-heading .text-blue { font-size: clamp(26px, 8vw, 36px); display: block; margin-bottom: 0; text-shadow: 3px 4px 10px rgba(0,0,0,0.9), 0 0 25px rgba(77, 163, 255, 0.5); white-space: nowrap; }
         .main-heading .text-white-title { font-size: clamp(20px, 6vw, 28px); display: block; margin-top: 2px;}
-        .mobile-break { display: none; } /* Đã ẩn <br> để tránh đệm thêm khoảng trống */
+        .mobile-break { display: none; } 
         
         .sub-heading { font-size: 15px; border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;}
         .desc { font-size: 14px; margin-bottom: 25px; text-align: center; max-width: 320px; line-height: 1.5; text-shadow: 2px 3px 8px rgba(0,0,0,1); }
         .hero-buttons { flex-direction: column; width: 100%; gap: 12px; align-items: center;}
         .btn-3d { width: 100%; max-width: 300px; padding: 14px; font-size: 12px; }
         
-        #san-pham { padding-top: 80px; } 
+        #san-pham { padding-top: 0; margin-top: -1px; }
 
         .interactive-container { flex-direction: column; min-height: auto; }
         .product-layer { padding: 60px 5% 40px 5%; height: auto; min-height: 380px; }

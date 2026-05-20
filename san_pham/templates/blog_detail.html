@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Bước đột phá mới: Vữa Khô Sông Hồng ứng dụng công nghệ Nano Châu Âu{% endblock %}
+{% block title %}{{ article.seo_title|default:article.tieu_de }}{% endblock %}
 
 {% block nav_class %}nav-solid-bg{% endblock %}
 
@@ -37,17 +37,29 @@
     .article-meta { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; color: var(--text-gray); font-size: 14px; font-weight: 600;}
     .article-meta i { color: var(--shk-tan); margin-right: 5px; }
 
-    .article-hero-img { width: 100%; border-radius: 12px; margin-bottom: 40px; object-fit: cover; aspect-ratio: 16/9; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    /* ĐÃ SỬA: Ép cứng khung ảnh bài viết tỉ lệ 4:3, tự động crop */
+    .article-hero-img { 
+        width: 100%; 
+        border-radius: 12px; 
+        margin-bottom: 40px; 
+        object-fit: cover; 
+        object-position: center;
+        aspect-ratio: 4 / 3; 
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+    }
 
+    /* ĐỊNH DẠNG LẠI NỘI DUNG TỪ CKEDITOR CHO ĐẸP MẮT */
     .article-content { color: #1e293b; font-size: 17px; line-height: 1.8; }
     .article-content p { margin-bottom: 20px; }
-    .article-content h3 { font-family: var(--font-primary); font-size: 24px; color: var(--shk-blue); margin: 40px 0 15px; font-weight: 700; }
-    .article-content img { width: 100%; border-radius: 10px; margin: 20px 0; }
+    .article-content h1, .article-content h2, .article-content h3 { font-family: var(--font-primary); color: var(--shk-blue); margin: 40px 0 15px; font-weight: 700; line-height: 1.3; }
+    .article-content img { max-width: 100%; height: auto; border-radius: 10px; margin: 20px 0; }
     .article-content blockquote { border-left: 5px solid var(--shk-tan); background: #f8fafc; padding: 20px; margin: 30px 0; font-style: italic; font-weight: 600; color: #334155; border-radius: 0 10px 10px 0;}
+    .article-content ul, .article-content ol { margin-bottom: 20px; padding-left: 20px; }
+    .article-content li { margin-bottom: 10px; }
 
     .article-share { display: flex; align-items: center; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 1px solid #e2e8f0; }
     .article-share span { font-weight: 700; font-family: var(--font-primary); color: var(--text-dark); }
-    .share-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+    .share-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; text-decoration: none; }
     .share-btn:hover { transform: translateY(-3px); }
     .share-fb { background: #1877f2; }
     .share-tw { background: #1da1f2; }
@@ -57,6 +69,7 @@
         .article-container { padding-top: 110px; }
         .article-wrapper { padding: 25px; }
         .article-title { font-size: 24px; }
+        .article-meta { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
 </style>
 {% endblock %}
@@ -68,37 +81,22 @@
         <div class="breadcrumb">
             <a href="{% url 'home_page' %}">Trang chủ</a> <span>/</span>
             <a href="{% url 'blog_page' %}">Blog</a> <span>/</span>
-            <span style="color: var(--text-dark);">Tin tức</span>
+            <span style="color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">{{ article.tieu_de }}</span>
         </div>
 
-        <h1 class="article-title">Bước đột phá mới: Vữa Khô Sông Hồng ứng dụng công nghệ Nano Châu Âu</h1>
+        <h1 class="article-title">{{ article.tieu_de }}</h1>
         
         <div class="article-meta">
-            <div class="meta-item"><i class="fa-regular fa-calendar"></i> 19/05/2026</div>
-            <div class="meta-item"><i class="fa-solid fa-user-pen"></i> Tác giả: Ban Giám Đốc</div>
-            <div class="meta-item"><i class="fa-regular fa-eye"></i> 1,245 lượt xem</div>
+            <div class="meta-item"><i class="fa-regular fa-calendar"></i> {{ article.ngay_dang|date:"d/m/Y" }}</div>
+            <div class="meta-item"><i class="fa-solid fa-user-pen"></i> Tác giả: {{ article.tac_gia }}</div>
         </div>
 
-        <img src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Vữa Khô Sông Hồng" class="article-hero-img">
+        {% if article.anh_dai_dien %}
+            <img src="{{ article.anh_dai_dien.url }}" alt="{{ article.tieu_de }}" class="article-hero-img">
+        {% endif %}
 
         <div class="article-content">
-            <p><strong>Ngày 19/05/2026, Công ty Vữa Khô Sông Hồng chính thức công bố việc ứng dụng thành công công nghệ Nano tiên tiến từ Châu Âu vào dây chuyền sản xuất vữa khô trộn sẵn. Đây được xem là bước tiến lịch sử, đánh dấu sự chuyển mình mạnh mẽ của vật liệu xây dựng nội địa trên thị trường quốc tế.</strong></p>
-            
-            <p>Trước bối cảnh ngành xây dựng đang yêu cầu ngày càng khắt khe về chất lượng và độ bền vững của công trình, việc kiểm soát cấp phối thủ công đã không còn đáp ứng được tiêu chuẩn. Giải pháp Vữa Khô Trộn Sẵn Sông Hồng ra đời nhằm giải quyết triệt để vấn đề rạn nứt, phồng rộp tường sau thời gian dài sử dụng.</p>
-            
-            <h3>1. Công nghệ Nano mang lại điều gì?</h3>
-            <p>Công nghệ Nano giúp phân tách các hạt cốt liệu (cát sấy khô, xi măng, phụ gia) xuống kích thước siêu nhỏ. Khi trộn với nước, các hạt này len lỏi và lấp đầy mọi lỗ rỗng vi mô, tạo ra một màng liên kết cực kỳ vững chắc.</p>
-            
-            <blockquote>"Vữa Khô Sông Hồng không chỉ là vật liệu xây dựng, mà là áo giáp bảo vệ công trình của bạn trước mọi tác động khắc nghiệt của thời tiết." - Kỹ sư trưởng dự án chia sẻ.</blockquote>
-
-            <h3>2. Lợi ích vượt trội cho nhà thầu</h3>
-            <ul>
-                <li><strong>Tiết kiệm nhân công:</strong> Không cần sàng cát, trộn xi măng tại công trường. Chỉ cần trộn với nước là dùng được ngay.</li>
-                <li><strong>Đảm bảo vệ sinh:</strong> Giảm thiểu tối đa bụi bẩn, bảo vệ môi trường và sức khỏe công nhân.</li>
-                <li><strong>Kiểm soát vật tư:</strong> Không hao hụt nguyên vật liệu, dễ dàng tính toán khối lượng thi công.</li>
-            </ul>
-
-            <p>Với hệ thống trạm trộn hiện đại đặt tại Hưng Yên, chúng tôi cam kết cung ứng liên tục với sản lượng hàng ngàn tấn mỗi ngày cho các đại dự án trên toàn quốc.</p>
+            {{ article.noi_dung|safe }}
         </div>
 
         <div class="article-share">

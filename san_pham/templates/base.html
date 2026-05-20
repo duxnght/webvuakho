@@ -70,7 +70,7 @@
         /* =========================================
            CỬA SỔ MENU MOBILE (DRAWER)
            ========================================= */
-        .mobile-drawer { position: fixed; top: 0; right: -100%; width: 75%; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 3000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); display: flex; flex-direction: column; padding: 80px 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .mobile-drawer { position: fixed; top: 0; right: -100%; width: 75%; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 3000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); display: flex; flex-direction: column; padding: 80px 40px 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         .mobile-drawer.active { right: 0; }
         .close-drawer { position: absolute; top: 25px; right: 25px; font-size: 28px; color: var(--text-dark); cursor: pointer; }
         .mobile-nav-links { display: flex; flex-direction: column; gap: 30px; }
@@ -81,14 +81,12 @@
         .drawer-overlay.active { opacity: 1; visibility: visible; }
 
         /* =========================================
-           FOOTER (Đã fix UI chuyên nghiệp)
+           FOOTER (Đã fix UI gọn gàng, chống dày)
            ========================================= */
         .global-footer { background: #ffffff; color: var(--text-dark); padding: 50px 5% 30px; position: relative; z-index: 10; border-top: 1px solid #e2e8f0; }
         
-        /* ĐÃ FIX PC: Bóp max-width xuống 1000px để căn bằng với form đăng ký phía trên */
         .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1100px; margin: 0 auto; }
         
-        /* ĐÃ FIX: Đổi màu tiêu đề sang xanh Navbar */
         .footer-col-left h3 { color: var(--shk-blue); font-size: 22px; margin-bottom: 25px; font-weight: 800;}
         
         .footer-info-item { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; font-weight: 500; color: #334155; line-height: 1.5; }
@@ -104,16 +102,16 @@
         .icon-fb { background: #1877f2; } .icon-yt { background: #ff0000; width: 45px !important; border-radius: 8px !important; } .icon-tk { background: #000; } .icon-in { background: #0a66c2; border-radius: 6px !important; }
 
         /* =========================================
-           FLOAT BUTTONS TÁCH RỜI HAI BÊN
+           FLOAT BUTTONS: TỐI ƯU HIỂN THỊ TRỰC QUAN
            ========================================= */
         .float-left { position: fixed; bottom: 30px; left: 30px; z-index: 2500; }
         .btn-scroll-top { 
-            width: 50px; height: 50px; border-radius: 50%; 
-            background: var(--shk-blue); 
+            width: 48px; height: 48px; border-radius: 50%; 
+            background: #2563eb; /* Nổi bật, xanh giống mảng Navbar */
             color: white; border: none; display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(77, 163, 255, 0.4); font-size: 20px;
+            cursor: pointer; transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4); font-size: 20px;
         }
-        .btn-scroll-top:hover { background: #2563eb; transform: translateY(-5px); box-shadow: 0 8px 20px rgba(77, 163, 255, 0.6); }
+        .btn-scroll-top:hover { background: #1d4ed8; transform: translateY(-5px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.6); }
 
         .float-right { position: fixed; bottom: 30px; right: 30px; z-index: 2500; }
         .zalo-btn { 
@@ -132,20 +130,20 @@
         }
 
         @media (max-width: 768px) {
-            /* ĐÃ FIX MOBILE: Căn trái thông tin liên hệ, căn giữa nhóm mạng xã hội */
-            .global-footer { padding: 40px 5% 100px; } 
-            .footer-container { flex-direction: column; align-items: flex-start; gap: 30px; } /* Đưa toàn bộ về căn trái */
+            /* Tinh chỉnh làm mỏng Footer, không che lấp nội dung */
+            .global-footer { padding: 30px 5% 80px; } 
+            .footer-container { flex-direction: column; align-items: flex-start; gap: 20px; } 
             .footer-col-left { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
+            .footer-col-left h3 { margin-bottom: 15px; font-size: 20px; }
             .footer-info-item { justify-content: flex-start; text-align: left; }
             
-            /* Ghi đè căn giữa riêng cho cột phải (MXH) */
-            .footer-col-right { align-items: center; text-align: center; margin-top: 10px; width: 100%; } 
+            .footer-col-right { align-items: center; text-align: center; margin-top: 5px; width: 100%; } 
             
-            /* Thu nhỏ kích thước Float Buttons trên đt */
+            /* Căn chỉnh Float Buttons sát lề */
             .float-left { bottom: 20px; left: 15px; }
             .float-right { bottom: 20px; right: 15px; }
             .zalo-btn { width: 50px; height: 50px; font-size: 14px;}
-            .btn-scroll-top { width: 45px; height: 45px; font-size: 18px;}
+            .btn-scroll-top { width: 42px; height: 42px; font-size: 18px;}
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -265,9 +263,13 @@
         closeDrawer.onclick = hideDrawer;
         drawerOverlay.onclick = hideDrawer;
 
+        // Xử lý nút cuộn bao quát cả 2 luồng (Window và PageWrapper)
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         scrollTopBtn.addEventListener('click', () => {
+            // Cuộn cho các trang dùng trục thẻ body (Blog, Tài liệu...)
             window.scrollTo({top: 0, behavior: 'smooth'});
+            
+            // Cuộn cho riêng trục #pageWrapper của trang chủ
             const pageWrapper = document.getElementById('pageWrapper');
             if(pageWrapper) {
                 pageWrapper.scrollTo({top: 0, behavior: 'smooth'});

@@ -21,16 +21,15 @@ jobs:
           script: |
             set -e
 
-            cd ~/webvuakho/vuakho
+            cd ~/webvuakho
             git pull origin main
 
-            source ~/webvuakho/venv/bin/activate
+            source ~/virtualenv/bin/activate
             pip install -r requirements.txt -q
 
             python manage.py migrate --no-input
             python manage.py collectstatic --no-input
 
-            mkdir -p ~/webvuakho/tmp
             touch ~/webvuakho/tmp/restart.txt
 
             echo "Deploy thanh cong!"

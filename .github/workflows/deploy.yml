@@ -13,16 +13,15 @@ jobs:
     steps:
       - name: Trigger cPanel Git Pull
         run: |
-          RESPONSE=$(curl -sk -G \
-            --user "${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}" \
-            --data-urlencode "repository=/home/${{ secrets.CPANEL_USERNAME }}/webvuakho" \
-            "https://${{ secrets.CPANEL_HOST }}:2083/execute/VersionControl/update")
+          RESPONSE=$(curl -sk \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_HOST }}:2083/execute/VersionControl/update?repository=/home/${{ secrets.CPANEL_USERNAME }}/webvuakho")
 
           echo "$RESPONSE"
 
           if echo "$RESPONSE" | grep -q '"status":1'; then
             echo "Deploy thanh cong!"
           else
-            echo "That bai hoac can kiem tra tay tren cPanel"
+            echo "That bai - kiem tra output o tren"
             exit 1
           fi

@@ -16,8 +16,8 @@ jobs:
         with:
           host: ${{ secrets.CPANEL_HOST }}
           username: ${{ secrets.CPANEL_USERNAME }}
-          key: ${{ secrets.CPANEL_SSH_KEY }}
-          port: 22
+          password: ${{ secrets.CPANEL_PASSWORD }}
+          port: 2222
           script: |
             set -e
 

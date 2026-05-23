@@ -7,29 +7,22 @@ on:
 
 jobs:
   deploy:
-    name: Deploy via SSH
+    name: Deploy via cPanel API
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy len server qua SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.CPANEL_HOST }}
-          username: ${{ secrets.CPANEL_USERNAME }}
-          password: ${{ secrets.CPANEL_PASSWORD }}
-          port: 58986
-          script: |
-            set -e
+      - name: Trigger cPanel Git Pull
+        run: |
+          RESPONSE=$(curl -sk -G \
+            --user "${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}" \
+            --data-urlencode "repository=/home/${{ secrets.CPANEL_USERNAME }}/webvuakho" \
+            "https://${{ secrets.CPANEL_HOST }}:2083/execute/VersionControl/update")
 
-            cd ~/webvuakho
-            git pull origin main
+          echo "$RESPONSE"
 
-            source ~/virtualenv/webvuakho/3.12/bin/activate
-            pip install -r requirements.txt -q
-
-            python manage.py migrate --no-input
-            python manage.py collectstatic --no-input
-
-            touch ~/webvuakho/tmp/restart.txt
-
+          if echo "$RESPONSE" | grep -q '"status":1'; then
             echo "Deploy thanh cong!"
+          else
+            echo "That bai hoac can kiem tra tay tren cPanel"
+            exit 1
+          fi

@@ -27,7 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',           # phải đứng TRƯỚC staticfiles
     'django.contrib.staticfiles',
+    'cloudinary',
     'ckeditor',
     'san_pham',
 ]
@@ -102,6 +104,16 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Cloudinary — lưu ảnh trên CDN thay vì host cPanel
+# Chỉ kích hoạt khi có biến môi trường, local dùng storage mặc định
+if os.environ.get('CLOUDINARY_CLOUD_NAME'):
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

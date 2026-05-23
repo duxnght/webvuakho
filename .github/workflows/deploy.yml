@@ -1,0 +1,36 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Cho phep bam nut deploy thu cong tren GitHub
+
+jobs:
+  deploy:
+    name: Deploy via SSH
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy len server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          password: ${{ secrets.CPANEL_PASSWORD }}
+          port: ${{ secrets.CPANEL_SSH_PORT }}
+          script: |
+            set -e
+
+            cd ~/webvuakho/vuakho
+            git pull origin main
+
+            source ~/webvuakho/venv/bin/activate
+            pip install -r requirements.txt -q
+
+            python manage.py migrate --no-input
+            python manage.py collectstatic --no-input
+
+            mkdir -p ~/webvuakho/tmp
+            touch ~/webvuakho/tmp/restart.txt
+
+            echo "Deploy thanh cong!"

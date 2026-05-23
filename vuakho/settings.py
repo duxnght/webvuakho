@@ -117,6 +117,8 @@ if os.environ.get('CLOUDINARY_CLOUD_NAME'):
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DEPLOY_WEBHOOK_TOKEN = os.environ.get('DEPLOY_WEBHOOK_TOKEN', '')
+
 
 # ==============================================================================
 # Nếu file local_settings.py tồn tại (local) → đè các cấu hình production ở trên.

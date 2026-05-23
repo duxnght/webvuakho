@@ -8,6 +8,6 @@ urlpatterns = [
     path('du-an/', views.danh_muc_du_an, name='danh_muc_du_an'),
     
     path('blog/', views.blog_page, name='blog_page'),
-    # ĐÃ SỬA: Thêm <slug:slug> để nhận diện bài viết động
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
+    path('_deploy/hook/', views.deploy_webhook, name='deploy_webhook'),
 ]

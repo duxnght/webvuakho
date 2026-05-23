@@ -7,21 +7,23 @@ on:
 
 jobs:
   deploy:
-    name: Deploy via cPanel API
+    name: Deploy via Webhook
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger cPanel Git Pull
+      - name: Trigger Deploy Webhook
         run: |
-          RESPONSE=$(curl -sk \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            "https://${{ secrets.CPANEL_HOST }}:2083/execute/VersionControl/update?repository=/home/${{ secrets.CPANEL_USERNAME }}/webvuakho")
+          RESPONSE=$(curl -s -o /tmp/resp.json -w "%{http_code}" \
+            -X POST \
+            -H "X-Deploy-Token: ${{ secrets.DEPLOY_WEBHOOK_TOKEN }}" \
+            "https://vuakhotronsanshk.com.vn/_deploy/hook/")
 
-          echo "$RESPONSE"
+          cat /tmp/resp.json
+          echo ""
 
-          if echo "$RESPONSE" | grep -q '"status":1'; then
+          if [ "$RESPONSE" = "200" ]; then
             echo "Deploy thanh cong!"
           else
-            echo "That bai - kiem tra output o tren"
+            echo "That bai — HTTP $RESPONSE"
             exit 1
           fi

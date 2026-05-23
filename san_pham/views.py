@@ -1,6 +1,11 @@
+import hmac
+import os
+import subprocess
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Case, When, IntegerField
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import VideoProject, Article, DangKyTuVan
 
@@ -48,3 +53,34 @@ def dang_ky_tu_van(request):
 
 def danh_muc_du_an(request):
     pass
+
+
+@csrf_exempt
+def deploy_webhook(request):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+
+    token = request.META.get('HTTP_X_DEPLOY_TOKEN', '')
+    expected = getattr(settings, 'DEPLOY_WEBHOOK_TOKEN', '')
+    if not expected or not hmac.compare_digest(token, expected):
+        return HttpResponse(status=403)
+
+    repo = '/home/nhkeos0p/webvuakho'
+    venv = '/home/nhkeos0p/virtualenv/webvuakho/3.12/bin'
+    log = []
+    try:
+        for cmd in [
+            ['git', 'pull', 'origin', 'main'],
+            [f'{venv}/pip', 'install', '-r', f'{repo}/requirements.txt', '-q'],
+            [f'{venv}/python', 'manage.py', 'migrate', '--no-input'],
+            [f'{venv}/python', 'manage.py', 'collectstatic', '--no-input'],
+        ]:
+            r = subprocess.run(cmd, cwd=repo, capture_output=True, text=True, timeout=120)
+            log.append({'cmd': cmd[0], 'ok': r.returncode == 0, 'out': r.stdout[-500:], 'err': r.stderr[-500:]})
+            if r.returncode != 0:
+                return JsonResponse({'status': 'error', 'log': log}, status=500)
+
+        open(f'{repo}/tmp/restart.txt', 'w').close()
+        return JsonResponse({'status': 'ok', 'log': log})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'detail': str(e)}, status=500)

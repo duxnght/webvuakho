@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Cho phep bam nut deploy thu cong tren GitHub
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -16,8 +16,8 @@ jobs:
         with:
           host: ${{ secrets.CPANEL_HOST }}
           username: ${{ secrets.CPANEL_USERNAME }}
-          password: ${{ secrets.CPANEL_PASSWORD }}
-          port: ${{ secrets.CPANEL_SSH_PORT }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: 22
           script: |
             set -e
 

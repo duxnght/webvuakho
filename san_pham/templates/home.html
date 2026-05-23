@@ -160,6 +160,8 @@
     .custom-dropdown-list li { padding: 12px 20px; color: #334155; cursor: pointer; transition: all 0.2s; font-size: 15px; font-family: var(--font-secondary); border-bottom: 1px solid #f1f5f9; }
     .custom-dropdown-list li:last-child { border-bottom: none; }
     .custom-dropdown-list li:hover { background: #f8fafc; color: var(--shk-blue); padding-left: 25px; font-weight: 600; }
+    .custom-dropdown-list li.dropdown-header { padding: 8px 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #94a3b8; background: #f8fafc; cursor: default; border-bottom: 1px solid #e2e8f0; text-transform: uppercase; }
+    .custom-dropdown-list li.dropdown-header:hover { padding-left: 20px; color: #94a3b8; font-weight: 800; background: #f8fafc; }
     .custom-dropdown-list::-webkit-scrollbar { width: 6px; }
     .custom-dropdown-list::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; margin: 5px 0;}
     .custom-dropdown-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -401,7 +403,43 @@
                             <i class="fa-solid fa-chevron-down icon-right"></i>
                             
                             <ul class="custom-dropdown-list">
-                                <li data-value="Hà Nội">Hà Nội</li><li data-value="Hải Phòng">Hải Phòng</li><li data-value="Bắc Ninh">Bắc Ninh</li><li data-value="Vĩnh Phúc">Vĩnh Phúc</li><li data-value="Hưng Yên">Hưng Yên</li><li data-value="Hải Dương">Hải Dương</li><li data-value="Bắc Giang">Bắc Giang</li><li data-value="Phú Thọ">Phú Thọ</li><li data-value="Quảng Ninh">Quảng Ninh</li><li data-value="Thái Nguyên">Thái Nguyên</li><li data-value="Hà Nam">Hà Nam</li><li data-value="Nam Định">Nam Định</li><li data-value="Ninh Bình">Ninh Bình</li><li data-value="Thái Bình">Thái Bình</li><li data-value="Hòa Bình">Hòa Bình</li><li data-value="Lạng Sơn">Lạng Sơn</li><li data-value="Lào Cai">Lào Cai</li><li data-value="Yên Bái">Yên Bái</li><li data-value="Sơn La">Sơn La</li><li data-value="Điện Biên">Điện Biên</li><li data-value="Lai Châu">Lai Châu</li><li data-value="Hà Giang">Hà Giang</li><li data-value="Cao Bằng">Cao Bằng</li><li data-value="Bắc Kạn">Bắc Kạn</li><li data-value="Tuyên Quang">Tuyên Quang</li><li data-value="Đà Nẵng">Đà Nẵng</li><li data-value="Hồ Chí Minh">Hồ Chí Minh</li><li data-value="Cần Thơ">Cần Thơ</li><li data-value="Thanh Hóa">Thanh Hóa</li><li data-value="Nghệ An">Nghệ An</li><li data-value="Hà Tĩnh">Hà Tĩnh</li><li data-value="Nha Trang">Khánh Hòa</li><li data-value="Bình Dương">Bình Dương</li><li data-value="Đồng Nai">Đồng Nai</li>
+                                <li class="dropdown-header" data-header>── MIỀN BẮC ──</li>
+                                <li data-value="TP. Hà Nội">TP. Hà Nội</li>
+                                <li data-value="TP. Hải Phòng">TP. Hải Phòng</li>
+                                <li data-value="Quảng Ninh">Quảng Ninh</li>
+                                <li data-value="Lạng Sơn">Lạng Sơn</li>
+                                <li data-value="Cao Bằng">Cao Bằng</li>
+                                <li data-value="Tuyên Quang">Tuyên Quang</li>
+                                <li data-value="Thái Nguyên">Thái Nguyên</li>
+                                <li data-value="Lào Cai">Lào Cai</li>
+                                <li data-value="Lai Châu">Lai Châu</li>
+                                <li data-value="Điện Biên">Điện Biên</li>
+                                <li data-value="Sơn La">Sơn La</li>
+                                <li data-value="Phú Thọ">Phú Thọ</li>
+                                <li data-value="Bắc Ninh">Bắc Ninh</li>
+                                <li data-value="Hưng Yên">Hưng Yên</li>
+                                <li data-value="Ninh Bình">Ninh Bình</li>
+                                <li data-value="Thanh Hóa">Thanh Hóa</li>
+                                <li class="dropdown-header" data-header>── MIỀN TRUNG ──</li>
+                                <li data-value="Nghệ An">Nghệ An</li>
+                                <li data-value="Hà Tĩnh">Hà Tĩnh</li>
+                                <li data-value="Quảng Trị">Quảng Trị</li>
+                                <li data-value="TP. Huế">TP. Huế</li>
+                                <li data-value="TP. Đà Nẵng">TP. Đà Nẵng</li>
+                                <li data-value="Quảng Ngãi">Quảng Ngãi</li>
+                                <li data-value="Gia Lai">Gia Lai</li>
+                                <li data-value="Đắk Lắk">Đắk Lắk</li>
+                                <li data-value="Khánh Hòa">Khánh Hòa</li>
+                                <li data-value="Lâm Đồng">Lâm Đồng</li>
+                                <li class="dropdown-header" data-header>── MIỀN NAM ──</li>
+                                <li data-value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</li>
+                                <li data-value="Đồng Nai">Đồng Nai</li>
+                                <li data-value="Tây Ninh">Tây Ninh</li>
+                                <li data-value="Đồng Tháp">Đồng Tháp</li>
+                                <li data-value="Vĩnh Long">Vĩnh Long</li>
+                                <li data-value="TP. Cần Thơ">TP. Cần Thơ</li>
+                                <li data-value="An Giang">An Giang</li>
+                                <li data-value="Cà Mau">Cà Mau</li>
                             </ul>
                         </div>
                         <button type="submit" class="btn-submit-pills">ĐĂNG KÝ NGAY <i class="fa-regular fa-paper-plane"></i></button>
@@ -522,6 +560,7 @@
 
     dropdownItems.forEach(item => {
         item.addEventListener('click', function() {
+            if (this.hasAttribute('data-header')) return;
             addressInput.value = this.getAttribute('data-value');
             selectGroup.classList.remove('open');
         });

@@ -54,3 +54,18 @@ class Article(models.Model):
         if not self.duong_dan_alias:
             self.duong_dan_alias = slugify(self.tieu_de)
         super(Article, self).save(*args, **kwargs)
+
+
+class DangKyTuVan(models.Model):
+    so_dien_thoai = models.CharField(max_length=20, verbose_name="Số điện thoại")
+    tinh_thanh = models.CharField(max_length=100, verbose_name="Tỉnh/Thành phố")
+    ngay_dang_ky = models.DateTimeField(auto_now_add=True, verbose_name="Ngày đăng ký")
+    da_lien_he = models.BooleanField(default=False, verbose_name="Đã liên hệ")
+
+    class Meta:
+        verbose_name = "Đăng ký tư vấn"
+        verbose_name_plural = "Quản lý Đăng ký tư vấn"
+        ordering = ['-ngay_dang_ky']
+
+    def __str__(self):
+        return f"{self.so_dien_thoai} – {self.tinh_thanh}"

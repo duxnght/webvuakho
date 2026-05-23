@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Case, When, IntegerField
-from .models import VideoProject, Article
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .models import VideoProject, Article, DangKyTuVan
 
 def home_page(request):
     # Lấy danh sách video và ÉP THỨ TỰ: NANO (1) -> M7.5 (2) -> JUMBO (3)
@@ -29,8 +31,20 @@ def blog_detail(request, slug):
 def tai_lieu_page(request):
     return render(request, 'tailieu.html')
 
+@require_POST
 def dang_ky_tu_van(request):
-    pass
+    phone = request.POST.get('phone', '').strip()
+    tinh_thanh = request.POST.get('address', '').strip()
+
+    if not phone or not tinh_thanh:
+        return JsonResponse({'status': 'error', 'message': 'Vui lòng điền đầy đủ thông tin.'})
+
+    digits = phone.replace('+', '').replace(' ', '').replace('-', '')
+    if not digits.isdigit() or not (9 <= len(digits) <= 15):
+        return JsonResponse({'status': 'error', 'message': 'Số điện thoại không hợp lệ.'})
+
+    DangKyTuVan.objects.create(so_dien_thoai=phone, tinh_thanh=tinh_thanh)
+    return JsonResponse({'status': 'success'})
 
 def danh_muc_du_an(request):
     pass

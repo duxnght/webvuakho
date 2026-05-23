@@ -1,0 +1,9 @@
+---
+deployment:
+  tasks:
+    - export VENV=$HOME/virtualenv/webvuakho/3.12/bin
+    - export APP=$HOME/webvuakho
+    - $VENV/pip install -r $APP/requirements.txt -q
+    - $VENV/python $APP/manage.py migrate --no-input
+    - $VENV/python $APP/manage.py collectstatic --no-input
+    - touch $APP/tmp/restart.txt

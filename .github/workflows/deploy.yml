@@ -24,7 +24,7 @@ jobs:
             cd ~/webvuakho
             git pull origin main
 
-            source ~/virtualenv/bin/activate
+            source ~/virtualenv/webvuakho/3.12/bin/activate
             pip install -r requirements.txt -q
 
             python manage.py migrate --no-input

@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+(function () {
+    var navigating = false;
+
+    // Đánh dấu đang điều hướng (không phải đóng tab)
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('a, button, input[type="submit"]')) navigating = true;
+    });
+    document.addEventListener('submit', function () { navigating = true; });
+    document.addEventListener('keydown', function (e) {
+        // F5 hoặc Ctrl/Cmd+R = reload, không phải đóng tab
+        if (e.key === 'F5' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r')) {
+            navigating = true;
+        }
+    });
+
+    window.addEventListener('beforeunload', function () {
+        if (!navigating) {
+            var token = (document.cookie.match(/(?:^|;\s*)csrftoken=([^;]*)/) || [])[1] || '';
+            if (token) {
+                var data = new FormData();
+                data.append('csrfmiddlewaretoken', token);
+                navigator.sendBeacon('/admin/logout/', data);
+            }
+        }
+    });
+}());
+</script>
+{% endblock %}

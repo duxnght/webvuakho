@@ -70,7 +70,8 @@ def deploy_webhook(request):
     log = []
     try:
         for cmd in [
-            ['git', 'pull', 'origin', 'main'],
+            ['git', 'fetch', 'origin', 'main'],
+            ['git', 'reset', '--hard', 'origin/main'],
             [f'{venv}/pip', 'install', '-r', f'{repo}/requirements.txt', '-q'],
             [f'{venv}/python', 'manage.py', 'migrate', '--no-input'],
             [f'{venv}/python', 'manage.py', 'collectstatic', '--no-input'],

@@ -106,8 +106,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Cloudinary — chỉ kích hoạt khi có credentials
+# cloudinary_storage KHÔNG thêm vào INSTALLED_APPS: package 0.3.0 override
+# collectstatic bằng command dùng settings.STATICFILES_STORAGE đã bị xóa trong
+# Django 6.0. MediaCloudinaryStorage vẫn hoạt động bình thường vì nó tự gọi
+# cloudinary.config() từ CLOUDINARY_STORAGE khi khởi tạo instance.
 if os.environ.get('CLOUDINARY_CLOUD_NAME'):
-    INSTALLED_APPS = ['cloudinary_storage'] + INSTALLED_APPS
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
         'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),

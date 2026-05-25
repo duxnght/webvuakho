@@ -147,7 +147,7 @@
                 </div>
                 <div class="doc-actions">
                     <button class="btn-action btn-view" onclick="openViewer()"><i class="fa-solid fa-book-open"></i> XEM TÀI LIỆU</button>
-                    <a href="{% static 'Ho_So_Nang_Luc_A3.pdf' %}" class="btn-action btn-down" download><i class="fa-solid fa-download"></i> TẢI XUỐNG</a>
+                    <a href="#" class="btn-action btn-down" style="opacity:.5;cursor:not-allowed;" title="Tài liệu đang cập nhật"><i class="fa-solid fa-download"></i> TẢI XUỐNG</a>
                 </div>
             </div>
         </div>
@@ -181,12 +181,12 @@
     });
 
     // --- LOGIC VIEWER TÀI LIỆU ---
-    const baseUrl = "{% static '' %}";
     const totalPages = 12;
-    const pages = [];
-    
-    for (let i = 1; i <= totalPages; i++) {
-        pages.push(`${baseUrl}tailieu/HSNL_${i}.webp`);
+    const firstPage = "{% static 'tailieu/HSNL_1.webp' %}";
+    const baseUrl = firstPage.slice(0, firstPage.lastIndexOf('/') + 1);
+    const pages = [firstPage];
+    for (let i = 2; i <= totalPages; i++) {
+        pages.push(baseUrl + 'HSNL_' + i + '.webp');
     }
 
     let currentPage = 0;

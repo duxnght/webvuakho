@@ -167,19 +167,32 @@
         .zalo-close-btn { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 18px; padding: 2px 4px; transition: 0.2s; flex-shrink: 0; }
         .zalo-close-btn:hover { color: white; transform: scale(1.2); }
 
-        .zalo-popup-body { padding: 16px 14px 10px; background: #f1f5f9; }
-        .zalo-msg-bubble {
-            background: white; color: #1e293b; padding: 11px 14px; border-radius: 0 13px 13px 13px;
-            font-size: 13.5px; line-height: 1.55; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            display: inline-block; max-width: 90%;
+        .zalo-chat-messages {
+            overflow-y: auto; padding: 14px 14px 4px; background: #f1f5f9;
+            display: flex; flex-direction: column; gap: 10px; max-height: 260px; min-height: 100px;
         }
-        .zalo-msg-time { font-size: 11px; color: #94a3b8; margin-top: 5px; }
-
-        .zalo-quick-replies { padding: 10px 14px; background: #f1f5f9; display: flex; flex-direction: column; gap: 7px; }
+        .zalo-msg-row { display: flex; flex-direction: column; }
+        .zalo-msg-row.user { align-items: flex-end; }
+        .zalo-msg-row.bot  { align-items: flex-start; }
+        .zalo-msg-bubble {
+            padding: 10px 13px; border-radius: 13px; font-size: 13.5px; line-height: 1.55;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07); max-width: 85%; word-break: break-word;
+        }
+        .zalo-msg-row.bot  .zalo-msg-bubble { background: white; color: #1e293b; border-radius: 0 13px 13px 13px; }
+        .zalo-msg-row.user .zalo-msg-bubble { background: #0068ff; color: white; border-radius: 13px 13px 0 13px; }
+        .zalo-msg-time { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+        .zalo-open-link {
+            margin-top: 8px; display: inline-flex; align-items: center; gap: 7px;
+            background: #0068ff; color: white; border-radius: 20px; padding: 9px 18px;
+            font-size: 13px; font-weight: 700; text-decoration: none; transition: 0.2s;
+        }
+        .zalo-open-link:hover { background: #0050d3; transform: translateY(-1px); color: white; }
+        .zalo-quick-replies { padding: 8px 14px 10px; background: #f1f5f9; display: flex; flex-direction: column; gap: 7px; }
         .zalo-quick-btn {
             background: white; color: #0068ff; border: 1.5px solid #0068ff;
             border-radius: 20px; padding: 7px 14px; font-size: 13px; font-weight: 600;
-            text-align: center; transition: 0.2s; display: block; text-decoration: none;
+            text-align: center; transition: 0.2s; cursor: pointer; width: 100%;
+            font-family: var(--font-secondary);
         }
         .zalo-quick-btn:hover { background: #0068ff; color: white; }
 
@@ -331,16 +344,16 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="zalo-popup-body">
-                <div class="zalo-msg-bubble">
-                    Xin chào! 👋 Bạn cần tư vấn về sản phẩm vữa khô hay hỗ trợ kỹ thuật?
+            <div class="zalo-chat-messages" id="zaloChatMessages">
+                <div class="zalo-msg-row bot">
+                    <div class="zalo-msg-bubble">Xin chào! 👋 Bạn cần tư vấn về sản phẩm vữa khô hay hỗ trợ kỹ thuật?</div>
+                    <div class="zalo-msg-time">Vừa xong</div>
                 </div>
-                <div class="zalo-msg-time">Vừa xong</div>
             </div>
-            <div class="zalo-quick-replies">
-                <a href="https://zalo.me/0386360797" target="_blank" rel="noopener" class="zalo-quick-btn">💬 Tư vấn sản phẩm</a>
-                <a href="https://zalo.me/0386360797" target="_blank" rel="noopener" class="zalo-quick-btn">📋 Yêu cầu báo giá</a>
-                <a href="https://zalo.me/0386360797" target="_blank" rel="noopener" class="zalo-quick-btn">🔧 Hỗ trợ kỹ thuật</a>
+            <div class="zalo-quick-replies" id="zaloQuickReplies">
+                <button class="zalo-quick-btn" onclick="zaloQuickReply('💬 Tư vấn sản phẩm')">💬 Tư vấn sản phẩm</button>
+                <button class="zalo-quick-btn" onclick="zaloQuickReply('📋 Yêu cầu báo giá')">📋 Yêu cầu báo giá</button>
+                <button class="zalo-quick-btn" onclick="zaloQuickReply('🔧 Hỗ trợ kỹ thuật')">🔧 Hỗ trợ kỹ thuật</button>
             </div>
             <div class="zalo-input-row">
                 <input type="text" class="zalo-input" id="zaloInput" placeholder="Nhập tin nhắn...">
@@ -439,44 +452,89 @@
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
 
         // Zalo chat widget
+        const ZALO_URL = 'https://zalo.me/0386360797';
+
         (function () {
-            const ZALO_URL = 'https://zalo.me/0386360797';
-            const bubble  = document.getElementById('zaloBubble');
-            const popup   = document.getElementById('zaloPopup');
+            const bubble   = document.getElementById('zaloBubble');
+            const popup    = document.getElementById('zaloPopup');
             const closeBtn = document.getElementById('zaloClose');
-            const input   = document.getElementById('zaloInput');
-            const sendBtn = document.getElementById('zaloSend');
-            const notif   = document.getElementById('zaloNotifDot');
+            const input    = document.getElementById('zaloInput');
+            const sendBtn  = document.getElementById('zaloSend');
+            const notif    = document.getElementById('zaloNotifDot');
+            const messages = document.getElementById('zaloChatMessages');
+            const quickReplies = document.getElementById('zaloQuickReplies');
 
             function openPopup() {
                 popup.classList.add('open');
                 if (notif) notif.style.display = 'none';
                 setTimeout(() => input.focus(), 300);
             }
-            function closePopup() {
-                popup.classList.remove('open');
+            function closePopup() { popup.classList.remove('open'); }
+
+            function addUserMessage(text) {
+                const row = document.createElement('div');
+                row.className = 'zalo-msg-row user';
+                row.innerHTML = '<div class="zalo-msg-bubble">' + text + '</div><div class="zalo-msg-time">Vừa xong</div>';
+                messages.appendChild(row);
+                messages.scrollTop = messages.scrollHeight;
             }
-            function goZalo() {
-                window.open(ZALO_URL, '_blank', 'noopener');
+
+            function addBotReply() {
+                const row = document.createElement('div');
+                row.className = 'zalo-msg-row bot';
+                row.innerHTML = '<div class="zalo-msg-bubble">Cảm ơn bạn! Nhấn nút bên dưới để kết nối với chuyên viên tư vấn của SHK qua Zalo nhé 😊</div>'
+                    + '<div class="zalo-msg-time">Vừa xong</div>'
+                    + '<a href="' + ZALO_URL + '" target="_blank" rel="noopener" class="zalo-open-link"><i class="fa-brands fa-square-phone"></i> Mở Zalo ngay</a>';
+                messages.appendChild(row);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            function handleSend(text) {
+                if (!text) return;
+                quickReplies.style.display = 'none';
+                addUserMessage(text);
+                setTimeout(addBotReply, 700);
             }
 
             bubble.addEventListener('click', function () {
                 popup.classList.contains('open') ? closePopup() : openPopup();
             });
-            closeBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                closePopup();
+            closeBtn.addEventListener('click', function (e) { e.stopPropagation(); closePopup(); });
+            sendBtn.addEventListener('click', function () {
+                const text = input.value.trim();
+                input.value = '';
+                handleSend(text);
             });
-            sendBtn.addEventListener('click', goZalo);
             input.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') goZalo();
+                if (e.key === 'Enter') {
+                    const text = input.value.trim();
+                    input.value = '';
+                    handleSend(text);
+                }
             });
-
-            // Đóng popup khi click ra ngoài
             document.addEventListener('click', function (e) {
                 if (!e.target.closest('.zalo-chat-wrap')) closePopup();
             });
         }());
+
+        function zaloQuickReply(text) {
+            document.getElementById('zaloQuickReplies').style.display = 'none';
+            const messages = document.getElementById('zaloChatMessages');
+            const row = document.createElement('div');
+            row.className = 'zalo-msg-row user';
+            row.innerHTML = '<div class="zalo-msg-bubble">' + text + '</div><div class="zalo-msg-time">Vừa xong</div>';
+            messages.appendChild(row);
+            messages.scrollTop = messages.scrollHeight;
+            setTimeout(function () {
+                const botRow = document.createElement('div');
+                botRow.className = 'zalo-msg-row bot';
+                botRow.innerHTML = '<div class="zalo-msg-bubble">Cảm ơn bạn! Nhấn nút bên dưới để kết nối với chuyên viên tư vấn của SHK qua Zalo nhé 😊</div>'
+                    + '<div class="zalo-msg-time">Vừa xong</div>'
+                    + '<a href="' + ZALO_URL + '" target="_blank" rel="noopener" class="zalo-open-link"><i class="fa-brands fa-square-phone"></i> Mở Zalo ngay</a>';
+                messages.appendChild(botRow);
+                messages.scrollTop = messages.scrollHeight;
+            }, 700);
+        }
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     

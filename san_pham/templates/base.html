@@ -24,7 +24,7 @@
         /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { width: 100%; min-height: 100vh; font-family: var(--font-secondary); background-color: #f8fafc; color: var(--text-dark); overflow-x: hidden; position: relative; top: 0 !important; }
+        body { width: 100%; min-height: 100vh; font-family: var(--font-secondary); background-color: #DCE7F2; color: var(--text-dark); overflow-x: hidden; position: relative; top: 0 !important; }
         
         /* Ẩn công cụ Google Dịch mặc định */
         .skiptranslate { display: none !important; } 
@@ -35,16 +35,9 @@
         /* Bảo vệ chống tràn cho các khối chứa nền Jumbo */
         .product-card, .product-item, .card-sp, .san-pham-box, .overflow-hidden { overflow: hidden !important; position: relative; }
 
-        /* Nền cực quang (Aurora) */
-        .global-aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; z-index: 1; filter: blur(90px); transform: scale(1.2); pointer-events: none;}
-        .global-aurora-bg div { flex: 1; opacity: 0.2; animation: pulseGlow 6s infinite alternate; } 
-        .stripe-yellow { background: #eab308; animation-delay: -2s !important;}
-        .stripe-blue { background: #2563eb; } 
-        .stripe-tan { background: #d97706; animation-delay: -4s !important;}
-        @keyframes pulseGlow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
-
-        /* Hạt Nano */
-        #nano-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.8; mix-blend-mode: overlay; }
+        /* Aurora + Particles: đã tắt */
+        .global-aurora-bg { display: none !important; }
+        #nano-particles { display: none !important; }
 
         /* =========================================
            THANH NAVBAR
@@ -299,37 +292,7 @@
             new google.translate.TranslateElement({ pageLanguage: 'vi', autoDisplay: false }, 'google_translate_element');
         }
 
-        // Hạt Nano Canvas
-        const canvas = document.getElementById('nano-particles');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let particlesArray = [];
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5; this.speedY = Math.random() * -0.5 - 0.1; 
-                this.opacity = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.y += this.speedY;
-                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
-        }
-        function init() {
-            particlesArray = []; let num = (canvas.width * canvas.height) / 10000; 
-            for (let i = 0; i < num; i++) particlesArray.push(new Particle());
-        }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particlesArray.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        init(); animate();
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
+        // Nano particles: đã tắt
 
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

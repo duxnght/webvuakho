@@ -6,22 +6,25 @@
 {% block extra_css %}
 <style>
     html, body, #pageWrapper, main {
-        background-color: #f8fafc !important;
+        background-color: #DCE7F2 !important;
         background-image: none !important;
     }
 
     .blog-page-solid-wrapper {
         width: 100%;
         min-height: 100vh;
-        background-color: #f8fafc !important;
+        background-color: #DCE7F2 !important;
         position: relative;
-        z-index: 10; 
-        padding-top: 100px; 
+        z-index: 10;
+        padding-top: 100px;
     }
-    
+
+    /* =========================================
+       PHẦN BÀI VIẾT
+    ========================================= */
     .blog-header-section {
         text-align: center;
-        padding: 60px 20px 40px 20px; 
+        padding: 60px 20px 40px 20px;
     }
     .blog-subtitle {
         color: #d97706;
@@ -43,7 +46,7 @@
     .blog-grid-container {
         max-width: 1250px;
         margin: 0 auto;
-        padding: 0 5% 100px 5%;
+        padding: 0 5% 60px 5%;
     }
     .blog-grid {
         display: grid;
@@ -52,7 +55,7 @@
     }
 
     .blog-card {
-        background: #ffffff !important; 
+        background: #ffffff !important;
         border-radius: 18px;
         overflow: hidden;
         box-shadow: 0 10px 30px rgba(0,0,0,0.06);
@@ -68,16 +71,13 @@
         border-color: #cbd5e1;
     }
 
-    /* ĐÃ SỬA: Ép cứng khung ảnh tỉ lệ 4:3 */
     .card-img-wrapper {
         position: relative;
         width: 100%;
-        aspect-ratio: 4 / 3; 
+        aspect-ratio: 4 / 3;
         overflow: hidden;
         background: #cbd5e1;
     }
-    
-    /* ĐÃ SỬA: Cắt ảnh vừa khít khung, lấy tâm ảnh */
     .card-img-wrapper img {
         width: 100%;
         height: 100%;
@@ -93,7 +93,7 @@
         position: absolute;
         top: 15px;
         left: 15px;
-        background: #d97706; 
+        background: #d97706;
         color: white;
         padding: 6px 14px;
         border-radius: 8px;
@@ -111,7 +111,7 @@
         flex-direction: column;
         background: #ffffff !important;
     }
-    
+
     .card-meta {
         color: #64748b;
         font-size: 14px;
@@ -122,7 +122,7 @@
         align-items: center;
         gap: 8px;
     }
-    
+
     .card-title-text {
         color: #0f172a;
         font-size: 21px;
@@ -161,22 +161,193 @@
     }
     .empty-state h3 { color: #0f172a; font-weight: 800; margin-top: 20px; margin-bottom: 10px;}
 
+    /* =========================================
+       PHẦN VIDEO PHÓNG SỰ DỰ ÁN
+    ========================================= */
+    .video-section-wrapper {
+        background: #DCE7F2;
+        padding: 20px 8% 60px 8%;
+        position: relative;
+        z-index: 10;
+    }
+    .video-section-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
+
+    .video-section-header {
+        text-align: center;
+        padding-bottom: 30px;
+    }
+    .video-section-header h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 900;
+        color: #0f172a;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+        margin-bottom: 10px;
+    }
+    .video-section-header p {
+        font-size: 15px;
+        color: #475569;
+        font-weight: 600;
+        font-family: var(--font-secondary);
+    }
+
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        width: 100%;
+    }
+
+    .video-card {
+        position: relative;
+        background: #1e293b;
+        border-radius: 18px;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .video-card.upcoming {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        cursor: default;
+    }
+    .upcoming-text {
+        font-size: clamp(14px, 1.5vw, 18px);
+        font-weight: 800;
+        color: #334155;
+        letter-spacing: 0.5px;
+    }
+
+    .video-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 5px 14px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 800;
+        color: white;
+        z-index: 10;
+        letter-spacing: 0.3px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .badge-m75 { background: #2563eb; }
+    .badge-nano { background: #eab308; color: #0f172a; }
+    .badge-jumbo { background: #ea580c; }
+
+    .yt-thumb {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .video-card:not(.upcoming):hover .yt-thumb { transform: scale(1.08); }
+
+    .play-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: rgba(220, 38, 38, 0.9);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        transition: 0.3s;
+        z-index: 2;
+        padding-left: 5px;
+    }
+    .video-card:not(.upcoming):hover .play-overlay {
+        background: #ef4444;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    /* POPUP VIDEO */
+    .video-modal {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.95);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.4s ease;
+        backdrop-filter: blur(10px);
+    }
+    .video-modal.active { opacity: 1; pointer-events: auto; }
+    .video-container {
+        position: relative;
+        width: 90%;
+        max-width: 900px;
+        aspect-ratio: 16/9;
+        background: #000;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        transform: scale(0.9);
+        transition: 0.4s ease;
+    }
+    .video-modal.active .video-container { transform: scale(1); }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .close-modal {
+        position: absolute;
+        top: 30px; right: 40px;
+        color: white;
+        font-size: 45px;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 10000;
+        line-height: 1;
+    }
+    .close-modal:hover { color: var(--shk-blue); transform: scale(1.1); }
+
     .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 1024px) {
         .blog-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+        .video-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     }
     @media (max-width: 768px) {
         .blog-page-solid-wrapper { padding-top: 80px; }
         .blog-header-section { padding-top: 40px; padding-bottom: 30px; }
         .blog-grid { grid-template-columns: 1fr; gap: 20px; }
+        .video-section-wrapper { padding: 20px 0 40px 0; }
+        .video-section-inner > .video-section-header { padding: 0 5% 20px 5%; }
+        .video-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 10px 5% 20px 5%;
+            gap: 15px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .video-grid::-webkit-scrollbar { display: none; }
+        .video-card { flex: 0 0 85%; scroll-snap-align: center; }
+        .close-modal { top: 15px; right: 20px; font-size: 36px; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="blog-page-solid-wrapper">
+
+    <!-- PHẦN BÀI VIẾT -->
     <section class="blog-header-section reveal">
         <div class="blog-subtitle">Tin tức & Sự kiện</div>
         <h1 class="blog-title">Phóng sự Sông Hồng</h1>
@@ -184,7 +355,7 @@
 
     <section class="blog-grid-container">
         <div class="blog-grid">
-            
+
             {% for article in articles %}
             <a href="{% url 'blog_detail' article.duong_dan_alias %}" class="blog-card reveal">
                 <div class="card-img-wrapper">
@@ -197,10 +368,10 @@
                         </div>
                     {% endif %}
                 </div>
-                
+
                 <div class="card-content">
                     <div class="card-meta">
-                        <i class="fa-regular fa-calendar"></i> 
+                        <i class="fa-regular fa-calendar"></i>
                         {{ article.ngay_dang|date:"d/m/Y" }}
                     </div>
                     <h2 class="card-title-text">{{ article.tieu_de }}</h2>
@@ -214,23 +385,113 @@
                 <p>Các tin tức và sự kiện mới nhất sẽ sớm được cập nhật tại đây.</p>
             </div>
             {% endfor %}
-            
+
         </div>
     </section>
+
+    <!-- PHẦN VIDEO PHÓNG SỰ DỰ ÁN -->
+    {% if videos %}
+    <section class="video-section-wrapper reveal">
+        <div class="video-section-inner">
+            <div class="video-section-header">
+                <h2>Video Phóng Sự Dự Án</h2>
+                <p>Bảo chứng chất lượng thực tế từ công trình</p>
+            </div>
+
+            <div class="video-grid">
+                {% for video in videos %}
+                    {% if video.sap_ra_mat %}
+                    <div class="video-card upcoming">
+                        <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                            {{ video.phan_loai }} SERIES
+                        </span>
+                        <span class="upcoming-text">DỰ ÁN SẮP RA MẮT</span>
+                    </div>
+                    {% else %}
+                    <div class="video-card" onclick="openVideoModal('{{ video.link_youtube }}')">
+                        <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                            {{ video.phan_loai }} SERIES
+                        </span>
+                        <div class="yt-thumb" data-url="{{ video.link_youtube }}"></div>
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+</div>
+
+<!-- POPUP VIDEO -->
+<div class="video-modal" id="blogVidModal">
+    <div class="close-modal" onclick="closeVideoModal()">&times;</div>
+    <div class="video-container">
+        <iframe id="blogYtIframe" src="" title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Reveal animation
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { 
-                if(entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('active');
             });
-        }, { threshold: 0.1 }); 
+        }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Load YouTube thumbnails
+        document.querySelectorAll('.yt-thumb[data-url]').forEach(el => {
+            const url = el.getAttribute('data-url');
+            const match = url.match(/(?:youtu\.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]{11})/);
+            if (match) {
+                el.style.backgroundImage = `url('https://img.youtube.com/vi/${match[1]}/hqdefault.jpg')`;
+            } else {
+                el.style.background = '#334155';
+            }
+        });
+    });
+
+    function getYoutubeId(url) {
+        if (!url) return null;
+        const match = url.match(/(?:youtu\.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]{11})/);
+        return match ? match[1] : null;
+    }
+
+    // iOS không cho autoplay — fix error 153
+    const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    function openVideoModal(videoUrl) {
+        const modal = document.getElementById('blogVidModal');
+        const ytId = getYoutubeId(videoUrl);
+        if (!ytId) return;
+
+        const autoplay = _isIOS ? '' : '&autoplay=1';
+
+        // Hiện modal TRƯỚC để iframe có kích thước thực khi load (fix black screen)
+        modal.classList.add('active');
+
+        // Đặt src sau khi modal đã render (fix black screen + iOS error 153)
+        setTimeout(() => {
+            document.getElementById('blogYtIframe').src =
+                `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1${autoplay}`;
+        }, 100);
+    }
+
+    function closeVideoModal() {
+        document.getElementById('blogYtIframe').src = "";
+        document.getElementById('blogVidModal').classList.remove('active');
+    }
+
+    // Đóng modal khi click nền
+    document.getElementById('blogVidModal').addEventListener('click', function(e) {
+        if (e.target === this) closeVideoModal();
     });
 </script>
 {% endblock %}

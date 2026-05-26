@@ -524,28 +524,30 @@
         });
     });
 
+    // iOS không cho autoplay — fix error 153
+    const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
     // 3. Hàm mở Modal phát video thông minh
     function openVideoModal(videoUrl = null) {
         const modal = document.getElementById('vidModal');
-        const iframe = document.getElementById('ytIframe');
-        
-        if (videoUrl) {
-            // Nếu click vào thẻ dự án -> Phát video dự án
-            const ytId = getYoutubeId(videoUrl);
-            iframe.src = ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0` : videoUrl;
-        } else {
-            // Nếu click nút Hero Banner -> Phát video mặc định của Công ty
-            iframe.src = "https://www.youtube.com/embed/N-FLw-piwlc?autoplay=1&rel=0";
-        }
-        
+        const ytId = videoUrl ? getYoutubeId(videoUrl) : 'N-FLw-piwlc';
+        if (!ytId) return;
+
+        const autoplay = _isIOS ? '' : '&autoplay=1';
+
+        // Hiện modal TRƯỚC để iframe có kích thước thực khi load (fix black screen)
         modal.classList.add('active');
+
+        // Đặt src sau khi modal đã render (fix black screen + iOS error 153)
+        setTimeout(() => {
+            document.getElementById('ytIframe').src =
+                `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1${autoplay}`;
+        }, 100);
     }
 
     function closeVideoModal() {
-        const modal = document.getElementById('vidModal');
-        const iframe = document.getElementById('ytIframe');
-        modal.classList.remove('active');
-        setTimeout(() => { iframe.src = ""; }, 400); // Ngắt tiếng ngay lập tức
+        document.getElementById('ytIframe').src = "";
+        document.getElementById('vidModal').classList.remove('active');
     }
 
     /* Form Đăng ký */

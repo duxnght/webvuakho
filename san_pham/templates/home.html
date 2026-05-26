@@ -47,16 +47,15 @@
     .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 15%; height: 70%; width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent); z-index: 10; transition: opacity 0.3s; pointer-events: none; }
     .interactive-container:not(:has(.expanded)) .product-layer:hover::after { opacity: 0; }
     
-    /* Gradient "Tinted Rise" — top có màu nhẹ để tách khỏi nền DCE7F2 */
-    .layer-yellow { background: linear-gradient(180deg, rgba(251,191,36,0.22) 0%, rgba(245,158,11,0.65) 38%, rgba(146,64,14,0.98) 100%); color: #1a0a00; }
-    .layer-blue   { background: linear-gradient(180deg, rgba(99,102,241,0.18) 0%, rgba(37,99,235,0.65) 38%, rgba(15,23,82,0.98) 100%);  color: white; }
-    .layer-tan    { background: linear-gradient(180deg, rgba(251,146,60,0.18) 0%, rgba(234,88,12,0.62) 38%, rgba(120,40,14,0.98) 100%);  color: #1a0a00; }
-    .product-layer:hover { flex: 1.6; z-index: 12; box-shadow: 0 0 80px rgba(0,0,0,0.3); }
+    /* Nền thống nhất DCE7F2 — chữ tối, ảnh sản phẩm nổi bật */
+    .layer-yellow, .layer-blue, .layer-tan { background: #DCE7F2; color: #0f172a; }
+    /* Đường phân cách giữa các panel */
+    .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after { background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.12), transparent); }
+    .product-layer:hover { flex: 1.6; z-index: 12; box-shadow: 0 0 60px rgba(0,0,0,0.12); }
 
     .watermark-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; pointer-events: none; }
-    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); font-size: clamp(100px, 15vw, 250px); font-weight: 900; pointer-events: none; transition: 0.6s; white-space: nowrap; text-shadow: 2px 2px 10px rgba(255,255,255,0.2);}
-    .layer-blue .watermark { color: rgba(255,255,255,0.08); }
-    .layer-yellow .watermark, .layer-tan .watermark { color: rgba(0,0,0,0.06); }
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); font-size: clamp(100px, 15vw, 250px); font-weight: 900; pointer-events: none; transition: 0.6s; white-space: nowrap; }
+    .layer-yellow .watermark, .layer-blue .watermark, .layer-tan .watermark { color: rgba(0,0,0,0.04); text-shadow: none; }
 
     .img-box { position: relative; min-height: 380px; width: 100%; z-index: 2; transition: all 0.4s ease; filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3)); display: flex; justify-content: center; align-items: flex-end; }
     .bag-std { height: auto; max-height: 350px; object-fit: contain; margin-bottom: 20px; } 
@@ -65,20 +64,19 @@
     
     .panel-content { text-align: center; margin-top: 35px; z-index: 3; width: 100%; transition: all 0.3s ease;}
     .interactive-container:not(:has(.expanded)) .product-layer:hover .panel-content { transform: translateY(-10px); }
-    .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid currentColor; margin-bottom: 15px; background: rgba(255,255,255,0.25); backdrop-filter: blur(5px);}
-    /* Badge trên yellow/tan: dùng màu đậm để rõ */
-    .layer-yellow .badge, .layer-tan .badge { border-color: rgba(0,0,0,0.35); color: #1a0a00; background: rgba(255,255,255,0.35); }
-    .layer-blue .badge { border-color: rgba(255,255,255,0.7); color: white; }
-    .panel-content h2 { font-size: 32px; margin-bottom: 10px; line-height: 1.2; font-weight: 800; letter-spacing: -1px; text-shadow: 0 2px 8px rgba(0,0,0,0.18);}
-    .panel-content p { font-size: 15px; font-weight: 600; line-height: 1.5; text-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+    /* Badge: tối, rõ trên nền DCE7F2 */
+    .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid #334155; color: #0f172a; margin-bottom: 15px; background: rgba(255,255,255,0.55); }
+    .panel-content h2 { font-size: 32px; margin-bottom: 10px; line-height: 1.2; font-weight: 800; letter-spacing: -1px; color: #0f172a; text-shadow: none; }
+    .panel-content p { font-size: 15px; font-weight: 600; line-height: 1.5; color: #334155; text-shadow: none; }
     
     /* --- EXPAND EFFECT --- */
     .product-layer.expanded { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; flex-direction: row; justify-content: flex-start; align-items: center; cursor: default; border: none; padding: 0; margin: 0; animation: smoothExpand 0.4s ease forwards; border-radius: 0; }
     @keyframes smoothExpand { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
     
-    .layer-yellow.expanded { background: linear-gradient(180deg, rgba(245,158,11,0.97) 0%, rgba(146,64,14,0.99) 100%); }
-    .layer-blue.expanded   { background: linear-gradient(180deg, rgba(37,99,235,0.97) 0%, rgba(15,23,82,0.99) 100%); }
-    .layer-tan.expanded    { background: linear-gradient(180deg, rgba(234,88,12,0.97) 0%, rgba(120,40,14,0.99) 100%); }
+    /* Expanded: giữ brand color để animation click vẫn ấn tượng */
+    .layer-yellow.expanded { background: linear-gradient(180deg, #f59e0b 0%, #92400e 100%); color: white; }
+    .layer-blue.expanded   { background: linear-gradient(180deg, #2563eb 0%, #0f1752 100%); color: white; }
+    .layer-tan.expanded    { background: linear-gradient(180deg, #ea580c 0%, #78280e 100%); color: white; }
 
     .expanded .img-box { width: 50vw; height: 100vh; min-height: unset; transform: scale(1.1) translateY(0) !important; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.5)); align-items: center; }
     .expanded .bag-jumbo { height: 80%; max-height: unset;}
@@ -95,10 +93,10 @@
     .spec-item b { display: block; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; font-family: var(--font-secondary); }
     .spec-item span { font-size: 19px; font-weight: 800; font-family: var(--font-primary); display: block; margin-top: 5px; line-height: 1.4;}
 
-    /* Expanded: yellow/tan nay có nền đậm hơn → dùng chữ trắng cho dễ đọc */
+    /* Info-overlay (expanded): chữ trắng trên tất cả brand color backgrounds */
     .layer-yellow .info-overlay, .layer-tan .info-overlay { color: white; }
-    .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: 0 4px 12px rgba(0,0,0,0.25); }
-    .layer-yellow .spec-card, .layer-tan .spec-card { background: rgba(255, 255, 255, 0.2); border-color: rgba(255,255,255,0.5); }
+    .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .layer-yellow .spec-card, .layer-tan .spec-card { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
 
     .btn-close { position: absolute; top: 40px; right: 40px; width: 60px; height: 60px; border-radius: 50%; background: white; color: black; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 101; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0; pointer-events: none; }
     .expanded .btn-close { opacity: 1; pointer-events: auto; }

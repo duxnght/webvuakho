@@ -30,33 +30,33 @@
         text-align: left;
     }
     /* Giới hạn text trong nửa trái để không chèn lên bucket */
-    .hero-text { max-width: 520px; z-index: 2; }
+    .hero-text { max-width: 580px; z-index: 2; }
 
-    /* VỮA KHÔ TRỘN SẪN = trắng / CAO CẤP = cam lớn hơn */
-    .main-heading { font-size: clamp(32px, 3.8vw, 55px); line-height: 1.05; letter-spacing: 3px; color: #ffffff; margin-bottom: 6px; font-weight: 700; }
+    /* Cả hai dòng cùng cỡ chữ */
+    .main-heading { font-size: clamp(36px, 5vw, 72px); line-height: 1.05; letter-spacing: 3px; color: #ffffff; margin-bottom: 0; font-weight: 700; }
     .main-heading .text-blue {
         color: #ffffff;
         font-weight: 700;
         letter-spacing: 3px;
         text-shadow: 0 2px 12px rgba(0,0,0,0.7);
         display: block;
-        line-height: 1.05;
+        line-height: 1.1;
+        margin-bottom: 14px; /* khoảng cách giữa 2 dòng */
     }
     .main-heading .text-white-title {
         color: #e76f51;
         font-weight: 900;
         letter-spacing: 4px;
-        font-size: 1.8em;   /* 1.8 × 55px = 99px — CAO CẤP to, nổi bật */
-        line-height: 1.0;   /* không overlap dòng trên */
-        margin-top: 2px;
-        text-shadow: 0 4px 20px rgba(231,111,81,0.3);
+        font-size: 1em;      /* cùng cỡ dòng trên */
+        line-height: 1.1;
+        text-shadow: 0 4px 20px rgba(231,111,81,0.35);
         display: block;
     }
 
     .desc { font-size: clamp(13px, 1.4vw, 15px); color: rgba(255,255,255,0.88); margin-bottom: 28px; font-weight: 400; font-family: var(--font-secondary); line-height: 1.75; text-shadow: 1px 2px 6px rgba(0,0,0,0.85); max-width: 100%; letter-spacing: 0.15px; }
 
     /* Thay đổi kiểu dáng nút bấm thành dạng bo nhộng phẳng giống thiết kế mong muốn */
-    .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-buttons { display: flex; gap: 14px; flex-wrap: nowrap; align-items: center; }
     .btn-3d { border-radius: 50px; font-weight: 700; font-size: 13.5px; letter-spacing: 1.5px; padding: 14px 30px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 9px; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; }
     .btn-white { background: #ffffff; color: #0f172a; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
     .btn-white:hover { background: #f8fafc; transform: translateY(-2px); }

@@ -225,10 +225,11 @@
     @media (max-width: 768px) {
         header .logo img { height: 70px !important; }
         .hero {
-            aspect-ratio: 4 / 5; /* Điều chỉnh tỉ lệ dọc phù hợp cho ảnh banner trên di động */
-            min-height: unset;
+            aspect-ratio: unset;
+            min-height: 100vh;
+            min-height: 100dvh; /* dynamic viewport height - tốt hơn trên mobile Chrome */
             padding: 40px 6%;
-            background: url('{% static "home/anhbia-mobile.webp" %}') top center / 100% auto no-repeat;
+            background: url('{% static "home/anhbia-mobile.webp" %}') top center / cover no-repeat;
             justify-content: center;
             flex-shrink: 0;
         }

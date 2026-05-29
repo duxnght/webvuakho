@@ -128,30 +128,32 @@
     .expanded .panel-content { opacity: 0; transform: translateY(50px); pointer-events: none; position: absolute; }
     .expanded .watermark { transform: translate(-50%, -50%) rotate(0deg); font-size: 35vw; opacity: 0.05; left: 50%; top: 50%; }
 
-    .info-overlay { position: absolute; right: 8%; width: 45vw; display: flex; flex-direction: column; justify-content: center; text-align: left; color: white; z-index: 10; opacity: 0; transform: translateX(60px); transition: all 0.5s ease 0.4s; pointer-events: none; }
+    .info-overlay { position: absolute; right: 8%; width: 45vw; display: flex; flex-direction: column; justify-content: center; text-align: left; color: #0f172a; z-index: 10; opacity: 0; transform: translateX(60px); transition: all 0.5s ease 0.4s; pointer-events: none; }
     .expanded .info-overlay { opacity: 1; transform: translateX(0); pointer-events: auto; }
-    .series-tag { font-weight: 600; letter-spacing: 1px; font-size: 14px; opacity: 0.9; margin-bottom: 8px; display: block; font-family: var(--font-secondary); text-transform: none; }
-    .info-overlay h2 { font-size: clamp(26px, 3.5vw, 45px); line-height: 1.35; margin-bottom: 35px; text-shadow: none; letter-spacing: -1px; white-space: nowrap; color: #0f172a; }
+    .series-tag { font-weight: 600; letter-spacing: 0.3px; font-size: 15px; opacity: 1; margin-bottom: 10px; display: block; font-family: var(--font-secondary); text-transform: none; color: #334155; }
+    .info-overlay h2 { font-size: clamp(26px, 3.5vw, 45px); line-height: 1.2; margin-bottom: 28px; text-shadow: none; letter-spacing: 1px; white-space: nowrap; color: #0f172a; }
 
-    .spec-card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 32px 36px; border: 1px solid rgba(255, 255, 255, 0.5); display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
-    .spec-item b { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; color: #64748b; font-family: var(--font-secondary); font-weight: 700; }
-    .spec-item span { font-size: 15px; font-weight: 500; font-family: var(--font-secondary); display: block; line-height: 1.65; color: #0f172a; }
-    .spec-item div { font-size: 15px !important; font-weight: 500 !important; font-family: var(--font-secondary) !important; line-height: 1.7 !important; margin-top: 6px !important; color: #0f172a; }
+    /* Spec-card mặc định (trước expand) */
+    .spec-card { background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 32px 36px; border: 1px solid rgba(255,255,255,0.5); display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+    .spec-item b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px; color: #334155; font-family: var(--font-secondary); font-weight: 700; }
+    .spec-item span { font-size: 15.5px; font-weight: 500; font-family: var(--font-secondary); display: block; line-height: 1.7; color: #0f172a; }
+    .spec-item div { font-size: 15.5px !important; font-weight: 500 !important; font-family: var(--font-secondary) !important; line-height: 1.75 !important; margin-top: 6px !important; color: #0f172a; }
 
     /* Tất cả expanded dùng nền sáng → chữ tối */
     .layer-yellow .info-overlay, .layer-tan .info-overlay { color: #0f172a; }
     .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: none; }
     .layer-yellow .spec-card, .layer-tan .spec-card { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
-    /* Màu nền spec-card khi expanded — không hiệu ứng */
-    .layer-blue.expanded   .spec-card { background: #D6E8F7; }
-    .layer-yellow.expanded .spec-card { background: #F5E8C8; }
-    .layer-tan.expanded    .spec-card { background: #E8DDCA; }
+    /* Spec-card khi expanded: nền màu + viền + đổ bóng nhẹ để tách khỏi nền tổng */
+    .layer-blue.expanded   .spec-card { background: #ffffff; border: 1.5px solid #b8d4ee; box-shadow: 0 4px 20px rgba(27,95,168,0.1); }
+    .layer-yellow.expanded .spec-card { background: #ffffff; border: 1.5px solid #e0c99a; box-shadow: 0 4px 20px rgba(200,125,18,0.1); }
+    .layer-tan.expanded    .spec-card { background: #ffffff; border: 1.5px solid #cdb99a; box-shadow: 0 4px 20px rgba(139,106,62,0.1); }
     .layer-blue.expanded   .spec-card,
     .layer-yellow.expanded .spec-card,
-    .layer-tan.expanded    .spec-card { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; border: none; color: #0f172a; }
-    .layer-blue.expanded   .spec-card b,
-    .layer-yellow.expanded .spec-card b,
-    .layer-tan.expanded    .spec-card b { opacity: 1; color: #475569; }
+    .layer-tan.expanded    .spec-card { backdrop-filter: none; -webkit-backdrop-filter: none; color: #0f172a; }
+    /* Label màu accent theo từng sản phẩm */
+    .layer-blue.expanded   .spec-card b { color: #1b5fa8; }
+    .layer-yellow.expanded .spec-card b { color: #a06010; }
+    .layer-tan.expanded    .spec-card b { color: #7a5530; }
 
     .btn-close { position: absolute; top: 40px; right: 40px; width: 60px; height: 60px; border-radius: 50%; background: white; color: black; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 101; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0; pointer-events: none; }
     .expanded .btn-close { opacity: 1; pointer-events: auto; }

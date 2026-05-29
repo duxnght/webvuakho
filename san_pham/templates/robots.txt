@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dang-ky-tu-van/
+Disallow: /_deploy/
+
+Sitemap: https://vuakhotronsanshk.com.vn/sitemap.xml

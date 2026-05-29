@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'cloudinary',
     'ckeditor',
     'san_pham',
@@ -120,6 +121,11 @@ if os.environ.get('CLOUDINARY_CLOUD_NAME'):
         'default': {'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage'},
         'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
     }
+else:
+    STORAGES = {
+        'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+        'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
+    }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -134,3 +140,18 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+
+# ==============================================================================
+# HTTPS SECURITY HEADERS — chỉ kích hoạt khi DEBUG=False (production)
+# Các giá trị này được đọc SAU khi local_settings.py đã ghi đè DEBUG,
+# nên trên máy local (DEBUG=True) những dòng này sẽ không chạy.
+# ==============================================================================
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 31536000          # 1 năm
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True            # Session cookie chỉ qua HTTPS
+    CSRF_COOKIE_SECURE = True               # CSRF cookie chỉ qua HTTPS

@@ -1,7 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ article.seo_title|default:article.tieu_de }}{% endblock %}
+{% block title %}{{ article.seo_title|default:article.tieu_de }} — SHK Mortar{% endblock %}
+
+{% block meta_seo %}
+<meta name="description" content="{{ article.seo_description|default:article.mo_ta_ngan }}">
+<meta property="og:title" content="{{ article.seo_title|default:article.tieu_de }}">
+<meta property="og:description" content="{{ article.seo_description|default:article.mo_ta_ngan }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://vuakhotronsanshk.com.vn/blog/{{ article.duong_dan_alias }}/">
+<meta property="og:site_name" content="SHK Mortar — Vữa Khô Sông Hồng">
+<meta property="og:locale" content="vi_VN">
+{% if article.anh_dai_dien %}<meta property="og:image" content="{{ article.anh_dai_dien.url }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://vuakhotronsanshk.com.vn/blog/{{ article.duong_dan_alias }}/">
+{% endblock %}
 
 {% block nav_class %}nav-solid-bg{% endblock %}
 

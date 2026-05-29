@@ -1,7 +1,39 @@
+# =========================
+# VUA KHO TRON SAN SHK
+# SEO + AI Crawlers
+# =========================
+
+# Cho phép toàn bộ bot đọc website
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /dang-ky-tu-van/
-Disallow: /_deploy/
 
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+
+# Claude AI
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Cốc Cốc
+User-agent: CoccocBot
+Allow: /
+
+# Chặn thư mục riêng tư nếu có
+Disallow: /admin/
+Disallow: /private/
+
+# Khai báo sitemap
 Sitemap: https://vuakhotronsanshk.com.vn/sitemap.xml

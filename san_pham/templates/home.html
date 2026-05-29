@@ -69,10 +69,13 @@
     .bag-jumbo { height: auto; max-height: 375px; object-fit: contain; margin-bottom: -10px; }
     .interactive-container:not(:has(.expanded)) .product-layer:hover .img-box { transform: scale(1.18) translateY(-25px); filter: drop-shadow(0 40px 45px rgba(0,0,0,0.5));}
     
-    .panel-content { text-align: center; margin-top: 25px; z-index: 3; width: 100%; transition: all 0.3s ease; border-radius: 18px; padding: 22px 18px 20px; }
+    .panel-content { text-align: center; margin-top: 25px; z-index: 3; width: 100%; transition: all 0.3s ease; border-radius: 18px; padding: 20px 18px 22px; min-height: 160px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .layer-blue   .panel-content { background: #D6E8F7; }
     .layer-yellow .panel-content { background: #F5E8C8; }
     .layer-tan    .panel-content { background: #E8DDCA; }
+    .panel-content .badge { margin-bottom: 4px; }
+    .panel-content h2 { margin: 0; font-size: 30px; line-height: 1.1; }
+    .panel-content p { margin: 4px 0 0; font-size: 14px; color: #475569; font-family: var(--font-secondary); font-weight: 500; line-height: 1.5; }
     .interactive-container:not(:has(.expanded)) .product-layer:hover .panel-content { transform: translateY(-10px); }
     /* Badge: tối, rõ trên nền DCE7F2 */
     .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid #334155; color: #0f172a; margin-bottom: 15px; background: rgba(255,255,255,0.55); }
@@ -283,7 +286,7 @@
         <div class="img-box"><img src="{% static 'home/vuakho7.5bao50.png' %}" alt="Vữa khô trộn sẵn" class="bag-std"></div>
         <div class="panel-content">
             <span class="badge">DÒNG TIÊU CHUẨN</span>
-            <h2>VỮA KHÔ<br><span style="color:#1b5fa8;">TRỘN SẴN</span></h2>
+            <h2>VỮA KHÔ<br><span style="color:#1b5fa8;">TRỘN SẴN M7.5</span></h2>
             <p>Công thức chuẩn cho xây, trát, cán nền</p>
         </div>
         <div class="info-overlay">
@@ -302,37 +305,15 @@
         </div>
     </div>
 
-    <!-- CỘT GIỮA: Vữa trát tường NanoFlex -->
-    <div class="product-layer layer-yellow" onclick="expand(this)">
-        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
-        <div class="watermark-wrapper"><div class="watermark">NANO</div></div>
-        <div class="img-box"><img src="{% static 'home/nanoflex-bao-50kg.png' %}" alt="Vữa trát tường NanoFlex" class="bag-std"></div>
-        <div class="panel-content">
-            <span class="badge" style="border-color: currentColor;">DÒNG CAO CẤP</span>
-            <h2>VỮA <span style="color:#c87d12;">TRÁT TƯỜNG</span><br>NANOFLEX</h2>
-            <p>Bổ sung phụ gia chống nứt, siêu bám dính</p>
-        </div>
-        <div class="info-overlay">
-            <span class="series-tag">TECH-SERIES</span>
-            <h2>VỮA TRÁT TƯỜNG NANOFLEX</h2>
-            <div class="spec-card">
-                <div class="spec-item" style="grid-column: 1 / -1;"><b>Thành phần</b><span>Cát sấy khô, xi măng Portland, tro bay và phụ gia chuyên dụng</span></div>
-                <div class="spec-item" style="grid-column: 1 / -1;"><b>Ứng dụng</b><span>Trát tường công trình trong nhà, ngoài trời</span></div>
-                <div class="spec-item"><b>Cường độ nén</b><span>>=7.5 MPa</span></div>
-                <div class="spec-item"><b>Định mức sử dụng</b><span>∼20kg/m² mỗi lớp trát 10mm</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- CỘT PHẢI: Vữa khô bao Jumbo -->
+    <!-- CỘT GIỮA: Vữa khô bao Jumbo (Dòng công trình) -->
     <div class="product-layer layer-tan" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark-wrapper"><div class="watermark">JUMBO</div></div>
         <div class="img-box"><img src="{% static 'home/vuakho7.5Jumbo.png' %}" alt="Vữa khô bao Jumbo" class="bag-jumbo"></div>
         <div class="panel-content">
-            <span class="badge">DÒNG DỰ ÁN</span>
+            <span class="badge">DÒNG CÔNG TRÌNH</span>
             <h2>VỮA KHÔ<br><span style="color:#8b6a3e;">BAO JUMBO</span></h2>
-            <p>Tối ưu giá cả cho công trình lớn</p>
+            <p>Đa dạng Mác, tối ưu giá cả</p>
         </div>
         <div class="info-overlay">
             <span class="series-tag">PRO-SERIES</span>
@@ -346,6 +327,28 @@
                         • Xây tường: 350-370kg/m³<br>• Trát tường: 20-22kg/m²/cm<br>• Cán nền: 30-35kg/m²/1.2-1.5 cm
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CỘT PHẢI: Vữa trát tường NanoFlex (Dòng cao cấp) -->
+    <div class="product-layer layer-yellow" onclick="expand(this)">
+        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="watermark-wrapper"><div class="watermark">NANO</div></div>
+        <div class="img-box"><img src="{% static 'home/nanoflex-bao-50kg.png' %}" alt="Vữa trát tường NanoFlex" class="bag-std"></div>
+        <div class="panel-content">
+            <span class="badge" style="border-color: currentColor;">DÒNG CAO CẤP</span>
+            <h2>VỮA <span style="color:#c87d12;">TRÁT TƯỜNG</span><br>NANOFLEX</h2>
+            <p>Thêm phụ gia, siêu bám dính, siêu giữ nước</p>
+        </div>
+        <div class="info-overlay">
+            <span class="series-tag">TECH-SERIES</span>
+            <h2>VỮA TRÁT TƯỜNG NANOFLEX</h2>
+            <div class="spec-card">
+                <div class="spec-item" style="grid-column: 1 / -1;"><b>Thành phần</b><span>Cát sấy khô, xi măng Portland, tro bay và phụ gia chuyên dụng</span></div>
+                <div class="spec-item" style="grid-column: 1 / -1;"><b>Ứng dụng</b><span>Trát tường công trình trong nhà, ngoài trời</span></div>
+                <div class="spec-item"><b>Cường độ nén</b><span>≥ 7.5 MPa</span></div>
+                <div class="spec-item"><b>Định mức sử dụng</b><span>∼20kg/m² mỗi lớp trát 10mm</span></div>
             </div>
         </div>
     </div>

@@ -118,9 +118,9 @@
     @keyframes smoothExpand { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
     
     /* Expanded: giữ brand color để animation click vẫn ấn tượng */
-    .layer-yellow.expanded { background: linear-gradient(180deg, #f59e0b 0%, #92400e 100%); color: white; }
-    .layer-blue.expanded   { background: linear-gradient(180deg, #2563eb 0%, #0f1752 100%); color: white; }
-    .layer-tan.expanded    { background: linear-gradient(180deg, #ea580c 0%, #78280e 100%); color: white; }
+    .layer-blue.expanded   { background: #D6E8F7; color: #0f172a; }
+    .layer-yellow.expanded { background: #F5E8C8; color: #0f172a; }
+    .layer-tan.expanded    { background: #E8DDCA; color: #0f172a; }
 
     .expanded .img-box { width: 50vw; height: 100vh; min-height: unset; transform: scale(1.1) translateY(0) !important; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.5)); align-items: center; }
     .expanded .bag-jumbo { height: 80%; max-height: unset;}
@@ -131,16 +131,16 @@
     .info-overlay { position: absolute; right: 8%; width: 45vw; display: flex; flex-direction: column; justify-content: center; text-align: left; color: white; z-index: 10; opacity: 0; transform: translateX(60px); transition: all 0.5s ease 0.4s; pointer-events: none; }
     .expanded .info-overlay { opacity: 1; transform: translateX(0); pointer-events: auto; }
     .series-tag { font-weight: 600; letter-spacing: 1px; font-size: 14px; opacity: 0.9; margin-bottom: 8px; display: block; font-family: var(--font-secondary); text-transform: none; }
-    .info-overlay h2 { font-size: clamp(26px, 3.5vw, 45px); line-height: 1.35; margin-bottom: 35px; text-shadow: 0 10px 20px rgba(0,0,0,0.2); letter-spacing: -1px; white-space: nowrap; }
+    .info-overlay h2 { font-size: clamp(26px, 3.5vw, 45px); line-height: 1.35; margin-bottom: 35px; text-shadow: none; letter-spacing: -1px; white-space: nowrap; color: #0f172a; }
 
     .spec-card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 32px 36px; border: 1px solid rgba(255, 255, 255, 0.5); display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
     .spec-item b { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; color: #64748b; font-family: var(--font-secondary); font-weight: 700; }
     .spec-item span { font-size: 15px; font-weight: 500; font-family: var(--font-secondary); display: block; line-height: 1.65; color: #0f172a; }
     .spec-item div { font-size: 15px !important; font-weight: 500 !important; font-family: var(--font-secondary) !important; line-height: 1.7 !important; margin-top: 6px !important; color: #0f172a; }
 
-    /* Info-overlay (expanded): chữ trắng trên tất cả brand color backgrounds */
-    .layer-yellow .info-overlay, .layer-tan .info-overlay { color: white; }
-    .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    /* Tất cả expanded dùng nền sáng → chữ tối */
+    .layer-yellow .info-overlay, .layer-tan .info-overlay { color: #0f172a; }
+    .layer-yellow .info-overlay h2, .layer-tan .info-overlay h2 { text-shadow: none; }
     .layer-yellow .spec-card, .layer-tan .spec-card { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
     /* Màu nền spec-card khi expanded — không hiệu ứng */
     .layer-blue.expanded   .spec-card { background: #D6E8F7; }
@@ -157,8 +157,8 @@
     .expanded .btn-close { opacity: 1; pointer-events: auto; }
     .btn-close:hover { transform: scale(1.1); background: var(--text-dark); color: white;}
 
-    .nav-btn { position: fixed; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none; transition: 0.3s; border: 1px solid rgba(255,255,255,0.5); }
-    .nav-btn:hover { background: white; color: var(--text-dark); transform: translateY(-50%) scale(1.1);}
+    .nav-btn { position: fixed; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); color: #0f172a; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none; transition: 0.3s; border: 1px solid rgba(0,0,0,0.12); }
+    .nav-btn:hover { background: rgba(0,0,0,0.18); color: #0f172a; transform: translateY(-50%) scale(1.1);}
     .prev-btn { left: 30px; } .next-btn { right: 30px; }
     body.is-expanded .nav-btn { opacity: 1; pointer-events: auto; }
 

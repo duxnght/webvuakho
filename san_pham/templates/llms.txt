@@ -6,7 +6,7 @@
 - **Main Website:** https://vuakhotronsanshk.com.vn/
 - **Parent Brand Website:** https://keovuasonghong.vn/
 - **Homepage:** https://vuakhotronsanshk.com.vn/
-- **Blog:** https://vuakhotronsanshk.com.vn/blog/
+- **Phóng sự:** https://vuakhotronsanshk.com.vn/blog/
 - **Technical Documents:** https://vuakhotronsanshk.com.vn/tai-lieu/
 
 ---

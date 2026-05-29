@@ -17,7 +17,7 @@
     <link rel="canonical" href="https://vuakhotronsanshk.com.vn/">
     {% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -28,8 +28,8 @@
             --text-dark: #0f172a;      
             --text-gray: #475569;      
             --transition-main: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            --font-primary: 'Be Vietnam Pro', sans-serif;
-            --font-secondary: 'Inter', sans-serif;
+            --font-primary: 'Barlow Condensed', sans-serif;
+            --font-secondary: 'Be Vietnam Pro', sans-serif;
         }
 
         /* Reset & Base */
@@ -53,7 +53,7 @@
         /* =========================================
            THANH NAVBAR
            ========================================= */
-        .top-nav-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 85px; z-index: 2000; padding: 0 8%; display: flex; align-items: center; transition: var(--transition-main); overflow: visible; }
+        .top-nav-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 68px; z-index: 2000; padding: 0 8%; display: flex; align-items: center; transition: var(--transition-main); overflow: visible; }
         header { width: 100%; display: flex; justify-content: space-between; align-items: center; background: transparent; overflow: visible; }
         .logo img { height: 100px; object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35)); transition: 0.3s;}
         
@@ -137,7 +137,7 @@
         @media (max-width: 992px) {
             nav { display: none; }
             .mobile-menu-btn { display: block; }
-            .top-nav-wrapper { height: 75px; padding: 0 5%; }
+            .top-nav-wrapper { height: 62px; padding: 0 5%; }
             .logo img { height: 70px; }
         }
 
@@ -174,7 +174,7 @@
         <i class="fas fa-times close-drawer" id="closeDrawer"></i>
         <div class="mobile-nav-links">
             <a href="{% url 'home_page' %}">Trang chủ</a>
-            <a href="{% url 'blog_page' %}">Blog</a>
+            <a href="{% url 'blog_page' %}">Phóng Sự</a>
             <a href="{% url 'tai_lieu_page' %}">Tài Liệu</a>
         </div>
         <div class="lang-switch" style="margin-top: auto; justify-content: center;">
@@ -194,7 +194,7 @@
                 
                 <nav>
                     <a href="{% url 'home_page' %}">Trang chủ</a>
-                    <a href="{% url 'blog_page' %}">Blog</a>
+                    <a href="{% url 'blog_page' %}">Phóng Sự</a>
                     <a href="{% url 'tai_lieu_page' %}">Tài Liệu</a>
                 </nav>
                 

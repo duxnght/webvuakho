@@ -8,7 +8,7 @@
     #pageWrapper { width: 100%; height: 100vh; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; position: relative; z-index: 2; }
     .snap-section { width: 100%; position: relative; display: flex; flex-direction: column; overflow: visible; }
     
-    .hero { min-height: 100vh; padding-top: 80px; }
+    .hero { min-height: 100vh; padding-top: 68px; }
     #san-pham { min-height: 100vh; padding-top: 0; margin-top: -1px; }
 
     header .logo img { filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));}
@@ -47,8 +47,10 @@
     .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 15%; height: 70%; width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent); z-index: 10; transition: opacity 0.3s; pointer-events: none; }
     .interactive-container:not(:has(.expanded)) .product-layer:hover::after { opacity: 0; }
     
-    /* Nền thống nhất DCE7F2 — chữ tối, ảnh sản phẩm nổi bật */
-    .layer-yellow, .layer-blue, .layer-tan { background: #DCE7F2; color: #0f172a; }
+    /* Màu nền riêng cho từng panel */
+    .layer-blue   { background: #EBF4FF; color: #0f172a; }
+    .layer-yellow { background: #FDF4E3; color: #0f172a; }
+    .layer-tan    { background: #F5E8C8; color: #0f172a; }
     /* Đường phân cách giữa các panel */
     .interactive-container:not(:has(.expanded)) .product-layer:not(:last-child)::after { background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.12), transparent); }
     .product-layer:hover { flex: 1.6; z-index: 12; box-shadow: 0 0 60px rgba(0,0,0,0.12); }
@@ -58,11 +60,14 @@
     .layer-yellow .watermark, .layer-blue .watermark, .layer-tan .watermark { color: rgba(0,0,0,0.04); text-shadow: none; }
 
     .img-box { position: relative; min-height: 380px; width: 100%; z-index: 2; transition: all 0.4s ease; filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3)); display: flex; justify-content: center; align-items: flex-end; }
-    .bag-std { height: auto; max-height: 350px; object-fit: contain; margin-bottom: 20px; } 
-    .bag-jumbo { height: auto; max-height: 420px; object-fit: contain; margin-bottom: -10px;} 
+    .bag-std { height: auto; max-height: 330px; object-fit: contain; margin-bottom: 20px; }
+    .bag-jumbo { height: auto; max-height: 375px; object-fit: contain; margin-bottom: -10px; }
     .interactive-container:not(:has(.expanded)) .product-layer:hover .img-box { transform: scale(1.18) translateY(-25px); filter: drop-shadow(0 40px 45px rgba(0,0,0,0.5));}
     
-    .panel-content { text-align: center; margin-top: 35px; z-index: 3; width: 100%; transition: all 0.3s ease;}
+    .panel-content { text-align: center; margin-top: 25px; z-index: 3; width: 100%; transition: all 0.3s ease; border-radius: 18px; padding: 22px 18px 20px; }
+    .layer-blue   .panel-content { background: #D6E8F7; }
+    .layer-yellow .panel-content { background: #F5E8C8; }
+    .layer-tan    .panel-content { background: #E8DDCA; }
     .interactive-container:not(:has(.expanded)) .product-layer:hover .panel-content { transform: translateY(-10px); }
     /* Badge: tối, rõ trên nền DCE7F2 */
     .badge { display: inline-block; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 2px solid #334155; color: #0f172a; margin-bottom: 15px; background: rgba(255,255,255,0.55); }
@@ -266,34 +271,14 @@
 </section>
 
 <section class="snap-section interactive-container" id="san-pham">
-    <div class="product-layer layer-yellow" onclick="expand(this)">
-        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
-        <div class="watermark-wrapper"><div class="watermark">NANO</div></div>
-        <div class="img-box"><img src="{% static 'home/nanoflex-bao-50kg.png' %}" alt="Nano" class="bag-std"></div>
-        <div class="panel-content">
-            <span class="badge" style="border-color: currentColor;">DÒNG CAO CẤP</span>
-            <h2>VỮA TRÁT TƯỜNG<br>NANOFLEX</h2>
-            <p>Bổ sung phụ gia chống nứt, siêu bám dính</p>
-        </div>
-        <div class="info-overlay">
-            <span class="series-tag">TECH-SERIES</span>
-            <h2>VỮA TRÁT TƯỜNG NANOFLEX</h2>
-            <div class="spec-card">
-                <div class="spec-item" style="grid-column: 1 / -1;"><b>Thành phần</b><span>Cát sấy khô, xi măng Portland, tro bay và phụ gia chuyên dụng</span></div>
-                <div class="spec-item" style="grid-column: 1 / -1;"><b>Ứng dụng</b><span>Trát tường công trình trong nhà, ngoài trời</span></div>
-                <div class="spec-item"><b>Cường độ nén</b><span>>=7.5 MPa</span></div>
-                <div class="spec-item"><b>Định mức sử dụng</b><span>∼20kg/ m² cho mỗi lớp trát 10mm</span></div>
-            </div>
-        </div>
-    </div>
-    
+    <!-- CỘT TRÁI: Vữa khô trộn sẵn (tiêu chuẩn) -->
     <div class="product-layer layer-blue" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark-wrapper"><div class="watermark">SHV01</div></div>
-        <div class="img-box"><img src="{% static 'home/vuakho7.5bao50.png' %}" alt="M7.5" class="bag-std"></div>
+        <div class="img-box"><img src="{% static 'home/vuakho7.5bao50.png' %}" alt="Vữa khô trộn sẵn" class="bag-std"></div>
         <div class="panel-content">
             <span class="badge">DÒNG TIÊU CHUẨN</span>
-            <h2>VỮA KHÔ<br>TRỘN SẴN</h2>
+            <h2>VỮA KHÔ<br><span style="color:#1b5fa8;">TRỘN SẴN</span></h2>
             <p>Công thức chuẩn cho xây, trát, cán nền</p>
         </div>
         <div class="info-overlay">
@@ -311,14 +296,37 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- CỘT GIỮA: Vữa trát tường NanoFlex -->
+    <div class="product-layer layer-yellow" onclick="expand(this)">
+        <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="watermark-wrapper"><div class="watermark">NANO</div></div>
+        <div class="img-box"><img src="{% static 'home/nanoflex-bao-50kg.png' %}" alt="Vữa trát tường NanoFlex" class="bag-std"></div>
+        <div class="panel-content">
+            <span class="badge" style="border-color: currentColor;">DÒNG CAO CẤP</span>
+            <h2>VỮA <span style="color:#c87d12;">TRÁT TƯỜNG</span><br>NANOFLEX</h2>
+            <p>Bổ sung phụ gia chống nứt, siêu bám dính</p>
+        </div>
+        <div class="info-overlay">
+            <span class="series-tag">TECH-SERIES</span>
+            <h2>VỮA TRÁT TƯỜNG NANOFLEX</h2>
+            <div class="spec-card">
+                <div class="spec-item" style="grid-column: 1 / -1;"><b>Thành phần</b><span>Cát sấy khô, xi măng Portland, tro bay và phụ gia chuyên dụng</span></div>
+                <div class="spec-item" style="grid-column: 1 / -1;"><b>Ứng dụng</b><span>Trát tường công trình trong nhà, ngoài trời</span></div>
+                <div class="spec-item"><b>Cường độ nén</b><span>>=7.5 MPa</span></div>
+                <div class="spec-item"><b>Định mức sử dụng</b><span>∼20kg/m² mỗi lớp trát 10mm</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CỘT PHẢI: Vữa khô bao Jumbo -->
     <div class="product-layer layer-tan" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark-wrapper"><div class="watermark">JUMBO</div></div>
-        <div class="img-box"><img src="{% static 'home/vuakho7.5Jumbo.png' %}" alt="Jumbo" class="bag-jumbo"></div>
+        <div class="img-box"><img src="{% static 'home/vuakho7.5Jumbo.png' %}" alt="Vữa khô bao Jumbo" class="bag-jumbo"></div>
         <div class="panel-content">
             <span class="badge">DÒNG DỰ ÁN</span>
-            <h2>VỮA KHÔ<br>BAO JUMBO</h2>
+            <h2>VỮA KHÔ<br><span style="color:#8b6a3e;">BAO JUMBO</span></h2>
             <p>Tối ưu giá cả cho công trình lớn</p>
         </div>
         <div class="info-overlay">

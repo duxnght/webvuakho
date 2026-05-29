@@ -16,23 +16,23 @@
     .reveal.active { opacity: 1; transform: translateY(0); }
     .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
 
-    /* --- 1. HERO BANNER --- */
+    /* --- 1. HERO BANNER (Đã sửa đổi không crop, scale theo bề ngang) --- */
     .hero {
-        background: url('{% static "home/anhbia.webp" %}') center/cover no-repeat;
+        background: url('{% static "home/anhbia.webp" %}') top center / 100% auto no-repeat;
         aspect-ratio: 16 / 9;
         min-height: unset;
         flex-shrink: 0;
-        justify-content: flex-end;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Căn giữa nội dung theo chiều dọc của banner */
         align-items: flex-start;
-        /* padding-bottom lớn hơn để đẩy text lên giữa banner thay vì dồn đáy */
-        padding: 100px 8% 16%;
+        padding: 0 8%;
         text-align: left;
     }
     /* Giới hạn text trong nửa trái để không chèn lên bucket */
     .hero-text { max-width: 520px; z-index: 2; }
 
     /* VỮA KHÔ TRỘN SẪN = trắng / CAO CẤP = cam lớn hơn */
-    /* Font nhỏ hơn để fit trong 520px container */
     .main-heading { font-size: clamp(32px, 3.8vw, 55px); line-height: 1.05; letter-spacing: 3px; color: #ffffff; margin-bottom: 6px; font-weight: 700; }
     .main-heading .text-blue {
         color: #ffffff;
@@ -46,26 +46,27 @@
         color: #e76f51;
         font-weight: 900;
         letter-spacing: 4px;
-        font-size: 1.8em;   /* 1.8 × 55px = 99px — CAO CẪP to, nổi bật */
+        font-size: 1.8em;   /* 1.8 × 55px = 99px — CAO CẤP to, nổi bật */
         line-height: 1.0;   /* không overlap dòng trên */
         margin-top: 2px;
-        text-shadow: 0 4px 20px rgba(231,111,81,0.4);
+        text-shadow: 0 4px 20px rgba(231,111,81,0.3);
         display: block;
     }
 
     .desc { font-size: clamp(13px, 1.4vw, 15px); color: rgba(255,255,255,0.88); margin-bottom: 28px; font-weight: 400; font-family: var(--font-secondary); line-height: 1.75; text-shadow: 1px 2px 6px rgba(0,0,0,0.85); max-width: 100%; letter-spacing: 0.15px; }
 
+    /* Thay đổi kiểu dáng nút bấm thành dạng bo nhộng phẳng giống thiết kế mong muốn */
     .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
-    .btn-3d { border-radius: 8px; font-weight: 700; font-size: 13.5px; letter-spacing: 1.5px; padding: 13px 26px; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; gap: 9px; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; }
-    .btn-white { background: #ffffff; color: #0f172a; box-shadow: 0 4px 0 #cbd5e1, 0 8px 18px rgba(0,0,0,0.3); }
-    .btn-white:hover { background: #f1f5f9; }
-    .btn-white:active { transform: translateY(3px); box-shadow: 0 1px 0 #cbd5e1; }
-    .btn-orange { background: #e76f51; color: white; box-shadow: 0 4px 0 #b85a3f, 0 8px 18px rgba(231,111,81,0.4); }
-    .btn-orange:hover { background: #d9603f; }
-    .btn-orange:active { transform: translateY(3px); box-shadow: 0 1px 0 #b85a3f; }
+    .btn-3d { border-radius: 50px; font-weight: 700; font-size: 13.5px; letter-spacing: 1.5px; padding: 14px 30px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 9px; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; }
+    .btn-white { background: #ffffff; color: #0f172a; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    .btn-white:hover { background: #f8fafc; transform: translateY(-2px); }
+    .btn-white:active { transform: translateY(0); }
+    .btn-orange { background: #e76f51; color: white; box-shadow: 0 4px 15px rgba(231,111,81,0.3); }
+    .btn-orange:hover { background: #f08367; transform: translateY(-2px); }
+    .btn-orange:active { transform: translateY(0); }
     /* giữ btn-blue để không vỡ layout nơi khác */
-    .btn-blue { background: #4da3ff; color: white; box-shadow: 0 4px 0 #2a75cc, 0 8px 18px rgba(0,0,0,0.3); }
-    .btn-blue:active { transform: translateY(3px); box-shadow: 0 1px 0 #2a75cc; }
+    .btn-blue { background: #4da3ff; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    .btn-blue:active { transform: translateY(0); }
 
     /* --- POPUP VIDEO --- */
     .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s ease; backdrop-filter: blur(10px); }
@@ -150,9 +151,7 @@
     .prev-btn { left: 30px; } .next-btn { right: 30px; }
     body.is-expanded .nav-btn { opacity: 1; pointer-events: auto; }
 
-    /* =========================================
-       3. PHÓNG SỰ DỰ ÁN (ĐÃ UPDATE CSS THUMBNAIL)
-    ========================================= */
+    /* --- 3. PHÓNG SỰ DỰ ÁN --- */
     .project-section-wrapper { padding: 60px 8% 20px 8%; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 10; }
     .project-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
     .project-title-block h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: #0f172a; text-transform: uppercase; margin-bottom: 12px; letter-spacing: -0.5px; }
@@ -166,7 +165,6 @@
     .card-badge { position: absolute; top: 15px; left: 15px; padding: 5px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; color: white; z-index: 10; letter-spacing: 0.3px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .badge-m75 { background: #2563eb; } .badge-nano { background: #eab308; color: #0f172a; } .badge-jumbo { background: #ea580c; }
     
-    /* CSS MỚI CHO THUMBNAIL VIDEO */
     .yt-thumbnail-container { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     .project-card:not(.upcoming):hover .yt-thumbnail-container { transform: scale(1.08); }
     .play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(220, 38, 38, 0.9); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s; z-index: 2; padding-left: 5px; }
@@ -176,9 +174,7 @@
     .view-more-link { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; color: #0f172a; text-decoration: none; transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1); font-size: 18px; }
     .view-more-link:hover { color: var(--shk-blue); transform: translateX(6px); }
 
-    /* =========================================
-       4. ĐĂNG KÝ TƯ VẤN & BÁO GIÁ
-    ========================================= */
+    /* --- 4. ĐĂNG KÝ TƯ VẤN & BÁO GIÁ --- */
     #tu-van { position: relative; z-index: 9999; padding: 20px 0 80px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .consult-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 0 5%; }
     .glass-3d-box.horizontal-card { background: #ffffff !important; backdrop-filter: none !important; border-radius: 20px; padding: 50px; box-shadow: 0 20px 45px rgba(0,0,0,0.08) !important; max-width: 1050px; width: 100%; }
@@ -217,9 +213,7 @@
     .btn-submit-pills:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35); }
     .btn-submit-pills:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    /* =======================================
-       RESPONSIVE MOBILE / TABLET 
-       ======================================= */
+    /* --- RESPONSIVE MOBILE / TABLET --- */
     @media (max-width: 1024px) {
         .expanded .img-box { width: 45vw; transform: translateX(-5vw) scale(1) !important;}
         .info-overlay { width: 55vw; right: 4%; }
@@ -231,22 +225,22 @@
     @media (max-width: 768px) {
         header .logo img { height: 70px !important; }
         .hero {
-            aspect-ratio: unset;
-            min-height: 100svh;
-            padding: 0 6% 12%;
-            background: url('{% static "home/anhbia-mobile.webp" %}') center/cover no-repeat;
-            justify-content: flex-end;
+            aspect-ratio: 4 / 5; /* Điều chỉnh tỉ lệ dọc phù hợp cho ảnh banner trên di động */
+            min-height: unset;
+            padding: 40px 6%;
+            background: url('{% static "home/anhbia-mobile.webp" %}') top center / 100% auto no-repeat;
+            justify-content: center;
             flex-shrink: 0;
         }
         .hero-text { text-align: left; display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
         .main-heading { white-space: normal; text-align: left; line-height: 1.0; margin-bottom: 14px; width: 100%; letter-spacing: 2px; }
-        .main-heading .text-blue { font-size: clamp(32px, 9vw, 48px); display: block; margin-bottom: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.7); white-space: nowrap; letter-spacing: 2px; }
-        .main-heading .text-white-title { font-size: clamp(52px, 15vw, 80px); display: block; letter-spacing: 2px; }
+        .main-heading .text-blue { font-size: clamp(24px, 7vw, 36px); display: block; margin-bottom: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.7); white-space: nowrap; letter-spacing: 2px; }
+        .main-heading .text-white-title { font-size: clamp(40px, 12vw, 60px); display: block; letter-spacing: 2px; }
         .mobile-break { display: none; } 
         .sub-heading { font-size: 15px; border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;}
         .desc { font-size: 13.5px; margin-bottom: 24px; text-align: left; max-width: 340px; line-height: 1.65; text-shadow: 1px 2px 6px rgba(0,0,0,0.85); }
         .hero-buttons { flex-direction: row; width: 100%; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .btn-3d { padding: 12px 18px; font-size: 12px; }
+        .btn-3d { padding: 12px 22px; font-size: 12px; }
         
         #san-pham { padding-top: 0; margin-top: -1px; }
         .interactive-container { flex-direction: column; min-height: auto; }
@@ -277,7 +271,6 @@
         .nav-btn { width: 40px; height: 40px; font-size: 16px; top: 25vh;} 
         .prev-btn { left: 10px; } .next-btn { right: 10px; }
 
-        /* VẪN GIỮ NGUYÊN HIỆU ỨNG CAROUSEL TRƯỢT NGANG CHO MOBILE */
         .project-section-wrapper { padding: 40px 0 20px 0; }
         .project-inner > .project-title-block, .project-inner > .project-footer-navigation { padding: 0 5%; }
         .project-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 5% 20px 5%; gap: 15px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -315,7 +308,6 @@
 </section>
 
 <section class="snap-section interactive-container" id="san-pham">
-    <!-- CỘT TRÁI: Vữa khô trộn sẵn (tiêu chuẩn) -->
     <div class="product-layer layer-blue" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark-wrapper"><div class="watermark">SHV01</div></div>
@@ -341,7 +333,6 @@
         </div>
     </div>
 
-    <!-- CỘT GIỮA: Vữa trát tường NanoFlex (Dòng cao cấp) -->
     <div class="product-layer layer-yellow" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark-wrapper"><div class="watermark">NANO</div></div>
@@ -363,7 +354,6 @@
         </div>
     </div>
 
-    <!-- CỘT PHẢI: Vữa khô bao Jumbo (Dòng công trình) -->
     <div class="product-layer layer-tan" onclick="expand(this)">
         <div class="btn-close" onclick="event.stopPropagation(); collapse()"><i class="fa-solid fa-xmark"></i></div>
         <div class="watermark-wrapper"><div class="watermark">JUMBO</div></div>
@@ -556,7 +546,6 @@
     /* =======================================================
        HỆ THỐNG XỬ LÝ VIDEO YOUTUBE THÔNG MINH (THUMBNAIL & PLAY)
     ======================================================= */
-    // 1. Hàm bóc tách ID Video từ mọi định dạng Link YouTube
     function getYoutubeId(url) {
         if (!url) return null;
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -564,36 +553,29 @@
         return (match && match[2].length === 11) ? match[2] : null;
     }
 
-    // 2. Tự động lấy ảnh bìa HD đắp vào thẻ video khi tải trang
     document.addEventListener("DOMContentLoaded", function() {
         const thumbContainers = document.querySelectorAll('.yt-thumbnail-container');
         thumbContainers.forEach(container => {
             const url = container.getAttribute('data-url');
             const ytId = getYoutubeId(url);
             if (ytId) {
-                // Tải ảnh bìa sắc nét nhất (maxresdefault) của YouTube
                 container.style.backgroundImage = `url('https://img.youtube.com/vi/${ytId}/hqdefault.jpg')`;
             } else {
-                container.style.background = '#334155'; // Nền xám dự phòng nếu link hỏng
+                container.style.background = '#334155';
             }
         });
     });
 
-    // iOS không cho autoplay — fix error 153
     const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    // 3. Hàm mở Modal phát video thông minh
     function openVideoModal(videoUrl = null) {
         const modal = document.getElementById('vidModal');
         const ytId = videoUrl ? getYoutubeId(videoUrl) : 'N-FLw-piwlc';
         if (!ytId) return;
 
         const autoplay = _isIOS ? '' : '&autoplay=1';
-
-        // Hiện modal TRƯỚC để iframe có kích thước thực khi load (fix black screen)
         modal.classList.add('active');
 
-        // Đặt src sau khi modal đã render (fix black screen + iOS error 153)
         setTimeout(() => {
             document.getElementById('ytIframe').src =
                 `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1${autoplay}`;

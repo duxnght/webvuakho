@@ -49,11 +49,11 @@
         position: relative;
         z-index: 10;
     }
-    .article-section-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
+    .article-section-inner { max-width: 1100px; width: 100%; margin: 0 auto; }
     .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
     }
 
     .blog-card {
@@ -64,18 +64,19 @@
         transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         border: 1px solid #e2e8f0;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         text-decoration: none;
     }
     .blog-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-6px);
         box-shadow: 0 20px 40px rgba(0,0,0,0.12);
         border-color: #cbd5e1;
     }
 
     .card-img-wrapper {
         position: relative;
-        width: 100%;
+        width: 360px;
+        flex-shrink: 0;
         aspect-ratio: 4 / 3;
         overflow: hidden;
         background: #cbd5e1;
@@ -107,19 +108,21 @@
     }
 
     .card-content {
-        padding: 25px;
+        padding: 28px 32px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         background: #ffffff !important;
+        min-width: 0;
     }
 
     .card-meta {
-        color: #64748b;
+        color: #2563eb;
         font-size: 14px;
         font-family: var(--font-secondary);
-        font-weight: 500;
-        margin-bottom: 12px;
+        font-weight: 600;
+        margin-top: 16px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -301,13 +304,16 @@
     .reveal.active { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 1024px) {
-        .blog-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
         .video-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .card-img-wrapper { width: 280px; }
     }
     @media (max-width: 768px) {
         .blog-page-solid-wrapper { padding-top: 80px; }
-        .blog-grid { grid-template-columns: 1fr; gap: 20px; }
         .article-section-wrapper { padding: 20px 5% 50px 5%; }
+        /* Card về dạng dọc: ảnh trên, nội dung dưới */
+        .blog-card { flex-direction: column; }
+        .card-img-wrapper { width: 100%; }
+        .card-content { justify-content: flex-start; padding: 22px 24px; }
         .video-section-wrapper { padding: 20px 0 40px 0; }
         .video-section-inner > .section-header { padding: 0 5%; }
         .video-grid {
@@ -386,12 +392,12 @@
                     </div>
 
                     <div class="card-content">
+                        <h2 class="card-title-text">{{ article.tieu_de }}</h2>
+                        <p class="card-excerpt">{{ article.mo_ta_ngan }}</p>
                         <div class="card-meta">
                             <i class="fa-regular fa-calendar"></i>
                             {{ article.ngay_dang|date:"d/m/Y" }}
                         </div>
-                        <h2 class="card-title-text">{{ article.tieu_de }}</h2>
-                        <p class="card-excerpt">{{ article.mo_ta_ngan }}</p>
                     </div>
                 </a>
                 {% empty %}

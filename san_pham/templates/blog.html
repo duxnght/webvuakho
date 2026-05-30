@@ -20,34 +20,36 @@
     }
 
     /* =========================================
-       PHẦN BÀI VIẾT
+       HEADER CHUNG CHO 2 SECTION (căn lề trái)
     ========================================= */
-    .blog-header-section {
-        text-align: center;
-        padding: 60px 20px 40px 20px;
+    .section-header {
+        text-align: left;
+        margin-bottom: 28px;
     }
-    .blog-subtitle {
-        color: #d97706;
-        font-size: 15px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 10px;
-        font-family: var(--font-secondary);
-    }
-    .blog-title {
+    .section-header h2 {
         color: #0f172a;
-        font-size: clamp(30px, 5vw, 45px);
+        font-size: clamp(28px, 4vw, 42px);
         font-weight: 900;
         text-transform: uppercase;
-        letter-spacing: -1px;
+        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+    }
+    .section-header p {
+        color: #475569;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: var(--font-secondary);
     }
 
-    .blog-grid-container {
-        max-width: 1250px;
-        margin: 0 auto;
-        padding: 0 5% 60px 5%;
+    /* =========================================
+       PHẦN KIẾN THỨC HỮU ÍCH (BÀI VIẾT)
+    ========================================= */
+    .article-section-wrapper {
+        padding: 20px 8% 80px 8%;
+        position: relative;
+        z-index: 10;
     }
+    .article-section-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
     .blog-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -166,30 +168,11 @@
     ========================================= */
     .video-section-wrapper {
         background: #DCE7F2;
-        padding: 20px 8% 60px 8%;
+        padding: 40px 8% 50px 8%;
         position: relative;
         z-index: 10;
     }
     .video-section-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
-
-    .video-section-header {
-        text-align: center;
-        padding-bottom: 30px;
-    }
-    .video-section-header h2 {
-        font-size: clamp(28px, 4vw, 42px);
-        font-weight: 900;
-        color: #0f172a;
-        text-transform: uppercase;
-        letter-spacing: -0.5px;
-        margin-bottom: 10px;
-    }
-    .video-section-header p {
-        font-size: 15px;
-        color: #475569;
-        font-weight: 600;
-        font-family: var(--font-secondary);
-    }
 
     .video-grid {
         display: grid;
@@ -323,10 +306,10 @@
     }
     @media (max-width: 768px) {
         .blog-page-solid-wrapper { padding-top: 80px; }
-        .blog-header-section { padding-top: 40px; padding-bottom: 30px; }
         .blog-grid { grid-template-columns: 1fr; gap: 20px; }
+        .article-section-wrapper { padding: 20px 5% 50px 5%; }
         .video-section-wrapper { padding: 20px 0 40px 0; }
-        .video-section-inner > .video-section-header { padding: 0 5% 20px 5%; }
+        .video-section-inner > .section-header { padding: 0 5%; }
         .video-grid {
             display: flex;
             flex-wrap: nowrap;
@@ -347,54 +330,12 @@
 {% block content %}
 <div class="blog-page-solid-wrapper">
 
-    <!-- PHẦN BÀI VIẾT -->
-    <section class="blog-header-section reveal">
-        <div class="blog-subtitle">Tin tức & Sự kiện</div>
-        <h1 class="blog-title">Phóng sự Sông Hồng</h1>
-    </section>
-
-    <section class="blog-grid-container">
-        <div class="blog-grid">
-
-            {% for article in articles %}
-            <a href="{% url 'blog_detail' article.duong_dan_alias %}" class="blog-card reveal">
-                <div class="card-img-wrapper">
-                    <span class="card-badge">Tin tức</span>
-                    {% if article.anh_dai_dien %}
-                        <img src="{{ article.anh_dai_dien.url }}" alt="{{ article.tieu_de }}">
-                    {% else %}
-                        <div style="width: 100%; height: 100%; background: #cbd5e1; display: flex; align-items: center; justify-content: center;">
-                            <i class="fa-regular fa-image" style="font-size: 40px; color: #94a3b8;"></i>
-                        </div>
-                    {% endif %}
-                </div>
-
-                <div class="card-content">
-                    <div class="card-meta">
-                        <i class="fa-regular fa-calendar"></i>
-                        {{ article.ngay_dang|date:"d/m/Y" }}
-                    </div>
-                    <h2 class="card-title-text">{{ article.tieu_de }}</h2>
-                    <p class="card-excerpt">{{ article.mo_ta_ngan }}</p>
-                </div>
-            </a>
-            {% empty %}
-            <div class="empty-state reveal">
-                <i class="fa-solid fa-box-open" style="font-size: 60px; color: #cbd5e1;"></i>
-                <h3>Chưa có bài viết nào</h3>
-                <p>Các tin tức và sự kiện mới nhất sẽ sớm được cập nhật tại đây.</p>
-            </div>
-            {% endfor %}
-
-        </div>
-    </section>
-
-    <!-- PHẦN VIDEO PHÓNG SỰ DỰ ÁN -->
+    <!-- PHẦN 1: PHÓNG SỰ THỰC TẾ (VIDEO) -->
     {% if videos %}
     <section class="video-section-wrapper reveal">
         <div class="video-section-inner">
-            <div class="video-section-header">
-                <h2>Video Phóng Sự Dự Án</h2>
+            <div class="section-header">
+                <h2>Phóng Sự Thực Tế</h2>
                 <p>Bảo chứng chất lượng thực tế từ công trình</p>
             </div>
 
@@ -421,6 +362,48 @@
         </div>
     </section>
     {% endif %}
+
+    <!-- PHẦN 2: KIẾN THỨC HỮU ÍCH (BÀI VIẾT) -->
+    <section class="article-section-wrapper reveal">
+        <div class="article-section-inner">
+            <div class="section-header">
+                <h2>Kiến Thức Hữu Ích</h2>
+                <p>Tìm hiểu thêm về vữa khô trộn sẵn</p>
+            </div>
+
+            <div class="blog-grid">
+                {% for article in articles %}
+                <a href="{% url 'blog_detail' article.duong_dan_alias %}" class="blog-card reveal">
+                    <div class="card-img-wrapper">
+                        <span class="card-badge">Kiến thức</span>
+                        {% if article.anh_dai_dien %}
+                            <img src="{{ article.anh_dai_dien.url }}" alt="{{ article.tieu_de }}">
+                        {% else %}
+                            <div style="width: 100%; height: 100%; background: #cbd5e1; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-regular fa-image" style="font-size: 40px; color: #94a3b8;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-meta">
+                            <i class="fa-regular fa-calendar"></i>
+                            {{ article.ngay_dang|date:"d/m/Y" }}
+                        </div>
+                        <h2 class="card-title-text">{{ article.tieu_de }}</h2>
+                        <p class="card-excerpt">{{ article.mo_ta_ngan }}</p>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="empty-state reveal">
+                    <i class="fa-solid fa-box-open" style="font-size: 60px; color: #cbd5e1;"></i>
+                    <h3>Chưa có bài viết nào</h3>
+                    <p>Các kiến thức hữu ích về vữa khô trộn sẵn sẽ sớm được cập nhật tại đây.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 
 </div>
 

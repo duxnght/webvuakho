@@ -1,3 +1,4 @@
+import re
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
@@ -9,10 +10,18 @@ class VideoProject(models.Model):
         ('NANO', 'NANO SERIES'),
         ('JUMBO', 'JUMBO SERIES'),
     ]
-    
+    NEN_TANG_CHOICES = [
+        ('YOUTUBE', 'YouTube'),
+        ('TIKTOK', 'TikTok'),
+    ]
+
     tieu_de = models.CharField(max_length=200, verbose_name="Tên dự án")
     phan_loai = models.CharField(max_length=20, choices=SERIES_CHOICES, default='M7.5', verbose_name="Dòng sản phẩm")
-    link_youtube = models.URLField(blank=True, null=True, verbose_name="Đường dẫn YouTube", help_text="Ví dụ: https://www.youtube.com/embed/...")
+    nen_tang = models.CharField(max_length=10, choices=NEN_TANG_CHOICES, default='YOUTUBE', verbose_name="Nền tảng video")
+    link_youtube = models.URLField(blank=True, null=True, verbose_name="Đường dẫn YouTube", help_text="Dán link YouTube (chọn khi nền tảng là YouTube). Vd: https://www.youtube.com/watch?v=...")
+    link_tiktok = models.URLField(blank=True, null=True, verbose_name="Đường dẫn TikTok", help_text="Dán link video TikTok đầy đủ (chọn khi nền tảng là TikTok). Vd: https://www.tiktok.com/@user/video/7123...")
+    anh_thumbnail = models.ImageField(upload_to='video_thumbs/', blank=True, null=True, verbose_name="Ảnh thumbnail", help_text="Bắt buộc cho TikTok. YouTube để trống sẽ tự lấy ảnh bìa.")
+    thumbnail_url = models.URLField(blank=True, null=True, editable=False, verbose_name="Thumbnail tự động (TikTok)")
     sap_ra_mat = models.BooleanField(default=False, verbose_name="Dự án sắp ra mắt (Chưa có video)")
     ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
 
@@ -23,6 +32,31 @@ class VideoProject(models.Model):
 
     def __str__(self):
         return self.tieu_de
+
+    @property
+    def youtube_id(self):
+        if not self.link_youtube:
+            return ''
+        m = re.search(r'(?:youtu\.be/|/v/|/embed/|watch\?v=|&v=)([^#&?]{11})', self.link_youtube)
+        return m.group(1) if m else ''
+
+    @property
+    def tiktok_id(self):
+        if not self.link_tiktok:
+            return ''
+        m = re.search(r'/video/(\d+)', self.link_tiktok)
+        return m.group(1) if m else ''
+
+    @property
+    def thumb_url(self):
+        """Trả về URL ảnh thumbnail phù hợp theo nền tảng."""
+        if self.anh_thumbnail:
+            return self.anh_thumbnail.url
+        if self.thumbnail_url:
+            return self.thumbnail_url
+        if self.youtube_id:
+            return f'https://img.youtube.com/vi/{self.youtube_id}/hqdefault.jpg'
+        return ''
 
 # LUỒNG BÀI VIẾT BLOG
 class Article(models.Model):
@@ -52,8 +86,14 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.duong_dan_alias:
-            self.duong_dan_alias = slugify(self.tieu_de)
-        super(Article, self).save(*args, **kwargs)
+            base_slug = slugify(self.tieu_de)
+            slug = base_slug
+            counter = 1
+            while Article.objects.filter(duong_dan_alias=slug).exclude(pk=self.pk).exists():
+                slug = f'{base_slug}-{counter}'
+                counter += 1
+            self.duong_dan_alias = slug
+        super().save(*args, **kwargs)
 
 
 class DangKyTuVan(models.Model):

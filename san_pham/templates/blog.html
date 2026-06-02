@@ -177,18 +177,22 @@
     }
     .video-section-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
 
-    .video-grid {
+    /* 2 KHU VỰC: TikTok (trái) + YouTube (phải) */
+    .media-zones {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
+        grid-template-columns: 1fr 1.45fr;
+        gap: 24px;
+        align-items: start;
         width: 100%;
     }
+    .media-zones.single { grid-template-columns: 1fr; }
+    .zone-tiktok { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .zone-youtube { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 
     .video-card {
         position: relative;
         background: #1e293b;
         border-radius: 18px;
-        aspect-ratio: 16 / 9;
         overflow: hidden;
         box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         display: flex;
@@ -196,6 +200,8 @@
         justify-content: center;
         cursor: pointer;
     }
+    .video-card.yt { aspect-ratio: 16 / 9; }
+    .video-card.tt { aspect-ratio: 9 / 16; }
     .video-card.upcoming {
         background: rgba(255, 255, 255, 0.7);
         border: 1px solid rgba(0, 0, 0, 0.08);
@@ -225,14 +231,24 @@
     .badge-nano { background: #eab308; color: #0f172a; }
     .badge-jumbo { background: #ea580c; }
 
-    .yt-thumb {
+    .thumb-img {
         width: 100%;
         height: 100%;
         background-size: cover;
         background-position: center;
+        background-color: #1e293b;
         transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .video-card:not(.upcoming):hover .yt-thumb { transform: scale(1.08); }
+    .video-card:not(.upcoming):hover .thumb-img { transform: scale(1.08); }
+    /* Nhãn nền tảng góc dưới */
+    .platform-tag {
+        position: absolute; bottom: 12px; right: 12px; z-index: 3;
+        width: 30px; height: 30px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px; color: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+    .platform-tag.yt { background: #ff0000; }
+    .platform-tag.tt { background: #000; }
 
     .play-overlay {
         position: absolute;
@@ -286,6 +302,14 @@
         transform: scale(0.9);
         transition: 0.4s ease;
     }
+    /* TikTok dọc 9:16 */
+    .video-container.portrait {
+        aspect-ratio: 9 / 16;
+        width: auto;
+        max-width: 92vw;
+        height: 88vh;
+        max-height: 88vh;
+    }
     .video-modal.active .video-container { transform: scale(1); }
     .video-container iframe { width: 100%; height: 100%; border: none; }
     .close-modal {
@@ -304,7 +328,6 @@
     .reveal.active { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 1024px) {
-        .video-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .card-img-wrapper { width: 280px; }
     }
     @media (max-width: 768px) {
@@ -314,20 +337,10 @@
         .blog-card { flex-direction: column; }
         .card-img-wrapper { width: 100%; }
         .card-content { justify-content: flex-start; padding: 22px 24px; }
-        .video-section-wrapper { padding: 20px 0 40px 0; }
-        .video-section-inner > .section-header { padding: 0 5%; }
-        .video-grid {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            padding: 10px 5% 20px 5%;
-            gap: 15px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .video-grid::-webkit-scrollbar { display: none; }
-        .video-card { flex: 0 0 85%; scroll-snap-align: center; }
+        .video-section-wrapper { padding: 20px 5% 40px 5%; }
+        /* Mobile: TikTok trên, YouTube dưới, mỗi zone 2 cột */
+        .media-zones { grid-template-columns: 1fr; gap: 20px; }
+        .zone-tiktok, .zone-youtube { grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .close-modal { top: 15px; right: 20px; font-size: 36px; }
     }
 </style>
@@ -337,7 +350,7 @@
 <div class="blog-page-solid-wrapper">
 
     <!-- PHẦN 1: PHÓNG SỰ THỰC TẾ (VIDEO) -->
-    {% if videos %}
+    {% if videos_youtube or videos_tiktok %}
     <section class="video-section-wrapper reveal">
         <div class="video-section-inner">
             <div class="section-header">
@@ -345,25 +358,47 @@
                 <p>Bảo chứng chất lượng thực tế từ công trình</p>
             </div>
 
-            <div class="video-grid">
-                {% for video in videos %}
-                    {% if video.sap_ra_mat %}
-                    <div class="video-card upcoming">
+            <div class="media-zones{% if not videos_tiktok or not videos_youtube %} single{% endif %}">
+
+                {% if videos_tiktok %}
+                <div class="zone-tiktok">
+                    {% for video in videos_tiktok %}
+                    <div class="video-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
                         <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
                             {{ video.phan_loai }} SERIES
                         </span>
-                        <span class="upcoming-text">DỰ ÁN SẮP RA MẮT</span>
-                    </div>
-                    {% else %}
-                    <div class="video-card" onclick="openVideoModal('{{ video.link_youtube }}')">
-                        <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
-                            {{ video.phan_loai }} SERIES
-                        </span>
-                        <div class="yt-thumb" data-url="{{ video.link_youtube }}"></div>
+                        <div class="thumb-img" style="background-image: url('{{ video.thumb_url }}');"></div>
+                        <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
                         <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </div>
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if videos_youtube %}
+                <div class="zone-youtube">
+                    {% for video in videos_youtube %}
+                        {% if video.sap_ra_mat %}
+                        <div class="video-card yt upcoming">
+                            <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                                {{ video.phan_loai }} SERIES
+                            </span>
+                            <span class="upcoming-text">DỰ ÁN SẮP RA MẮT</span>
+                        </div>
+                        {% else %}
+                        <div class="video-card yt" onclick="openVideoModal('youtube', '{{ video.youtube_id }}')">
+                            <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                                {{ video.phan_loai }} SERIES
+                            </span>
+                            <div class="thumb-img" style="background-image: url('{{ video.thumb_url }}');"></div>
+                            <div class="platform-tag yt"><i class="fa-brands fa-youtube"></i></div>
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
             </div>
         </div>
     </section>
@@ -434,48 +469,39 @@
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Load YouTube thumbnails
-        document.querySelectorAll('.yt-thumb[data-url]').forEach(el => {
-            const url = el.getAttribute('data-url');
-            const match = url.match(/(?:youtu\.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]{11})/);
-            if (match) {
-                el.style.backgroundImage = `url('https://img.youtube.com/vi/${match[1]}/hqdefault.jpg')`;
-            } else {
-                el.style.background = '#334155';
-            }
-        });
     });
-
-    function getYoutubeId(url) {
-        if (!url) return null;
-        const match = url.match(/(?:youtu\.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]{11})/);
-        return match ? match[1] : null;
-    }
 
     // iOS không cho autoplay — fix error 153
     const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    function openVideoModal(videoUrl) {
+    function openVideoModal(platform, id) {
+        if (!id) return;
         const modal = document.getElementById('blogVidModal');
-        const ytId = getYoutubeId(videoUrl);
-        if (!ytId) return;
+        const container = modal.querySelector('.video-container');
+        const iframe = document.getElementById('blogYtIframe');
 
-        const autoplay = _isIOS ? '' : '&autoplay=1';
-
-        // Hiện modal TRƯỚC để iframe có kích thước thực khi load (fix black screen)
         modal.classList.add('active');
 
-        // Đặt src sau khi modal đã render (fix black screen + iOS error 153)
-        setTimeout(() => {
-            document.getElementById('blogYtIframe').src =
-                `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1${autoplay}`;
-        }, 100);
+        if (platform === 'tiktok') {
+            container.classList.add('portrait');
+            setTimeout(() => {
+                iframe.src = `https://www.tiktok.com/player/v1/${id}?autoplay=1&music_info=0&description=0&rel=0`;
+            }, 100);
+        } else {
+            container.classList.remove('portrait');
+            const autoplay = _isIOS ? '' : '&autoplay=1';
+            setTimeout(() => {
+                iframe.src = `https://www.youtube.com/embed/${id}?rel=0&playsinline=1${autoplay}`;
+            }, 100);
+        }
     }
 
     function closeVideoModal() {
-        document.getElementById('blogYtIframe').src = "";
-        document.getElementById('blogVidModal').classList.remove('active');
+        const iframe = document.getElementById('blogYtIframe');
+        iframe.src = "";
+        const modal = document.getElementById('blogVidModal');
+        modal.classList.remove('active');
+        modal.querySelector('.video-container').classList.remove('portrait');
     }
 
     // Đóng modal khi click nền

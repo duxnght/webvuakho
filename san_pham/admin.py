@@ -1,5 +1,8 @@
 import csv
+import json
 import os
+import urllib.parse
+import urllib.request
 from io import BytesIO
 from django.contrib import admin
 from django.core.files.base import ContentFile
@@ -36,11 +39,44 @@ def _to_webp(uploaded_file, quality=85):
         return None
 
 
+def _fetch_tiktok_thumbnail(url):
+    """Lấy thumbnail TikTok qua oEmbed (best-effort, có thể thất bại)."""
+    try:
+        api = 'https://www.tiktok.com/oembed?url=' + urllib.parse.quote(url, safe='')
+        req = urllib.request.Request(api, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            return data.get('thumbnail_url') or ''
+    except Exception:
+        return ''
+
+
 @admin.register(VideoProject)
 class VideoProjectAdmin(admin.ModelAdmin):
-    list_display = ('tieu_de', 'phan_loai', 'sap_ra_mat', 'ngay_tao')
-    list_filter = ('phan_loai', 'sap_ra_mat')
+    list_display = ('tieu_de', 'nen_tang', 'phan_loai', 'sap_ra_mat', 'ngay_tao')
+    list_filter = ('nen_tang', 'phan_loai', 'sap_ra_mat')
     search_fields = ('tieu_de',)
+
+    fieldsets = (
+        ('Thông tin video', {
+            'fields': ('tieu_de', 'phan_loai', 'nen_tang', 'sap_ra_mat')
+        }),
+        ('Nguồn video', {
+            'fields': ('link_youtube', 'link_tiktok', 'anh_thumbnail'),
+            'description': 'Chọn nền tảng ở trên, rồi dán link tương ứng. TikTok nên tải kèm ảnh thumbnail (nếu để trống hệ thống sẽ thử tự lấy).'
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        # Chuyển thumbnail tải lên sang WebP
+        if 'anh_thumbnail' in form.changed_data and form.cleaned_data.get('anh_thumbnail'):
+            webp = _to_webp(form.cleaned_data['anh_thumbnail'])
+            if webp:
+                obj.anh_thumbnail.save(webp.name, webp, save=False)
+        # TikTok không có thumbnail tải lên → thử lấy tự động qua oEmbed
+        if obj.nen_tang == 'TIKTOK' and not obj.anh_thumbnail and obj.link_tiktok:
+            obj.thumbnail_url = _fetch_tiktok_thumbnail(obj.link_tiktok)
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(Article)

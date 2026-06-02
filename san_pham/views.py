@@ -2,16 +2,16 @@ import hmac
 import os
 import subprocess
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Case, When, IntegerField
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import VideoProject, Article, DangKyTuVan
 
-def home_page(request):
-    # Lấy danh sách video và ÉP THỨ TỰ: NANO (1) -> M7.5 (2) -> JUMBO (3)
-    videos = VideoProject.objects.annotate(
+def _ordered_videos():
+    # ÉP THỨ TỰ: NANO (1) -> M7.5 (2) -> JUMBO (3)
+    return VideoProject.objects.annotate(
         custom_order=Case(
             When(phan_loai='NANO', then=1),
             When(phan_loai='M7.5', then=2),
@@ -19,21 +19,26 @@ def home_page(request):
             output_field=IntegerField(),
         )
     ).order_by('custom_order', '-ngay_tao')
-    
-    context = {'videos': videos}
+
+
+def home_page(request):
+    videos = _ordered_videos()
+    context = {
+        'videos': videos,
+        'videos_youtube': videos.filter(nen_tang='YOUTUBE')[:4],
+        'videos_tiktok': videos.filter(nen_tang='TIKTOK')[:4],
+    }
     return render(request, 'home.html', context)
 
 def blog_page(request):
     articles = Article.objects.filter(hien_thi=True)
-    videos = VideoProject.objects.annotate(
-        custom_order=Case(
-            When(phan_loai='NANO', then=1),
-            When(phan_loai='M7.5', then=2),
-            When(phan_loai='JUMBO', then=3),
-            output_field=IntegerField(),
-        )
-    ).order_by('custom_order', '-ngay_tao')
-    context = {'articles': articles, 'videos': videos}
+    videos = _ordered_videos()
+    context = {
+        'articles': articles,
+        'videos': videos,
+        'videos_youtube': videos.filter(nen_tang='YOUTUBE')[:4],
+        'videos_tiktok': videos.filter(nen_tang='TIKTOK')[:4],
+    }
     return render(request, 'blog.html', context)
 
 def blog_detail(request, slug):
@@ -60,7 +65,7 @@ def dang_ky_tu_van(request):
     return JsonResponse({'status': 'success'})
 
 def danh_muc_du_an(request):
-    pass
+    return redirect('home_page')
 
 
 @csrf_exempt
@@ -89,7 +94,8 @@ def deploy_webhook(request):
             if r.returncode != 0:
                 return JsonResponse({'status': 'error', 'log': log}, status=500)
 
-        open(f'{repo}/tmp/restart.txt', 'w').close()
+        with open(f'{repo}/tmp/restart.txt', 'w'):
+            pass
         return JsonResponse({'status': 'ok', 'log': log})
     except Exception as e:
         return JsonResponse({'status': 'error', 'detail': str(e)}, status=500)

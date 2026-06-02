@@ -72,6 +72,7 @@
     .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s ease; backdrop-filter: blur(10px); }
     .video-modal.active { opacity: 1; pointer-events: auto; }
     .video-container { position: relative; width: 90%; max-width: 900px; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: 0.4s ease; }
+    .video-container.portrait { aspect-ratio: 9 / 16; width: auto; max-width: 92vw; height: 88vh; max-height: 88vh; }
     .video-modal.active .video-container { transform: scale(1); }
     .video-container iframe { width: 100%; height: 100%; border: none; }
     .close-modal { position: absolute; top: 30px; right: 40px; color: white; font-size: 45px; cursor: pointer; transition: 0.3s; z-index: 10000; line-height: 1; }
@@ -169,19 +170,28 @@
     .project-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
     .project-title-block h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: #0f172a; text-transform: uppercase; margin-bottom: 6px; letter-spacing: -0.5px; }
     .project-title-block p { font-size: 16px; color: #1e40af; font-weight: 700; margin-bottom: 30px; font-family: var(--font-secondary); letter-spacing: 0.3px; text-shadow: none; }
-    .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; width: 100%; }
-    
-    .project-card { position: relative; background: #1e293b; border-radius: 18px; aspect-ratio: 16 / 9; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer;}
+    /* 2 KHU VỰC: TikTok (trái) + YouTube (phải) */
+    .media-zones { display: grid; grid-template-columns: 1fr 1.45fr; gap: 24px; align-items: start; width: 100%; }
+    .media-zones.single { grid-template-columns: 1fr; }
+    .zone-tiktok { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .zone-youtube { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+    .project-card { position: relative; background: #1e293b; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer;}
+    .project-card.yt { aspect-ratio: 16 / 9; }
+    .project-card.tt { aspect-ratio: 9 / 16; }
     .project-card.upcoming { background: rgba(255, 255, 255, 0.45); border: 1px solid rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 10px 25px rgba(0,0,0,0.03); cursor: default;}
     .upcoming-text { font-size: clamp(14px, 1.5vw, 18px); font-weight: 800; color: #334155; letter-spacing: 0.5px; }
-    
+
     .card-badge { position: absolute; top: 15px; left: 15px; padding: 5px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; color: white; z-index: 10; letter-spacing: 0.3px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .badge-m75 { background: #2563eb; } .badge-nano { background: #eab308; color: #0f172a; } .badge-jumbo { background: #ea580c; }
-    
-    .yt-thumbnail-container { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+
+    .yt-thumbnail-container { width: 100%; height: 100%; background-size: cover; background-position: center; background-color: #1e293b; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     .project-card:not(.upcoming):hover .yt-thumbnail-container { transform: scale(1.08); }
     .play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(220, 38, 38, 0.9); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s; z-index: 2; padding-left: 5px; }
     .project-card:not(.upcoming):hover .play-icon-overlay { background: #ef4444; transform: translate(-50%, -50%) scale(1.15); }
+    .platform-tag { position: absolute; bottom: 12px; right: 12px; z-index: 3; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); }
+    .platform-tag.yt { background: #ff0000; }
+    .platform-tag.tt { background: #000; }
 
     .project-footer-navigation { display: flex; justify-content: flex-end; margin-top: 20px; padding-right: 5px; }
     .view-more-link { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; color: #0f172a; text-decoration: none; transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1); font-size: 18px; }
@@ -231,8 +241,7 @@
         .expanded .img-box { width: 45vw; transform: translateX(-5vw) scale(1) !important;}
         .info-overlay { width: 55vw; right: 4%; }
         .spec-card { padding: 25px; gap: 20px; }
-        .info-overlay h2 { white-space: normal; } 
-        .project-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .info-overlay h2 { white-space: normal; }
     }
 
     @media (max-width: 768px) {
@@ -285,11 +294,9 @@
         .nav-btn { width: 40px; height: 40px; font-size: 16px; top: 25vh;} 
         .prev-btn { left: 10px; } .next-btn { right: 10px; }
 
-        .project-section-wrapper { padding: 40px 0 20px 0; }
-        .project-inner > .project-title-block, .project-inner > .project-footer-navigation { padding: 0 5%; }
-        .project-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 5% 20px 5%; gap: 15px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .project-grid::-webkit-scrollbar { display: none; } 
-        .project-card { flex: 0 0 85%; scroll-snap-align: center; }
+        .project-section-wrapper { padding: 40px 5% 20px 5%; }
+        .media-zones { grid-template-columns: 1fr; gap: 20px; }
+        .zone-tiktok, .zone-youtube { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
         #tu-van { padding: 20px 0 60px 0; }
         .consult-wrapper { padding: 0 5%; }
@@ -404,32 +411,48 @@
             <p>Bảo chứng chất lượng thi công</p>
         </div>
         
-        <div class="project-grid">
-            {% for video in videos %}
-                
-                {% if video.sap_ra_mat %}
-                <div class="project-card upcoming">
-                    <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
-                        {{ video.phan_loai }} SERIES
-                    </span>
-                    <span class="upcoming-text">DỰ ÁN SẮP RA MẮT</span>
-                </div>
-                
-                {% else %}
-                <div class="project-card has-video" onclick="openVideoModal('{{ video.link_youtube }}')">
-                    <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
-                        {{ video.phan_loai }} SERIES
-                    </span>
-                    <div class="yt-thumbnail-container" data-url="{{ video.link_youtube }}">
-                        <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
-                    </div>
-                </div>
-                {% endif %}
+        <div class="media-zones{% if not videos_tiktok or not videos_youtube %} single{% endif %}">
 
-            {% empty %}
-                <p style="color: white; padding: 20px;">Chưa có video phóng sự nào được đăng tải.</p>
-            {% endfor %}
-            
+            {% if videos_tiktok %}
+            <div class="zone-tiktok">
+                {% for video in videos_tiktok %}
+                <div class="project-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
+                    <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                        {{ video.phan_loai }} SERIES
+                    </span>
+                    <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_url }}');"></div>
+                    <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
+                    <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if videos_youtube %}
+            <div class="zone-youtube">
+                {% for video in videos_youtube %}
+                    {% if video.sap_ra_mat %}
+                    <div class="project-card yt upcoming">
+                        <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                            {{ video.phan_loai }} SERIES
+                        </span>
+                        <span class="upcoming-text">DỰ ÁN SẮP RA MẮT</span>
+                    </div>
+                    {% else %}
+                    <div class="project-card yt has-video" onclick="openVideoModal('youtube', '{{ video.youtube_id }}')">
+                        <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                            {{ video.phan_loai }} SERIES
+                        </span>
+                        <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_url }}');">
+                            <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                        <div class="platform-tag yt"><i class="fa-brands fa-youtube"></i></div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </div>
 
         <div class="project-footer-navigation">
@@ -560,47 +583,40 @@
     }
 
     /* =======================================================
-       HỆ THỐNG XỬ LÝ VIDEO YOUTUBE THÔNG MINH (THUMBNAIL & PLAY)
+       PHÁT VIDEO TRONG TRANG: YouTube (16:9) + TikTok (9:16)
     ======================================================= */
-    function getYoutubeId(url) {
-        if (!url) return null;
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const thumbContainers = document.querySelectorAll('.yt-thumbnail-container');
-        thumbContainers.forEach(container => {
-            const url = container.getAttribute('data-url');
-            const ytId = getYoutubeId(url);
-            if (ytId) {
-                container.style.backgroundImage = `url('https://img.youtube.com/vi/${ytId}/hqdefault.jpg')`;
-            } else {
-                container.style.background = '#334155';
-            }
-        });
-    });
-
     const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    function openVideoModal(videoUrl = null) {
+    function openVideoModal(platform, id) {
+        // Nút "Video giới thiệu" gọi không tham số → dùng video mặc định
+        if (platform === undefined) { platform = 'youtube'; id = 'N-FLw-piwlc'; }
+        if (!id) return;
         const modal = document.getElementById('vidModal');
-        const ytId = videoUrl ? getYoutubeId(videoUrl) : 'N-FLw-piwlc';
-        if (!ytId) return;
+        const container = modal.querySelector('.video-container');
+        const iframe = document.getElementById('ytIframe');
 
-        const autoplay = _isIOS ? '' : '&autoplay=1';
         modal.classList.add('active');
 
-        setTimeout(() => {
-            document.getElementById('ytIframe').src =
-                `https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1${autoplay}`;
-        }, 100);
+        if (platform === 'tiktok') {
+            container.classList.add('portrait');
+            setTimeout(() => {
+                iframe.src = `https://www.tiktok.com/player/v1/${id}?autoplay=1&music_info=0&description=0&rel=0`;
+            }, 100);
+        } else {
+            container.classList.remove('portrait');
+            const autoplay = _isIOS ? '' : '&autoplay=1';
+            setTimeout(() => {
+                iframe.src = `https://www.youtube.com/embed/${id}?rel=0&playsinline=1${autoplay}`;
+            }, 100);
+        }
     }
 
     function closeVideoModal() {
-        document.getElementById('ytIframe').src = "";
-        document.getElementById('vidModal').classList.remove('active');
+        const iframe = document.getElementById('ytIframe');
+        iframe.src = "";
+        const modal = document.getElementById('vidModal');
+        modal.classList.remove('active');
+        modal.querySelector('.video-container').classList.remove('portrait');
     }
 
     /* Form Đăng ký */

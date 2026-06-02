@@ -180,7 +180,7 @@
     /* 2 KHU VỰC: TikTok (trái) + YouTube (phải) */
     .media-zones {
         display: grid;
-        grid-template-columns: 1fr 1.45fr;
+        grid-template-columns: 1.45fr 1fr;
         gap: 24px;
         align-items: start;
         width: 100%;
@@ -360,21 +360,6 @@
 
             <div class="media-zones{% if not videos_tiktok or not videos_youtube %} single{% endif %}">
 
-                {% if videos_tiktok %}
-                <div class="zone-tiktok">
-                    {% for video in videos_tiktok %}
-                    <div class="video-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
-                        <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
-                            {{ video.phan_loai }} SERIES
-                        </span>
-                        <div class="thumb-img" style="background-image: url('{{ video.thumb_url }}');"></div>
-                        <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
                 {% if videos_youtube %}
                 <div class="zone-youtube">
                     {% for video in videos_youtube %}
@@ -395,6 +380,21 @@
                             <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                         </div>
                         {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if videos_tiktok %}
+                <div class="zone-tiktok">
+                    {% for video in videos_tiktok %}
+                    <div class="video-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
+                        <span class="video-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                            {{ video.phan_loai }} SERIES
+                        </span>
+                        <div class="thumb-img" style="background-image: url('{{ video.thumb_url }}');"></div>
+                        <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </div>
                     {% endfor %}
                 </div>
                 {% endif %}

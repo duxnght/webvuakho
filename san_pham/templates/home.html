@@ -171,7 +171,7 @@
     .project-title-block h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: #0f172a; text-transform: uppercase; margin-bottom: 6px; letter-spacing: -0.5px; }
     .project-title-block p { font-size: 16px; color: #1e40af; font-weight: 700; margin-bottom: 30px; font-family: var(--font-secondary); letter-spacing: 0.3px; text-shadow: none; }
     /* 2 KHU VỰC: TikTok (trái) + YouTube (phải) */
-    .media-zones { display: grid; grid-template-columns: 1fr 1.45fr; gap: 24px; align-items: start; width: 100%; }
+    .media-zones { display: grid; grid-template-columns: 1.45fr 1fr; gap: 24px; align-items: start; width: 100%; }
     .media-zones.single { grid-template-columns: 1fr; }
     .zone-tiktok { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .zone-youtube { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
@@ -413,21 +413,6 @@
         
         <div class="media-zones{% if not videos_tiktok or not videos_youtube %} single{% endif %}">
 
-            {% if videos_tiktok %}
-            <div class="zone-tiktok">
-                {% for video in videos_tiktok %}
-                <div class="project-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
-                    <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
-                        {{ video.phan_loai }} SERIES
-                    </span>
-                    <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_url }}');"></div>
-                    <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
-                    <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-
             {% if videos_youtube %}
             <div class="zone-youtube">
                 {% for video in videos_youtube %}
@@ -449,6 +434,21 @@
                         <div class="platform-tag yt"><i class="fa-brands fa-youtube"></i></div>
                     </div>
                     {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if videos_tiktok %}
+            <div class="zone-tiktok">
+                {% for video in videos_tiktok %}
+                <div class="project-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
+                    <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
+                        {{ video.phan_loai }} SERIES
+                    </span>
+                    <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_url }}');"></div>
+                    <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
+                    <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                </div>
                 {% endfor %}
             </div>
             {% endif %}

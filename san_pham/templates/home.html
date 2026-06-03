@@ -115,7 +115,7 @@
     .panel-content p { font-size: 15px; font-weight: 600; line-height: 1.5; color: #334155; text-shadow: none; }
     
     /* --- EXPAND EFFECT --- */
-    .product-layer.expanded { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; flex-direction: row; justify-content: flex-start; align-items: center; cursor: default; border: none; padding: 0; margin: 0; animation: smoothExpand 0.4s ease forwards; border-radius: 0; }
+    .product-layer.expanded { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; flex-direction: row; justify-content: flex-start; align-items: center; cursor: default; border: none; padding: 0; margin: 0; animation: smoothExpand 0.4s ease forwards; border-radius: 0; }
     @keyframes smoothExpand { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
     
     /* Expanded: giữ brand color để animation click vẫn ấn tượng */
@@ -156,11 +156,11 @@
     .layer-yellow.expanded .spec-card b { color: #a06010; }
     .layer-tan.expanded    .spec-card b { color: #7a5530; }
 
-    .btn-close { position: absolute; top: 40px; right: 40px; width: 60px; height: 60px; border-radius: 50%; background: white; color: black; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 101; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0; pointer-events: none; }
+    .btn-close { position: absolute; top: 40px; right: 40px; width: 60px; height: 60px; border-radius: 50%; background: white; color: black; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 10020; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0; pointer-events: none; }
     .expanded .btn-close { opacity: 1; pointer-events: auto; }
     .btn-close:hover { transform: scale(1.1); background: var(--text-dark); color: white;}
 
-    .nav-btn { position: fixed; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); color: #0f172a; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none; transition: 0.3s; border: 1px solid rgba(0,0,0,0.12); }
+    .nav-btn { position: fixed; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); color: #0f172a; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10010; opacity: 0; pointer-events: none; transition: 0.3s; border: 1px solid rgba(0,0,0,0.12); }
     .nav-btn:hover { background: rgba(0,0,0,0.18); color: #0f172a; transform: translateY(-50%) scale(1.1);}
     .prev-btn { left: 30px; } .next-btn { right: 30px; }
     body.is-expanded .nav-btn { opacity: 1; pointer-events: auto; }

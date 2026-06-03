@@ -170,23 +170,20 @@
     .project-inner { max-width: 1300px; width: 100%; margin: 0 auto; }
     .project-title-block h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: #0f172a; text-transform: uppercase; margin-bottom: 6px; letter-spacing: -0.5px; }
     .project-title-block p { font-size: 16px; color: #1e40af; font-weight: 700; margin-bottom: 30px; font-family: var(--font-secondary); letter-spacing: 0.3px; text-shadow: none; }
-    /* 2 KHU VỰC: TikTok (trái) + YouTube (phải) */
-    .media-zones { display: grid; grid-template-columns: 1.45fr 1fr; gap: 24px; align-items: start; width: 100%; }
-    .media-zones.single { grid-template-columns: 1fr; }
-    .zone-tiktok { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .zone-youtube { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    /* LƯỚI 3×2: hàng trên YouTube, hàng dưới TikTok — tất cả 16:9 */
+    .media-grid { display: flex; flex-direction: column; gap: 22px; width: 100%; }
+    .lane { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
-    .project-card { position: relative; background: #1e293b; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer;}
-    .project-card.yt { aspect-ratio: 16 / 9; }
-    .project-card.tt { aspect-ratio: 9 / 16; }
+    .project-card { position: relative; background: #1e293b; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; aspect-ratio: 16 / 9; }
     .project-card.upcoming { background: rgba(255, 255, 255, 0.45); border: 1px solid rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 10px 25px rgba(0,0,0,0.03); cursor: default;}
     .upcoming-text { font-size: clamp(14px, 1.5vw, 18px); font-weight: 800; color: #334155; letter-spacing: 0.5px; }
 
     .card-badge { position: absolute; top: 15px; left: 15px; padding: 5px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; color: white; z-index: 10; letter-spacing: 0.3px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .badge-m75 { background: #2563eb; } .badge-nano { background: #eab308; color: #0f172a; } .badge-jumbo { background: #ea580c; }
 
-    .yt-thumbnail-container { width: 100%; height: 100%; background-size: cover; background-position: center; background-color: #1e293b; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+    .yt-thumbnail-container { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-color: #1e293b; z-index: 0; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     .project-card:not(.upcoming):hover .yt-thumbnail-container { transform: scale(1.08); }
+    .tt-mobile { display: none; } /* ảnh dọc TikTok, chỉ hiện trên mobile */
     .play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(220, 38, 38, 0.9); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s; z-index: 2; padding-left: 5px; }
     .project-card:not(.upcoming):hover .play-icon-overlay { background: #ef4444; transform: translate(-50%, -50%) scale(1.15); }
     .platform-tag { position: absolute; bottom: 12px; right: 12px; z-index: 3; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); }
@@ -294,9 +291,16 @@
         .nav-btn { width: 40px; height: 40px; font-size: 16px; top: 25vh;} 
         .prev-btn { left: 10px; } .next-btn { right: 10px; }
 
-        .project-section-wrapper { padding: 40px 5% 20px 5%; }
-        .media-zones { grid-template-columns: 1fr; gap: 20px; }
-        .zone-tiktok, .zone-youtube { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .project-section-wrapper { padding: 40px 0 20px 0; }
+        .project-inner > .project-title-block, .project-inner > .project-footer-navigation { padding: 0 5%; }
+        /* Mobile: 2 luồng cuộn ngang — YouTube trên, TikTok dưới */
+        .media-grid { gap: 24px; }
+        .lane { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 4px 5% 10px 5%; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .lane::-webkit-scrollbar { display: none; }
+        .lane-youtube .project-card { flex: 0 0 80%; scroll-snap-align: center; }
+        .lane-tiktok .project-card { flex: 0 0 48%; scroll-snap-align: center; aspect-ratio: 9 / 16; }
+        .lane-tiktok .tt-desktop { display: none; }
+        .lane-tiktok .tt-mobile { display: block; }
 
         #tu-van { padding: 20px 0 60px 0; }
         .consult-wrapper { padding: 0 5%; }
@@ -411,27 +415,26 @@
             <p>Bảo chứng chất lượng thi công</p>
         </div>
         
-        <div class="media-zones{% if not videos_tiktok or not videos_youtube %} single{% endif %}">
+        <div class="media-grid">
 
             {% if videos_youtube %}
-            <div class="zone-youtube">
+            <div class="lane lane-youtube">
                 {% for video in videos_youtube %}
                     {% if video.sap_ra_mat %}
-                    <div class="project-card yt upcoming">
+                    <div class="project-card upcoming">
                         <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
                             {{ video.phan_loai }} SERIES
                         </span>
                         <span class="upcoming-text">DỰ ÁN SẮP RA MẮT</span>
                     </div>
                     {% else %}
-                    <div class="project-card yt has-video" onclick="openVideoModal('youtube', '{{ video.youtube_id }}')">
+                    <div class="project-card has-video" onclick="openVideoModal('youtube', '{{ video.youtube_id }}')">
                         <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
                             {{ video.phan_loai }} SERIES
                         </span>
-                        <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_url }}');">
-                            <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
-                        </div>
+                        <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_landscape }}');"></div>
                         <div class="platform-tag yt"><i class="fa-brands fa-youtube"></i></div>
+                        <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
                     </div>
                     {% endif %}
                 {% endfor %}
@@ -439,13 +442,14 @@
             {% endif %}
 
             {% if videos_tiktok %}
-            <div class="zone-tiktok">
+            <div class="lane lane-tiktok">
                 {% for video in videos_tiktok %}
-                <div class="project-card tt" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
+                <div class="project-card" onclick="openVideoModal('tiktok', '{{ video.tiktok_id }}')">
                     <span class="card-badge {% if video.phan_loai == 'M7.5' %}badge-m75{% elif video.phan_loai == 'NANO' %}badge-nano{% else %}badge-jumbo{% endif %}">
                         {{ video.phan_loai }} SERIES
                     </span>
-                    <div class="yt-thumbnail-container" style="background-image: url('{{ video.thumb_url }}');"></div>
+                    <div class="yt-thumbnail-container tt-desktop" style="background-image: url('{{ video.thumb_landscape }}');"></div>
+                    <div class="yt-thumbnail-container tt-mobile" style="background-image: url('{{ video.thumb_portrait }}');"></div>
                     <div class="platform-tag tt"><i class="fa-brands fa-tiktok"></i></div>
                     <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
                 </div>

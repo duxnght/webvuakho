@@ -48,15 +48,29 @@ class VideoProject(models.Model):
         return m.group(1) if m else ''
 
     @property
-    def thumb_url(self):
-        """Trả về URL ảnh thumbnail phù hợp theo nền tảng."""
+    def thumb_landscape(self):
+        """Ảnh 16:9 cho desktop. Ưu tiên ảnh upload; YouTube tự lấy ảnh bìa."""
         if self.anh_thumbnail:
             return self.anh_thumbnail.url
-        if self.thumbnail_url:
-            return self.thumbnail_url
         if self.youtube_id:
             return f'https://img.youtube.com/vi/{self.youtube_id}/hqdefault.jpg'
+        if self.thumbnail_url:
+            return self.thumbnail_url
         return ''
+
+    @property
+    def thumb_portrait(self):
+        """Ảnh dọc gốc TikTok cho mobile."""
+        if self.thumbnail_url:
+            return self.thumbnail_url
+        if self.anh_thumbnail:
+            return self.anh_thumbnail.url
+        return ''
+
+    # Giữ tương thích ngược
+    @property
+    def thumb_url(self):
+        return self.thumb_landscape
 
 # LUỒNG BÀI VIẾT BLOG
 class Article(models.Model):

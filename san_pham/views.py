@@ -25,8 +25,8 @@ def home_page(request):
     videos = _ordered_videos()
     context = {
         'videos': videos,
-        'videos_youtube': videos.filter(nen_tang='YOUTUBE')[:4],
-        'videos_tiktok': videos.filter(nen_tang='TIKTOK')[:4],
+        'videos_youtube': videos.filter(nen_tang='YOUTUBE')[:3],
+        'videos_tiktok': videos.filter(nen_tang='TIKTOK')[:3],
     }
     return render(request, 'home.html', context)
 
@@ -36,8 +36,8 @@ def blog_page(request):
     context = {
         'articles': articles,
         'videos': videos,
-        'videos_youtube': videos.filter(nen_tang='YOUTUBE')[:4],
-        'videos_tiktok': videos.filter(nen_tang='TIKTOK')[:4],
+        'videos_youtube': videos.filter(nen_tang='YOUTUBE')[:3],
+        'videos_tiktok': videos.filter(nen_tang='TIKTOK')[:3],
     }
     return render(request, 'blog.html', context)
 

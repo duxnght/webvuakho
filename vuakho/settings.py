@@ -28,10 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'san_pham',
     'django.contrib.sitemaps',
     'cloudinary',
     'ckeditor',
-    'san_pham',
 ]
 
 MIDDLEWARE = [

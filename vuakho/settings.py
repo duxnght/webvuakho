@@ -156,6 +156,12 @@ CKEDITOR_CONFIGS = {
         ],
         # uploadimage: dán (Ctrl+V) / kéo-thả ảnh vào bài là tự upload luôn.
         'extraPlugins': 'uploadimage',
+        # CKEditor 4.22 (getUploadUrl) nối "&responseType=json" vào
+        # filebrowserUploadUrl mà KHÔNG kiểm tra dấu "?" -> URL bị hỏng -> 404.
+        # Đặt thẳng uploadUrl/imageUploadUrl để plugin lấy nguyên URL (đường dẫn
+        # cố định = reverse('ckeditor_upload')); view tự trả JSON nên vẫn parse được.
+        'uploadUrl': '/ckeditor/upload/',
+        'imageUploadUrl': '/ckeditor/upload/',
         # Ẩn nút "Duyệt máy chủ" (ảnh nằm trên Cloudinary, không liệt kê được).
         'filebrowserBrowseUrl': '',
         'height': 400,

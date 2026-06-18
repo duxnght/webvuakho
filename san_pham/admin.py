@@ -1,42 +1,16 @@
 import csv
 import json
-import os
 import urllib.parse
 import urllib.request
-from io import BytesIO
 from django.contrib import admin
-from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from django.utils import timezone
-from PIL import Image as PilImage
+from .image_utils import to_webp as _to_webp
 from .models import VideoProject, Article, DangKyTuVan
 
 admin.site.site_header = "Hệ thống Quản trị Vữa Khô Sông Hồng"
 admin.site.site_title = "Admin Sông Hồng"
 admin.site.index_title = "Bảng điều khiển"
-
-
-def _to_webp(uploaded_file, quality=85):
-    """Convert any uploaded image to WebP. Returns ContentFile or None on failure."""
-    try:
-        uploaded_file.seek(0)
-        img = PilImage.open(uploaded_file)
-        img.load()
-        if img.mode == 'P':
-            img = img.convert('RGBA')
-        if img.mode in ('RGBA', 'LA'):
-            bg = PilImage.new('RGB', img.size, (255, 255, 255))
-            bg.paste(img, mask=img.split()[-1])
-            img = bg
-        elif img.mode != 'RGB':
-            img = img.convert('RGB')
-        buf = BytesIO()
-        img.save(buf, format='WebP', quality=quality, method=4)
-        buf.seek(0)
-        base = os.path.splitext(os.path.basename(uploaded_file.name))[0]
-        return ContentFile(buf.read(), name=f'{base}.webp')
-    except Exception:
-        return None
 
 
 def _fetch_tiktok_thumbnail(url):

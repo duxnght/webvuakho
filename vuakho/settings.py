@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'cloudinary',
     'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,39 @@ else:
     }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ==============================================================================
+# CKEditor — upload ảnh trong thân bài viết
+# Ảnh được view tùy biến (san_pham.ckeditor_views) chuyển sang WebP rồi lưu qua
+# storage mặc định (Cloudinary trên production), giống pipeline ảnh đại diện.
+# ==============================================================================
+CKEDITOR_UPLOAD_PATH = 'blog_content/'
+CKEDITOR_RESTRICT_BY_DATE = True
+CKEDITOR_IMAGE_BACKEND = None  # tự convert WebP, không cần backend tạo thumbnail
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'language': 'vi',
+        'skin': 'moono-lisa',
+        'toolbar': 'SHK',
+        'toolbar_SHK': [
+            ['Format', 'Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList', 'Blockquote'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['Image', 'Table', 'HorizontalRule', 'SpecialChar'],
+            ['TextColor', 'BGColor'],
+            ['RemoveFormat', 'Source', 'Maximize'],
+        ],
+        # uploadimage: dán (Ctrl+V) / kéo-thả ảnh vào bài là tự upload luôn.
+        'extraPlugins': 'uploadimage',
+        # Ẩn nút "Duyệt máy chủ" (ảnh nằm trên Cloudinary, không liệt kê được).
+        'filebrowserBrowseUrl': '',
+        'height': 400,
+        'width': '100%',
+    }
+}
 
 DEPLOY_WEBHOOK_TOKEN = os.environ.get('DEPLOY_WEBHOOK_TOKEN', '')
 

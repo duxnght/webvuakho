@@ -1,7 +1,7 @@
 import re
 from django.db import models
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # LUỒNG VIDEO DỰ ÁN
 class VideoProject(models.Model):
@@ -81,7 +81,7 @@ class Article(models.Model):
     
     anh_dai_dien = models.ImageField(upload_to='blog_images/', verbose_name="Ảnh bài viết")
     mo_ta_ngan = models.TextField(max_length=500, verbose_name="Mô tả ngắn")
-    noi_dung = RichTextField(verbose_name="Nội dung bài viết")
+    noi_dung = RichTextUploadingField(verbose_name="Nội dung bài viết")
     
     hien_thi = models.BooleanField(default=True, verbose_name="Hiện bài viết")
     ngay_dang = models.DateTimeField(auto_now_add=True, verbose_name="Ngày đăng")
